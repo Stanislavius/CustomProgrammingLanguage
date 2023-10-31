@@ -7,15 +7,21 @@ file: [statements]
 
 statements: statement+
 
-statement: sum |
-           mul |
-           sub |
-           div |
+statement: sum
 
-sum: INT + INT
-mul: INT * INT
-sub: INT - INT
-div: INT / INT
+sum:
+        | sum '+' term
+        | sum '-' term
+        | term
+
+term:
+        | term '*' factor
+        | term '/' factor
+        | factor
+
+factor:
+        | INT
+        | -factor
 
 INT     : [0-9]+
 */
@@ -23,29 +29,15 @@ public class Main {
     public static void main(String[] args) {
         String filename = args[0];
         Lexer l = new Lexer(filename);
+        Parser parser = new Parser();
         try {
-            LinkedList<ExpressionToken> tokens = l.read();
-            for (ExpressionToken token : tokens) System.out.println(token);
-            System.out.println("Execution");
-            for (ExpressionToken token: tokens){
-                int result = 0;
-                switch (token.getOp()){
-                    case ("+"):
-                        result = token.getArg1() + token.getArg2();
-                        break;
-                    case ("-"):
-                        result = token.getArg1() - token.getArg2();
-                        break;
-                    case ("*"):
-                        result = token.getArg1() * token.getArg2();
-                        break;
-                    case ("/"):
-                        result = token.getArg1() / token.getArg2();
-                        break;
-
-                }
-                System.out.println(result);
+            LinkedList<Token> tokens = l.read();
+            LinkedList<ParsedTree> ps = parser.parse(tokens);
+            LinkedList<String> result = Executor.execute(ps);
+            for (String to_print: result){
+                System.out.println(to_print);
             }
+
         }
         catch(Exception e){
             System.out.println(e.getStackTrace());

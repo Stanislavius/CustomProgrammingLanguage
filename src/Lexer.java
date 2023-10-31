@@ -16,55 +16,68 @@ public class Lexer {
         this.filename = filename;
     }
 
-    public LinkedList<ExpressionToken> read() throws Exception {
-        LinkedList<ExpressionToken> tokens = new LinkedList<ExpressionToken>();
+    public LinkedList<Token> read() throws Exception {
+        LinkedList<Token> tokens = new LinkedList<Token>();
         BufferedReader br = new BufferedReader(new FileReader(filename));
         String st = null;
+        int line_num = 0;
         while ((st = br.readLine()) != null) {
             Matcher arithmetic_matcher = arithmetic_pattern.matcher(st);
             Matcher int_matcher = int_pattern.matcher(st);
-            if (arithmetic_matcher.find()){
-                String op = arithmetic_matcher.group();
-                if (arithmetic_matcher.find()){
-                    //System.out.println("Error");
-                    //throw new Exception("Can't process expression.");
-                }
-                if (int_matcher.find()){
-                    int arg1 = Integer.parseInt(int_matcher.group());
-                    int_matcher.find();
-                    int arg2 = Integer.parseInt(int_matcher.group());
-                    ExpressionToken new_token = new ExpressionToken(op, arg1, arg2);
-                    tokens.add(new_token);
-                }
+            while (int_matcher.find()){
+                int start = int_matcher.start();
+                tokens.add(new Token(token_type.INT, int_matcher.group(), line_num, start));
             }
+            while (arithmetic_matcher.find()){
+                int start = arithmetic_matcher.start();
+                tokens.add(new Token(token_type.arithmetic,
+                        arithmetic_matcher.group(), line_num, start));
+            }
+            tokens.add(new Token(token_type.new_line, "", line_num, st.length() - 1));
+
+            line_num++;
         }
         return tokens;
     }
 }
 
-class ExpressionToken{
-    final private String op;
-    final private int arg1;
-    final private int arg2;
-    public ExpressionToken(String op, int arg1, int arg2){
-        this.op = op;
-        this.arg1 = arg1;
-        this.arg2 = arg2;
-    }
 
-    public String getOp(){
-        return this.op;
-    }
+enum token_type{
+    INT,
+    arithmetic,
+    new_line
+}
 
-    public int getArg1(){
-        return this.arg1;
-    }
 
-    public int getArg2(){
-        return this.arg2;
+class Token{
+    private token_type type;
+    private String value;
+    private int line;
+    private int start_pos;
+    public Token(token_type type, String value, int line, int start_pos){
+        this.type = type;
+        this.value = value;
+        this.line = line;
+        this.start_pos = start_pos;
     }
 
     public String toString(){
-        return this.arg1 + this.op + this.arg2;
+        return type + " " + value + " " + line + " " + start_pos;
+    }
+
+    public token_type getType(){
+        return this.type;
+    }
+
+    public String getValue(){
+        return this.value;
+    }
+
+    public int getLine(){
+        return this.line;
+    }
+
+    public int getPos(){
+        return this.start_pos;
     }
 }
