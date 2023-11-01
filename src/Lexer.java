@@ -10,6 +10,7 @@ public class Lexer {
     final String[] arithmetic_op = {"+", "-", "*", "/"};
     Pattern arithmetic_pattern = Pattern.compile("[+-/*]{1}");
     Pattern int_pattern = Pattern.compile("[0-9]+");
+    Pattern parenthesis_pattern = Pattern.compile("[\\(\\)]{1}");
     final private String filename;
 
     public Lexer(String filename) {
@@ -24,6 +25,7 @@ public class Lexer {
         while ((st = br.readLine()) != null) {
             Matcher arithmetic_matcher = arithmetic_pattern.matcher(st);
             Matcher int_matcher = int_pattern.matcher(st);
+            Matcher paranthesis_matcher = parenthesis_pattern.matcher(st);
             while (int_matcher.find()){
                 int start = int_matcher.start();
                 tokens.add(new Token(token_type.INT, int_matcher.group(), line_num, start));
@@ -32,6 +34,11 @@ public class Lexer {
                 int start = arithmetic_matcher.start();
                 tokens.add(new Token(token_type.arithmetic,
                         arithmetic_matcher.group(), line_num, start));
+            }
+            while (paranthesis_matcher.find()){
+                int start = paranthesis_matcher.start();
+                tokens.add(new Token(token_type.parenthesis,
+                        paranthesis_matcher.group(), line_num, start));
             }
             tokens.add(new Token(token_type.new_line, "", line_num, st.length() - 1));
 
@@ -45,7 +52,8 @@ public class Lexer {
 enum token_type{
     INT,
     arithmetic,
-    new_line
+    new_line,
+    parenthesis
 }
 
 

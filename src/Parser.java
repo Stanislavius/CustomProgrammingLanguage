@@ -54,22 +54,76 @@ class ParsedTree{
     ParsedTree left;
     ParsedTree right;
     public ParsedTree(LinkedList<Token> tokens){
+        int i = 0;
         if (tokens.size() == 1){
             this.token = tokens.get(0);
         }
         else {
-            int i = 0;
-            while (i < tokens.size()) {
-                if (tokens.get(i).getType() == token_type.arithmetic) {
-                    if (tokens.get(i).getValue().equals("+") || tokens.get(i).getValue().equals("-")) {
-                        if (i != 0)
-                            left = new ParsedTree(new LinkedList<Token>(tokens.subList(0, i)));
-                        right = new ParsedTree(new LinkedList<Token>(tokens.subList(i + 1, tokens.size())));
-                        token = tokens.get(i);
-                        break;
+            if (tokens.get(0).getType() == token_type.parenthesis){
+                int start = 0;
+                int end = -100;
+                int balance = 1;
+                i = 1;
+                while (i < tokens.size() && balance != 0) {
+                    if (tokens.get(i).getType() == token_type.parenthesis) {
+                        if (tokens.get(i).getValue().equals("(")){
+                            balance = 1;
+                        }
+                        while (i < tokens.size() && balance != 0){
+                            if (tokens.get(i).getValue().equals("(")) {
+                                balance = balance + 1;
+                            }
+                            if (tokens.get(i).getValue().equals(")")){
+                                balance = balance - 1;
+                            }
+                            if (balance == 0) {
+                                end = i;
+
+                            }
+                            else {
+                                i++;
+                            }
+                        }
+
+                    }
+                    i++;
+                }
+                if (balance == 0){
+                    if(start + 1 == end){
+                        // something
+                    }
+                    else
+                    {
+                        if (start == 0 && end == (tokens.size() - 1)){
+                            tokens.remove(tokens.size() - 1);
+                            tokens.remove(0);
+                        }
+                        else {
+                            left = new ParsedTree(new LinkedList<Token>(tokens.subList(start + 1, end)));
+                            right = new ParsedTree(new LinkedList<Token>(tokens.subList(end + 2, tokens.size())));
+                            token = tokens.get(end + 1);
+                        }
                     }
                 }
-                i++;
+                else{
+                    //Throw error
+                }
+            }
+
+            if (token == null) {
+                i = 0;
+                while (i < tokens.size()) {
+                    if (tokens.get(i).getType() == token_type.arithmetic) {
+                        if (tokens.get(i).getValue().equals("+") || tokens.get(i).getValue().equals("-")) {
+                            if (i != 0)
+                                left = new ParsedTree(new LinkedList<Token>(tokens.subList(0, i)));
+                            right = new ParsedTree(new LinkedList<Token>(tokens.subList(i + 1, tokens.size())));
+                            token = tokens.get(i);
+                            break;
+                        }
+                    }
+                    i++;
+                }
             }
             if (token == null) {
                 i = 0;
@@ -121,5 +175,16 @@ class ParsedTree{
         }
         return 0;
 
+    }
+
+    public String toString(){
+        String l = "";
+        if (left != null)
+            l = "("+left.toString();
+        String r = "";
+        if (right != null){
+            r = right.toString() + ")";
+        }
+        return l + this.token.getValue() + r;
     }
 }
