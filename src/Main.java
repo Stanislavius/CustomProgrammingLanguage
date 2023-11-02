@@ -7,7 +7,8 @@ file: [statements]
 
 statements: statement+
 
-statement: sum
+statement: |sum
+           |(sum)
 
 sum:
         | sum '+' term

@@ -1,6 +1,7 @@
 import java.io.FileOutputStream;
 import java.util.Collections;
 import java.util.Comparator;
+import java.util.Iterator;
 import java.util.LinkedList;
 
 public class Parser {
@@ -33,92 +34,86 @@ public class Parser {
                 return result;
             }
         });
-
-        LinkedList<Token> block = new LinkedList<Token>();
-        for(Token token : tokens){
-            if (token.getType().equals(token_type.new_line)){
-                program.add(new ParsedTree(block));
-                block = new LinkedList<Token>();
+        try {
+            LinkedList<ParsedTree> block = new LinkedList<ParsedTree>();
+            for (Token token : tokens) {
+                if (token.getType().equals(token_type.new_line)) {
+                    program.add(new ParsedTree(block));
+                    block = new LinkedList<ParsedTree>();
+                } else {
+                    block.add(new ParsedTree(token));
+                }
             }
-            else{
-                block.add(token);
-            }
+            System.out.println("parsed");
         }
-        int k = 4;
+        catch (ParsingException e){
+            System.out.println(e);
+        }
         return program;
     }
 }
 
 class ParsedTree{
+    final static String first_priority = "*/";
+    final static String second_priority = "+-";
     Token token = null;
     ParsedTree left;
     ParsedTree right;
-    public ParsedTree(LinkedList<Token> tokens){
-        int i = 0;
-        if (tokens.size() == 1){
-            this.token = tokens.get(0);
+    public ParsedTree(LinkedList<ParsedTree> tokens) throws ParsingException {
+        if (tokens.size() == 1) {
+            if (tokens.get(0).is_single()) this.token = tokens.get(0).token;
+            else{
+                this.left = tokens.get(0).left;
+                this.right = tokens.get(0).right;
+                this.token = tokens.get(0).token;
+            }
         }
         else {
-            if (tokens.get(0).getType() == token_type.parenthesis){
-                int start = 0;
-                int end = -100;
-                int balance = 1;
-                i = 1;
-                while (i < tokens.size() && balance != 0) {
-                    if (tokens.get(i).getType() == token_type.parenthesis) {
-                        if (tokens.get(i).getValue().equals("(")){
-                            balance = 1;
-                        }
-                        while (i < tokens.size() && balance != 0){
+            int i = 0;
+            LinkedList<ParsedTree> operands = new LinkedList<ParsedTree>();
+            while (i < tokens.size()) {
+                if (tokens.get(i).getType() == token_type.parenthesis) {
+                    int balance = 1;
+                    int start = i;
+                    while (i < tokens.size() - 1) {
+                        i = i + 1;
+                        if (tokens.get(i).getType() == token_type.parenthesis) {
                             if (tokens.get(i).getValue().equals("(")) {
-                                balance = balance + 1;
+                                balance++;
+                            } else {
+                                balance--;
                             }
-                            if (tokens.get(i).getValue().equals(")")){
-                                balance = balance - 1;
-                            }
-                            if (balance == 0) {
-                                end = i;
-
-                            }
-                            else {
-                                i++;
-                            }
-                        }
-
-                    }
-                    i++;
-                }
-                if (balance == 0){
-                    if(start + 1 == end){
-                        // something
-                    }
-                    else
-                    {
-                        if (start == 0 && end == (tokens.size() - 1)){
-                            tokens.remove(tokens.size() - 1);
-                            tokens.remove(0);
-                        }
-                        else {
-                            left = new ParsedTree(new LinkedList<Token>(tokens.subList(start + 1, end)));
-                            right = new ParsedTree(new LinkedList<Token>(tokens.subList(end + 2, tokens.size())));
-                            token = tokens.get(end + 1);
+                            if (balance == 0)
+                                break;
                         }
                     }
+                    int end = i - 1;
+                    if (balance == 0) {
+                        operands.add(new ParsedTree(new LinkedList<ParsedTree>(tokens.subList(start + 1, end+1))));
+                    } else {
+                        throw new ParenthesesException(tokens.get(start).token);
+                    }
+                } else {
+                    operands.add(tokens.get(i));
                 }
-                else{
-                    //Throw error
-                }
+                i++;
             }
-
+            Iterator iter = operands.iterator();
+            while (iter.hasNext()){
+                ParsedTree pt = (ParsedTree) iter.next();
+                if (pt.getType().equals(token_type.parenthesis)) iter.remove();
+            }
+            //now we should have operands without any parentheses
+            i = 0;
             if (token == null) {
                 i = 0;
-                while (i < tokens.size()) {
-                    if (tokens.get(i).getType() == token_type.arithmetic) {
-                        if (tokens.get(i).getValue().equals("+") || tokens.get(i).getValue().equals("-")) {
+                while (i < operands.size()) {
+                    if (operands.get(i).is_single() && operands.get(i).getType() == token_type.arithmetic) {
+                        if (operands.get(i).getValue().equals("+") || operands.get(i).getValue().equals("-")) {
                             if (i != 0)
-                                left = new ParsedTree(new LinkedList<Token>(tokens.subList(0, i)));
-                            right = new ParsedTree(new LinkedList<Token>(tokens.subList(i + 1, tokens.size())));
-                            token = tokens.get(i);
+                                left = new ParsedTree(new LinkedList<ParsedTree>(operands.subList(0, i)));
+                            right = new ParsedTree(new LinkedList<ParsedTree>(operands.subList(i + 1, operands.size())));
+                            token = operands.get(i).token;
                             break;
                         }
                     }
@@ -127,24 +122,76 @@ class ParsedTree{
             }
             if (token == null) {
                 i = 0;
-                while (i < tokens.size()) {
-                    if (tokens.get(i).getType() == token_type.arithmetic) {
-                        if (tokens.get(i).getValue().equals("*") || tokens.get(i).getValue().equals("/")) {
-                            left = new ParsedTree(new LinkedList<Token>(tokens.subList(0, i)));
-                            right = new ParsedTree(new LinkedList<Token>(tokens.subList(i + 1, tokens.size())));
-                            token = tokens.get(i);
+                while (i < operands.size()) {
+                    if (operands.get(i).is_single() && operands.get(i).getType() == token_type.arithmetic) {
+                        if (operands.get(i).getValue().equals("*") || operands.get(i).getValue().equals("/")) {
+                            left = new ParsedTree(new LinkedList<ParsedTree>(operands.subList(0, i)));
+                            right = new ParsedTree(new LinkedList<ParsedTree>(operands.subList(i + 1, operands.size())));
+                            token = operands.get(i).token;
                             break;
                         }
                     }
                     i++;
                 }
             }
-        }
 
+        }
+    }
+
+    public boolean is_single(){
+        if (this.left == null && this.right == null) return true;
+        return false;
+    }
+    public ParsedTree(Object l, Object r, Token t){
+        if (l.getClass().equals(Token.class))
+            this.left = new ParsedTree((Token) l);
+        else
+            this.left = (ParsedTree) l;
+        if (r.getClass().equals(Token.class))
+            this.right = new ParsedTree((Token) r);
+        else
+            this.right = (ParsedTree) r;
+        this.token = t;
+
+    }
+
+    public int getLine(){
+        return this.token.getLine();
+    }
+
+    public int getPos(){
+        return this.token.getPos();
+    }
+
+    public String getValue(){
+        return this.token.getValue();
+    }
+
+    public void setLeft(ParsedTree left){
+        this.left = left;
+    }
+
+    public void setRight(ParsedTree right){
+        this.right = right;
+    }
+
+    public void setLeftAndRight(ParsedTree left, ParsedTree right){
+        this.left = left;
+        this.right = right;
     }
 
     public ParsedTree(Token t){
         this.token = t;
+    }
+
+    public ParsedTree(ParsedTree left, ParsedTree right, Token t){
+        this.left = left;
+        this.right = right;
+        this.token = t;
+    }
+
+    public token_type getType(){
+        return this.token.getType();
     }
 
     public int execute(){
@@ -187,4 +234,48 @@ class ParsedTree{
         }
         return l + this.token.getValue() + r;
     }
+}
+
+class Operand{
+    int priority;
+    Token token;
+    String return_type;
+    public Operand(){
+
+    }
+}
+
+
+class ParsingException extends Exception{
+    protected Token error_token;
+
+    public ParsingException(Token t){
+        error_token = t;
+    }
+
+    public String toString(){
+        StringBuilder sb = new StringBuilder();
+        sb.append("Error in line ");
+        sb.append(error_token.getLine());
+        sb.append(", position is ");
+        sb.append(error_token.getPos());
+        return sb.toString();
+    }
+
+}
+
+class ParenthesesException extends ParsingException{
+    public ParenthesesException(Token t){
+        super(t);
+    }
+
+    public String toString(){
+        StringBuilder sb = new StringBuilder();
+        sb.append("Parentheses don't match. Starts at ");
+        sb.append(error_token.getLine());
+        sb.append(" line, position is ");
+        sb.append(error_token.getPos());
+        return sb.toString();
+    }
+
 }
