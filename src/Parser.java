@@ -161,6 +161,22 @@ class ParsedTree{
 
     }
 
+    public boolean hasLeft(){
+        return left != null;
+    }
+
+    public Token getToken(){
+        return this.token;
+    }
+
+    public ParsedTree getRight(){
+        return this.right;
+    }
+
+    public ParsedTree getLeft(){
+        return this.left;
+    }
+
     public int getLine(){
         return this.token.getLine();
     }
@@ -200,36 +216,6 @@ class ParsedTree{
         return this.token.getType();
     }
 
-    public int execute(){
-        if (left == null && right == null){
-            return Integer.parseInt(this.token.getValue());
-        }
-        else{
-            switch (this.token.getValue()) {
-                case "+":
-                    if (left == null){
-                        return right.execute();
-                    }
-                    else{
-                        return left.execute() + right.execute();
-                    }
-                case "-":
-                    if (left == null){
-                        return -right.execute();
-                    }
-                    else{
-                        return left.execute() - right.execute();
-                    }
-                case "*":
-                        return left.execute() * right.execute();
-                case "/":
-                    return left.execute() / right.execute();
-            }
-        }
-        return 0;
-
-    }
-
     public String toString(){
         String l = "";
         if (left != null)
@@ -239,15 +225,6 @@ class ParsedTree{
             r = right.toString() + ")";
         }
         return l + this.token.getValue() + r;
-    }
-}
-
-class Operand{
-    int priority;
-    Token token;
-    String return_type;
-    public Operand(){
-
     }
 }
 
