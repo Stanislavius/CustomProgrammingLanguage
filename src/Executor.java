@@ -1,5 +1,4 @@
 import java.util.LinkedList;
-import java.util.function.IntBinaryOperator;
 
 public class Executor {
     public static LinkedList<String> execute(LinkedList<ParsedTree> program){
@@ -7,7 +6,12 @@ public class Executor {
         for (ParsedTree line: program){
             IntExecutionToken current_line = getExecutionTree(line);
             //System.out.println(line.toString());
-            result.add(current_line.execute() + "");
+            try {
+                result.add(current_line.execute() + "");
+            }
+            catch (ExecutionException e){
+                System.out.println(e.toString());
+            }
         }
         return result;
     }
@@ -37,12 +41,13 @@ abstract class ExecutionToken{
     Token token;
     public ExecutionToken(Token token){ this.token = token;}
 
+    public Token getToken() {return token;}
 }
 
 
 abstract class IntExecutionToken extends ExecutionToken{
     public IntExecutionToken(Token token){super(token);}
-    public abstract int execute();
+    public abstract int execute() throws ExecutionException;
 }
 
 class IntType extends IntExecutionToken{
@@ -67,7 +72,7 @@ class BinaryNumericalOperation extends IntExecutionToken{
         this.right = right;
     }
 
-    public int execute(){
+    public int execute() throws ExecutionException{
         int result = 0;
         switch (token.getValue()) {
             case "+":
@@ -80,7 +85,11 @@ class BinaryNumericalOperation extends IntExecutionToken{
                 result = left.execute() * right.execute();
                 break;
             case "/":
-                result = left.execute() / right.execute();
+                int right_int = right.execute();
+                if(right_int == 0){
+                    throw new ZeroDivisionException(this.getToken());
+                }
+                result = left.execute() / right_int;
                 break;
         }
         return result;
@@ -95,7 +104,7 @@ class UnaryNumericalOperation extends IntExecutionToken{
         this.right = right;
     }
 
-    public int execute(){
+    public int execute() throws ExecutionException{
         int result = 0;
         switch (token.getValue()) {
             case "+":
@@ -107,4 +116,38 @@ class UnaryNumericalOperation extends IntExecutionToken{
         }
         return result;
     }
+}
+
+class ExecutionException extends Exception{
+    protected Token error_token;
+
+    public ExecutionException(Token t){
+        error_token = t;
+    }
+
+    public String toString(){
+        StringBuilder sb = new StringBuilder();
+        sb.append("Runtime error in line ");
+        sb.append(error_token.getLine());
+        sb.append(", position is ");
+        sb.append(error_token.getPos());
+        return sb.toString();
+    }
+
+}
+
+class ZeroDivisionException extends ExecutionException {
+    public ZeroDivisionException(Token t){
+        super(t);
+    }
+
+    public String toString(){
+        StringBuilder sb = new StringBuilder();
+        sb.append("Division by zero in line ");
+        sb.append(error_token.getLine());
+        sb.append(", position is ");
+        sb.append(error_token.getPos());
+        return sb.toString();
+    }
+
 }
