@@ -1,31 +1,6 @@
 import java.io.IOException;
 import java.util.LinkedList;
 
-/*
-Grammar:
-file: [statements]
-
-statements: statement+
-
-statement: |sum
-           |(sum)
-
-sum:
-        | sum '+' term
-        | sum '-' term
-        | term
-
-term:
-        | term '*' factor
-        | term '/' factor
-        | factor
-
-factor:
-        | INT
-        | -factor
-
-INT     : [0-9]+
-*/
 public class Main {
     public static void main(String[] args) {
         String filename = args[0];

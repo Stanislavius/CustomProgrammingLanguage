@@ -7,43 +7,57 @@ import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 public class Lexer {
-    final String[] arithmetic_op = {"+", "-", "*", "/"};
-    Pattern arithmetic_pattern = Pattern.compile("[+-/*]{1}");
-    Pattern int_pattern = Pattern.compile("[0-9]+");
-    Pattern parenthesis_pattern = Pattern.compile("[\\(\\)]{1}");
+    final static Pattern arithmetic_pattern = Pattern.compile("[+-/*]{1}");
+    final static Pattern int_pattern = Pattern.compile("[0-9]+");
+    final static Pattern parenthesis_pattern = Pattern.compile("[\\(\\)]{1}");
     final private String filename;
 
     public Lexer(String filename) {
         this.filename = filename;
     }
 
+    public Lexer(){this.filename = null;}
+
     public LinkedList<Token> read() throws Exception {
         LinkedList<Token> tokens = new LinkedList<Token>();
-        BufferedReader br = new BufferedReader(new FileReader(filename));
-        String st = null;
-        int line_num = 0;
-        while ((st = br.readLine()) != null) {
-            Matcher arithmetic_matcher = arithmetic_pattern.matcher(st);
-            Matcher int_matcher = int_pattern.matcher(st);
-            Matcher paranthesis_matcher = parenthesis_pattern.matcher(st);
-            while (int_matcher.find()){
-                int start = int_matcher.start();
-                tokens.add(new Token(token_type.INT, int_matcher.group(), line_num, start));
+            BufferedReader br = new BufferedReader(new FileReader(filename));
+            String st = null;
+            int line_num = 0;
+            while ((st = br.readLine()) != null) {
+                tokens.addAll(this.readline(st, line_num));
+                line_num++;
             }
-            while (arithmetic_matcher.find()){
-                int start = arithmetic_matcher.start();
-                tokens.add(new Token(token_type.arithmetic,
-                        arithmetic_matcher.group(), line_num, start));
-            }
-            while (paranthesis_matcher.find()){
-                int start = paranthesis_matcher.start();
-                tokens.add(new Token(token_type.parenthesis,
-                        paranthesis_matcher.group(), line_num, start));
-            }
-            tokens.add(new Token(token_type.new_line, "", line_num, st.length() - 1));
+            return tokens;
+    }
 
-            line_num++;
+    public LinkedList<Token> read(String[] code){
+        LinkedList<Token> tokens = new LinkedList<Token>();
+        for(int line_num = 0; line_num < code.length; ++line_num){
+            tokens.addAll(this.readline(code[line_num], line_num));
         }
+        return tokens;
+    }
+
+    public LinkedList<Token> readline(String st, int line_num){
+        LinkedList<Token> tokens = new LinkedList<Token>();
+        Matcher arithmetic_matcher = arithmetic_pattern.matcher(st);
+        Matcher int_matcher = int_pattern.matcher(st);
+        Matcher paranthesis_matcher = parenthesis_pattern.matcher(st);
+        while (int_matcher.find()){
+            int start = int_matcher.start();
+            tokens.add(new Token(token_type.INT, int_matcher.group(), line_num, start));
+        }
+        while (arithmetic_matcher.find()){
+            int start = arithmetic_matcher.start();
+            tokens.add(new Token(token_type.arithmetic,
+                    arithmetic_matcher.group(), line_num, start));
+        }
+        while (paranthesis_matcher.find()){
+            int start = paranthesis_matcher.start();
+            tokens.add(new Token(token_type.parenthesis,
+                    paranthesis_matcher.group(), line_num, start));
+        }
+        tokens.add(new Token(token_type.new_line, "", line_num, st.length() - 1));
         return tokens;
     }
 }

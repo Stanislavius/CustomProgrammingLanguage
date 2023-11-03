@@ -44,7 +44,6 @@ public class Parser {
                     block.add(new ParsedTree(token));
                 }
             }
-            System.out.println("parsed");
         }
         catch (ParsingException e){
             System.out.println(e);
