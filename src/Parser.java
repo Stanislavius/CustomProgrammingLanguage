@@ -88,7 +88,7 @@ class ParsedTree{
                     }
                     int end = i - 1;
                     if (balance == 0) {
-                        operands.add(new ParsedTree(new LinkedList<ParsedTree>(tokens.subList(start + 1, end+1))));
+                        operands.add(new ParsedTree(new LinkedList<ParsedTree>(tokens.subList(start + 1, end + 1))));
                     } else {
                         throw new ParenthesesException(tokens.get(start).token);
                     }
@@ -98,42 +98,49 @@ class ParsedTree{
                 i++;
             }
             Iterator iter = operands.iterator();
-            while (iter.hasNext()){
+            while (iter.hasNext()) {
                 ParsedTree pt = (ParsedTree) iter.next();
                 if (pt.getType().equals(token_type.parenthesis)) iter.remove();
             }
             //now we should have operands without any parentheses
-            i = 0;
-            if (token == null) {
+            if (operands.size() == 1) {
+                ParsedTree pt =  operands.get(0);
+                this.token = pt.token;
+                this.left = pt.left;
+                this.right = pt.right;
+            } else {
                 i = 0;
-                while (i < operands.size()) {
-                    if (operands.get(i).is_single() && operands.get(i).getType() == token_type.arithmetic) {
-                        if (operands.get(i).getValue().equals("+") || operands.get(i).getValue().equals("-")) {
-                            if (i != 0)
+                if (token == null) {
+                    i = 0;
+                    while (i < operands.size()) {
+                        if (operands.get(i).is_single() && operands.get(i).getType() == token_type.arithmetic) {
+                            if (operands.get(i).getValue().equals("+") || operands.get(i).getValue().equals("-")) {
+                                if (i != 0)
+                                    left = new ParsedTree(new LinkedList<ParsedTree>(operands.subList(0, i)));
+                                right = new ParsedTree(new LinkedList<ParsedTree>(operands.subList(i + 1, operands.size())));
+                                token = operands.get(i).token;
+                                break;
+                            }
+                        }
+                        i++;
+                    }
+                }
+                if (token == null) {
+                    i = 0;
+                    while (i < operands.size()) {
+                        if (operands.get(i).is_single() && operands.get(i).getType() == token_type.arithmetic) {
+                            if (operands.get(i).getValue().equals("*") || operands.get(i).getValue().equals("/")) {
                                 left = new ParsedTree(new LinkedList<ParsedTree>(operands.subList(0, i)));
-                            right = new ParsedTree(new LinkedList<ParsedTree>(operands.subList(i + 1, operands.size())));
-                            token = operands.get(i).token;
-                            break;
+                                right = new ParsedTree(new LinkedList<ParsedTree>(operands.subList(i + 1, operands.size())));
+                                token = operands.get(i).token;
+                                break;
+                            }
                         }
+                        i++;
                     }
-                    i++;
                 }
-            }
-            if (token == null) {
-                i = 0;
-                while (i < operands.size()) {
-                    if (operands.get(i).is_single() && operands.get(i).getType() == token_type.arithmetic) {
-                        if (operands.get(i).getValue().equals("*") || operands.get(i).getValue().equals("/")) {
-                            left = new ParsedTree(new LinkedList<ParsedTree>(operands.subList(0, i)));
-                            right = new ParsedTree(new LinkedList<ParsedTree>(operands.subList(i + 1, operands.size())));
-                            token = operands.get(i).token;
-                            break;
-                        }
-                    }
-                    i++;
-                }
-            }
 
+            }
         }
     }
 
