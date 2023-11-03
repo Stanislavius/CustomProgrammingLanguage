@@ -52,3 +52,4 @@ Write program code in txt file. Pass path to file as command line argument and r
 2. src/Parser.java - builds syntax tree using tokens.
 3. src/Executor.java - executes code after text of program is parsed.
 4. src/Main.java - receives path to file with program, creates Lexer, Parser and Executor, guarantees communication between them.
+5. src/Testing.java - to test if program returns desired output.
