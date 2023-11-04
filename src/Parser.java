@@ -91,8 +91,10 @@ class ParsedTokens{
             int function_inx = -1;
             while (i < tokens.size()) {
                 if (tokens.get(i).getType() == token_type.function) {
-                    function_is_expected = true;
-                    function_inx = i;
+                    if (tokens.get(i).OperandsCount() == 0) {
+                        function_is_expected = true;
+                        function_inx = i;
+                    }
                     i++;
                 }
                 else {
