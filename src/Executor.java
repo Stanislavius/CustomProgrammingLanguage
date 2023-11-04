@@ -90,14 +90,21 @@ class IntFunction extends IntExecutionToken{
         this.args = args;
     }
     public int execute() throws ExecutionException {
-        if (token.getValue().equals("abs")){
-            if (args.size() != 1)
-                throw new WrongNumberOfArgumentsException(token, 1, args.size());
-            return Math.abs(args.get(0).execute());
+        switch (token.getValue()) {
+            case "abs":
+                if (args.size() != 1)
+                    throw new WrongNumberOfArgumentsException(token, 1, args.size());
+                return Math.abs(args.get(0).execute());
+            case "neg":
+                if (args.size() != 1)
+                    throw new WrongNumberOfArgumentsException(token, 1, args.size());
+                int res = args.get(0).execute();
+                if (res > 0) res = - res;
+                return res;
+            default:
+                throw new NoSuchFunctionException(token);
         }
-        else{
-            throw new NoSuchFunctionException(token);
-        }
+
     }
 }
 
