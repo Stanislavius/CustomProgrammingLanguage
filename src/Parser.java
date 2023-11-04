@@ -1,8 +1,5 @@
 import java.io.FileOutputStream;
-import java.util.Collections;
-import java.util.Comparator;
-import java.util.Iterator;
-import java.util.LinkedList;
+import java.util.*;
 
 public class Parser {
     public LinkedList<ParsedTokens> parse(LinkedList<Token> tokens){
@@ -55,9 +52,9 @@ public class Parser {
 
 
 class ParsedTokens{
-    final static String first_priority = "*/";
-    final static String second_priority = "+-";
     Token token = null;
+    static final HashSet<String> firstPriority = new HashSet<String>(Arrays.asList("*", "/"));
+    static final HashSet<String> secondPriority = new HashSet<String>(Arrays.asList("+", "-"));
     LinkedList<ParsedTokens> children = new LinkedList<ParsedTokens>();
 
     public ParsedTokens(Token t){
@@ -76,63 +73,26 @@ class ParsedTokens{
         children.add(pt); //divide into args
     }
 
-    public ParsedTokens(LinkedList<ParsedTokens> tokens) throws ParsingException {
-        if (tokens.size() == 1) {
-            if (tokens.get(0).is_single()) this.token = tokens.get(0).token;
-            else{
-                children = tokens.get(0).getChildren();
-                this.token = tokens.get(0).getToken();
+    public void divideByOperands(LinkedList<ParsedTokens> operands, HashSet<String> operations) throws ParsingException {
+        for(int i = 0; i < operands.size(); ++i) {
+            if (operands.get(i).is_single() && operands.get(i).getType().equals(token_type.arithmetic)){
+                if (operations.contains(operands.get(i).getValue())) {
+                    setRight(new ParsedTokens(new LinkedList<ParsedTokens>(operands.subList(i + 1, operands.size()))));
+                    if (i != 0)
+                        setLeft(new ParsedTokens(new LinkedList<ParsedTokens>(operands.subList(0, i))));
+                    token = operands.get(i).token;
+                    break;
+                }
             }
         }
+    }
+
+    public ParsedTokens(LinkedList<ParsedTokens> tokens) throws ParsingException {
+        if (tokens.size() == 1) {
+            this.ifSizeIsOne(tokens);
+        }
         else {
-            int i = 0;
-            LinkedList<ParsedTokens> operands = new LinkedList<ParsedTokens>();
-            boolean function_is_expected = false;
-            int function_inx = -1;
-            while (i < tokens.size()) {
-                if (tokens.get(i).getType() == token_type.function) {
-                    if (tokens.get(i).OperandsCount() == 0) {
-                        function_is_expected = true;
-                        function_inx = i;
-                    }
-                    i++;
-                }
-                else {
-                    if (tokens.get(i).getType() == token_type.parenthesis) {
-                        int balance = 1;
-                        int start = i;
-                        while (i < tokens.size() - 1) {
-                            i = i + 1;
-                            if (tokens.get(i).getType() == token_type.parenthesis) {
-                                if (tokens.get(i).getValue().equals("(")) {
-                                    balance++;
-                                } else {
-                                    balance--;
-                                }
-                                if (balance == 0)
-                                    break;
-                            }
-                        }
-                        int end = i - 1;
-                        if (balance == 0) {
-                            if (function_is_expected){ //TODO THIS, FUNCTION CAN HAVE MANY ARGS
-                                operands.add(new ParsedTokens(new LinkedList<ParsedTokens>(tokens.subList(start + 1, end + 1)),
-                                        tokens.get(function_inx).getToken()));
-                                //there we should divide into args of func, will be done later
-                                function_is_expected = false;
-                                function_inx = - 1;
-                            }
-                            else operands.add(new ParsedTokens(new LinkedList<ParsedTokens>(tokens.subList(start + 1, end + 1))));
-                        } else {
-                            throw new ParenthesesException(tokens.get(start).token);
-                        }
-                    } else {
-                        if(function_is_expected) throw new FunctionStartException(tokens.get(function_inx).getToken());
-                        else operands.add(tokens.get(i));
-                    }
-                    i++;
-                }
-            }
+            LinkedList<ParsedTokens> operands = this.getOperands(tokens);
             Iterator iter = operands.iterator();
             while (iter.hasNext()) {
                 ParsedTokens pt = (ParsedTokens) iter.next();
@@ -140,43 +100,79 @@ class ParsedTokens{
             }
             //now we should have operands without any parentheses
             if (operands.size() == 1) {
-                ParsedTokens pt =  operands.get(0);
-                this.token = pt.token;
-                this.children = pt.getChildren();
+                this.ifSizeIsOne(operands);
             } else {
-                i = 0;
                 if (token == null) {
-                    i = 0;
-                    while (i < operands.size()) {
-                        if (operands.get(i).is_single() && operands.get(i).getType() == token_type.arithmetic) {
-                            if (operands.get(i).getValue().equals("+") || operands.get(i).getValue().equals("-")) {
-                                setRight(new ParsedTokens(new LinkedList<ParsedTokens>(operands.subList(i + 1, operands.size()))));
-                                if (i != 0)
-                                    setLeft(new ParsedTokens(new LinkedList<ParsedTokens>(operands.subList(0, i))));
-                                token = operands.get(i).token;
-                                break;
-                            }
-                        }
-                        i++;
-                    }
+                    divideByOperands(operands, secondPriority);
                 }
                 if (token == null) {
-                    i = 0;
-                    while (i < operands.size()) {
-                        if (operands.get(i).is_single() && operands.get(i).getType() == token_type.arithmetic) {
-                            if (operands.get(i).getValue().equals("*") || operands.get(i).getValue().equals("/")) {
-                                setRight(new ParsedTokens(new LinkedList<ParsedTokens>(operands.subList(i + 1, operands.size()))));
-                                setLeft(new ParsedTokens(new LinkedList<ParsedTokens>(operands.subList(0, i))));
-                                token = operands.get(i).token;
-                                break;
-                            }
-                        }
-                        i++;
-                    }
+                   divideByOperands(operands, firstPriority);
                 }
 
             }
         }
+    }
+
+    public void ifSizeIsOne(LinkedList<ParsedTokens> tokens){
+        if (tokens.get(0).is_single())
+            this.token = tokens.get(0).getToken();
+        else{
+            children = tokens.get(0).getChildren();
+            this.token = tokens.get(0).getToken();
+        }
+    }
+
+    public LinkedList<ParsedTokens> getOperands(LinkedList<ParsedTokens> tokens) throws ParsingException {
+        int i = 0;
+        LinkedList<ParsedTokens> operands = new LinkedList<ParsedTokens>();
+        boolean function_is_expected = false;
+        int function_inx = -1;
+        while (i < tokens.size()) {
+            if (tokens.get(i).getType() == token_type.function) {
+                if (tokens.get(i).OperandsCount() == 0) {
+                    function_is_expected = true;
+                    function_inx = i;
+                    //if there is --abs(a) - error, because function will be droped after operands - abs()
+                }
+
+                i++;
+            } else {
+                if (tokens.get(i).getType() == token_type.parenthesis) {
+                    int balance = 1;
+                    int start = i;
+                    while (i < tokens.size() - 1) {
+                        i = i + 1;
+                        if (tokens.get(i).getType() == token_type.parenthesis) {
+                            if (tokens.get(i).getValue().equals("(")) {
+                                balance++;
+                            } else {
+                                balance--;
+                            }
+                            if (balance == 0)
+                                break;
+                        }
+                    }
+                    int end = i - 1;
+                    if (balance == 0) {
+                        if (function_is_expected) { //TODO THIS, FUNCTION CAN HAVE MANY ARGS
+                            operands.add(new ParsedTokens(new LinkedList<ParsedTokens>(tokens.subList(start + 1, end + 1)),
+                                    tokens.get(function_inx).getToken()));
+                            //there we should divide into args of func, will be done later
+                            function_is_expected = false;
+                            function_inx = -1;
+                        } else
+                            operands.add(new ParsedTokens(new LinkedList<ParsedTokens>(tokens.subList(start + 1, end + 1))));
+                    } else {
+                        throw new ParenthesesException(tokens.get(start).token);
+                    }
+                } else {
+                    if (function_is_expected) throw new FunctionStartException(tokens.get(function_inx).getToken());
+                    else operands.add(tokens.get(i));
+                }
+                i++;
+            }
+        }
+        return operands;
     }
 
     public LinkedList<ParsedTokens> getChildren() {
