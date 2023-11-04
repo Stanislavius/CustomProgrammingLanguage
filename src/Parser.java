@@ -5,8 +5,8 @@ import java.util.Iterator;
 import java.util.LinkedList;
 
 public class Parser {
-    public LinkedList<ParsedTree> parse(LinkedList<Token> tokens){
-        LinkedList<ParsedTree> program= new LinkedList<ParsedTree>();
+    public LinkedList<ParsedTokens> parse(LinkedList<Token> tokens){
+        LinkedList<ParsedTokens> program= new LinkedList<ParsedTokens>();
         Collections.sort(tokens, new Comparator<Token>() {
             public int compare(Token t1, Token t2) {
                 // compare two instance of `Score` and return `int` as result.
@@ -35,13 +35,13 @@ public class Parser {
             }
         });
         try {
-            LinkedList<ParsedTree> block = new LinkedList<ParsedTree>();
+            LinkedList<ParsedTokens> block = new LinkedList<ParsedTokens>();
             for (Token token : tokens) {
                 if (token.getType().equals(token_type.new_line)) {
-                    program.add(new ParsedTree(block));
-                    block = new LinkedList<ParsedTree>();
+                    program.add(new ParsedTokens(block));
+                    block = new LinkedList<ParsedTokens>();
                 } else {
-                    block.add(new ParsedTree(token));
+                    block.add(new ParsedTokens(token));
                 }
             }
         }
@@ -52,62 +52,95 @@ public class Parser {
     }
 }
 
-class ParsedTree{
+
+
+class ParsedTokens{
     final static String first_priority = "*/";
     final static String second_priority = "+-";
     Token token = null;
-    ParsedTree left;
-    ParsedTree right;
-    public ParsedTree(LinkedList<ParsedTree> tokens) throws ParsingException {
+    LinkedList<ParsedTokens> children = new LinkedList<ParsedTokens>();
+
+    public ParsedTokens(Token t){
+        this.token = t;
+    }
+
+    public ParsedTokens(ParsedTokens left, ParsedTokens right, Token t){
+        children.add(left);
+        children.add(right);
+        this.token = t;
+    }
+
+    public ParsedTokens(LinkedList<ParsedTokens> tokens, Token token) throws ParsingException {
+        this.token = token;
+        ParsedTokens pt = new ParsedTokens(tokens);
+        children.add(pt); //divide into args
+    }
+
+    public ParsedTokens(LinkedList<ParsedTokens> tokens) throws ParsingException {
         if (tokens.size() == 1) {
             if (tokens.get(0).is_single()) this.token = tokens.get(0).token;
             else{
-                this.left = tokens.get(0).left;
-                this.right = tokens.get(0).right;
-                this.token = tokens.get(0).token;
+                children = tokens.get(0).getChildren();
+                this.token = tokens.get(0).getToken();
             }
         }
         else {
             int i = 0;
-            LinkedList<ParsedTree> operands = new LinkedList<ParsedTree>();
+            LinkedList<ParsedTokens> operands = new LinkedList<ParsedTokens>();
+            boolean function_is_expected = false;
+            int function_inx = -1;
             while (i < tokens.size()) {
-                if (tokens.get(i).getType() == token_type.parenthesis) {
-                    int balance = 1;
-                    int start = i;
-                    while (i < tokens.size() - 1) {
-                        i = i + 1;
-                        if (tokens.get(i).getType() == token_type.parenthesis) {
-                            if (tokens.get(i).getValue().equals("(")) {
-                                balance++;
-                            } else {
-                                balance--;
-                            }
-                            if (balance == 0)
-                                break;
-                        }
-                    }
-                    int end = i - 1;
-                    if (balance == 0) {
-                        operands.add(new ParsedTree(new LinkedList<ParsedTree>(tokens.subList(start + 1, end + 1))));
-                    } else {
-                        throw new ParenthesesException(tokens.get(start).token);
-                    }
-                } else {
-                    operands.add(tokens.get(i));
+                if (tokens.get(i).getType() == token_type.function) {
+                    function_is_expected = true;
+                    function_inx = i;
+                    i++;
                 }
-                i++;
+                else {
+                    if (tokens.get(i).getType() == token_type.parenthesis) {
+                        int balance = 1;
+                        int start = i;
+                        while (i < tokens.size() - 1) {
+                            i = i + 1;
+                            if (tokens.get(i).getType() == token_type.parenthesis) {
+                                if (tokens.get(i).getValue().equals("(")) {
+                                    balance++;
+                                } else {
+                                    balance--;
+                                }
+                                if (balance == 0)
+                                    break;
+                            }
+                        }
+                        int end = i - 1;
+                        if (balance == 0) {
+                            if (function_is_expected){ //TODO THIS, FUNCTION CAN HAVE MANY ARGS
+                                operands.add(new ParsedTokens(new LinkedList<ParsedTokens>(tokens.subList(start + 1, end + 1)),
+                                        tokens.get(function_inx).getToken()));
+                                //there we should divide into args of func, will be done later
+                                function_is_expected = false;
+                                function_inx = - 1;
+                            }
+                            else operands.add(new ParsedTokens(new LinkedList<ParsedTokens>(tokens.subList(start + 1, end + 1))));
+                        } else {
+                            throw new ParenthesesException(tokens.get(start).token);
+                        }
+                    } else {
+                        if(function_is_expected) throw new FunctionStartException(tokens.get(function_inx).getToken());
+                        else operands.add(tokens.get(i));
+                    }
+                    i++;
+                }
             }
             Iterator iter = operands.iterator();
             while (iter.hasNext()) {
-                ParsedTree pt = (ParsedTree) iter.next();
+                ParsedTokens pt = (ParsedTokens) iter.next();
                 if (pt.getType().equals(token_type.parenthesis)) iter.remove();
             }
             //now we should have operands without any parentheses
             if (operands.size() == 1) {
-                ParsedTree pt =  operands.get(0);
+                ParsedTokens pt =  operands.get(0);
                 this.token = pt.token;
-                this.left = pt.left;
-                this.right = pt.right;
+                this.children = pt.getChildren();
             } else {
                 i = 0;
                 if (token == null) {
@@ -115,9 +148,9 @@ class ParsedTree{
                     while (i < operands.size()) {
                         if (operands.get(i).is_single() && operands.get(i).getType() == token_type.arithmetic) {
                             if (operands.get(i).getValue().equals("+") || operands.get(i).getValue().equals("-")) {
+                                setRight(new ParsedTokens(new LinkedList<ParsedTokens>(operands.subList(i + 1, operands.size()))));
                                 if (i != 0)
-                                    left = new ParsedTree(new LinkedList<ParsedTree>(operands.subList(0, i)));
-                                right = new ParsedTree(new LinkedList<ParsedTree>(operands.subList(i + 1, operands.size())));
+                                    setLeft(new ParsedTokens(new LinkedList<ParsedTokens>(operands.subList(0, i))));
                                 token = operands.get(i).token;
                                 break;
                             }
@@ -130,8 +163,8 @@ class ParsedTree{
                     while (i < operands.size()) {
                         if (operands.get(i).is_single() && operands.get(i).getType() == token_type.arithmetic) {
                             if (operands.get(i).getValue().equals("*") || operands.get(i).getValue().equals("/")) {
-                                left = new ParsedTree(new LinkedList<ParsedTree>(operands.subList(0, i)));
-                                right = new ParsedTree(new LinkedList<ParsedTree>(operands.subList(i + 1, operands.size())));
+                                setRight(new ParsedTokens(new LinkedList<ParsedTokens>(operands.subList(i + 1, operands.size()))));
+                                setLeft(new ParsedTokens(new LinkedList<ParsedTokens>(operands.subList(0, i))));
                                 token = operands.get(i).token;
                                 break;
                             }
@@ -144,41 +177,38 @@ class ParsedTree{
         }
     }
 
-    public boolean is_single(){
-        if (this.left == null && this.right == null) return true;
-        return false;
+    public LinkedList<ParsedTokens> getChildren() {
+        return this.children;
     }
-    public ParsedTree(Object l, Object r, Token t){
-        if (l.getClass().equals(Token.class))
-            this.left = new ParsedTree((Token) l);
-        else
-            this.left = (ParsedTree) l;
-        if (r.getClass().equals(Token.class))
-            this.right = new ParsedTree((Token) r);
-        else
-            this.right = (ParsedTree) r;
-        this.token = t;
 
+    public boolean is_single(){
+        return (children.isEmpty());
     }
 
     public boolean hasLeft(){
-        return left != null;
+        return (children.size() > 1);
     }
 
     public Token getToken(){
         return this.token;
     }
 
-    public ParsedTree getRight(){
-        return this.right;
+    public ParsedTokens getRight(){
+        if (children.isEmpty()) return null;
+        else return this.children.get(0);
     }
 
-    public ParsedTree getLeft(){
-        return this.left;
+    public ParsedTokens getLeft(){
+        if (children.size() < 2) return null;
+        else return this.children.get(1);
     }
 
     public int getLine(){
         return this.token.getLine();
+    }
+
+    public int OperandsCount(){
+        return children.size();
     }
 
     public int getPos(){
@@ -189,27 +219,19 @@ class ParsedTree{
         return this.token.getValue();
     }
 
-    public void setLeft(ParsedTree left){
-        this.left = left;
+    public void setLeft(ParsedTokens left){
+        if (children.size() == 1) children.add(left);
+        else children.set(1, left);
     }
 
-    public void setRight(ParsedTree right){
-        this.right = right;
+    public void setRight(ParsedTokens right){
+        if (children.isEmpty()) children.add(right);
+        else children.set(0, right);
     }
 
-    public void setLeftAndRight(ParsedTree left, ParsedTree right){
-        this.left = left;
-        this.right = right;
-    }
-
-    public ParsedTree(Token t){
-        this.token = t;
-    }
-
-    public ParsedTree(ParsedTree left, ParsedTree right, Token t){
-        this.left = left;
-        this.right = right;
-        this.token = t;
+    public void setLeftAndRight(ParsedTokens left, ParsedTokens right){
+        this.setRight(right);
+        this.setLeft(left);
     }
 
     public token_type getType(){
@@ -217,14 +239,26 @@ class ParsedTree{
     }
 
     public String toString(){
-        String l = "";
-        if (left != null)
-            l = "("+left.toString();
-        String r = "";
-        if (right != null){
-            r = right.toString() + ")";
+        if (this.token.getType() == token_type.function){
+            StringBuilder st = new StringBuilder();
+            st.append(token.getValue());
+            st.append("(");
+            for (int i = 0; i < children.size(); ++i) {
+                st.append(children.get(i).toString());
+                st.append(" ");
+            }
+            return st.toString();
         }
-        return l + this.token.getValue() + r;
+        else {
+            String l = "";
+            if (getLeft() != null)
+                l = "(" + getLeft().toString();
+            String r = "";
+            if (getRight() != null) {
+                r = getRight().toString() + ")";
+            }
+            return l + this.token.getValue() + r;
+        }
     }
 }
 
@@ -255,6 +289,22 @@ class ParenthesesException extends ParsingException{
     public String toString(){
         StringBuilder sb = new StringBuilder();
         sb.append("Parentheses don't match. Starts at ");
+        sb.append(error_token.getLine());
+        sb.append(" line, position is ");
+        sb.append(error_token.getPos());
+        return sb.toString();
+    }
+
+}
+
+class FunctionStartException extends ParsingException{
+    public FunctionStartException(Token t){
+        super(t);
+    }
+
+    public String toString(){
+        StringBuilder sb = new StringBuilder();
+        sb.append("At this position are expected parentheses: ");
         sb.append(error_token.getLine());
         sb.append(" line, position is ");
         sb.append(error_token.getPos());

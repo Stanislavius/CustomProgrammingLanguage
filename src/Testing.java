@@ -6,14 +6,15 @@ public class Testing {
                 "1 + 2",
                 "(27 * 4)*(12 - 4*5) + (21 - (56 * 43))",
                 "(54 + 12) * (12 + 1) + (324 - 2) +- (12*4)*4",
-                "(21 * 4) + 12*3 + 45 / 45 + 12 * 11 + (11 * 255 + 1)*(12-5)*11 + 12 + (13 - 54)"
+                "(21 * 4) + 12*3 + 45 / 45 + 12 * 11 + (11 * 255 + 1)*(12-5)*11 + 12 + (13 - 54)",
+                "abs(2-5)"
         };
-        String[] expected_output = {"3", "3", "-3251", "988", "216286"};
+        String[] expected_output = {"3", "3", "-3251", "988", "216286", "3"};
         Lexer l = new Lexer();
         Parser parser = new Parser();
         LinkedList<Token> tokens = l.read(code);
         System.out.println("Lexer is done");
-        LinkedList<ParsedTree> ps = parser.parse(tokens);
+        LinkedList<ParsedTokens> ps = parser.parse(tokens);
         System.out.println("Parsing is done");
         LinkedList<String> result = Executor.execute(ps);
         System.out.println("Executing is done");

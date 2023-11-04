@@ -1,9 +1,9 @@
 import java.util.LinkedList;
 
 public class Executor {
-    public static LinkedList<String> execute(LinkedList<ParsedTree> program){
+    public static LinkedList<String> execute(LinkedList<ParsedTokens> program){
         LinkedList<String> result = new LinkedList<String>();
-        for (ParsedTree line: program){
+        for (ParsedTokens line: program){
             IntExecutionToken current_line = getExecutionTree(line);
             //System.out.println(line.toString());
             try {
@@ -16,7 +16,7 @@ public class Executor {
         return result;
     }
 
-    public static IntExecutionToken getExecutionTree(ParsedTree pt){
+    public static IntExecutionToken getExecutionTree(ParsedTokens pt){
         IntExecutionToken result = null;
         if (pt.getType().equals(token_type.arithmetic)){
             if (pt.hasLeft()) {
@@ -31,6 +31,14 @@ public class Executor {
         }
         if (pt.getType().equals(token_type.INT)){
             result = new IntType(pt.getToken());
+        }
+
+        if (pt.getType().equals(token_type.function)){
+            LinkedList<IntExecutionToken> children = new LinkedList<IntExecutionToken>();
+            LinkedList<ParsedTokens> args = pt.getChildren();
+            for(int i = 0; i < args.size(); ++i)
+                children.add(getExecutionTree(args.get(i)));
+            result = new IntFunction(pt.getToken(), children);
         }
         return result;
     }
@@ -50,6 +58,7 @@ abstract class IntExecutionToken extends ExecutionToken{
     public abstract int execute() throws ExecutionException;
 }
 
+
 class IntType extends IntExecutionToken{
     int value;
     public IntType(Token token){
@@ -60,6 +69,36 @@ class IntType extends IntExecutionToken{
         return Integer.parseInt(this.token.getValue());
     }
 
+}
+
+class PrintFunc<T>{
+    T value;
+    public PrintFunc(T value){
+        this.value = value;
+    }
+
+    public String execute(){
+        return value.toString();
+    }
+}
+
+
+class IntFunction extends IntExecutionToken{
+    LinkedList<IntExecutionToken> args;
+    public IntFunction(Token token, LinkedList<IntExecutionToken> args){
+        super(token);
+        this.args = args;
+    }
+    public int execute() throws ExecutionException {
+        if (token.getValue().equals("abs")){
+            if (args.size() != 1)
+                throw new WrongNumberOfArgumentsException(token, 1, args.size());
+            return Math.abs(args.get(0).execute());
+        }
+        else{
+            throw new NoSuchFunctionException(token);
+        }
+    }
 }
 
 
@@ -151,3 +190,47 @@ class ZeroDivisionException extends ExecutionException {
     }
 
 }
+
+class NoSuchFunctionException extends ExecutionException{
+    public NoSuchFunctionException(Token t){
+        super(t);
+    }
+
+    public String toString(){
+        StringBuilder sb = new StringBuilder();
+        sb.append("No such function ");
+        sb.append(error_token.getValue());
+        sb.append(" ");
+        sb.append(error_token.getLine());
+        sb.append(", position is ");
+        sb.append(error_token.getPos());
+        return sb.toString();
+    }
+}
+
+class WrongNumberOfArgumentsException extends ExecutionException{
+    int needed;
+    int provided;
+    public WrongNumberOfArgumentsException(Token t, int needed, int provided){
+        super(t);
+        this.needed = needed;
+        this.provided = provided;
+    }
+
+    public String toString(){
+        StringBuilder sb = new StringBuilder();
+        sb.append("Function ");
+        sb.append(error_token.getValue());
+        sb.append(" expects ");
+        sb.append(needed);
+        sb.append(" arguments, ");
+        sb.append(provided);
+        sb.append(" is given in line");
+        sb.append(error_token.getLine());
+        sb.append(", position is ");
+        sb.append(error_token.getPos());
+        return sb.toString();
+    }
+}
+
+

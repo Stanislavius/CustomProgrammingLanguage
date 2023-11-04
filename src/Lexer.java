@@ -12,6 +12,7 @@ public class Lexer {
     final static Pattern parenthesis_pattern = Pattern.compile("[\\(\\)]{1}");
     final private String filename;
 
+    final static Pattern print_pattern = Pattern.compile("[a-zA-Z]+\\(.*\\)");
     public Lexer(String filename) {
         this.filename = filename;
     }
@@ -43,6 +44,7 @@ public class Lexer {
         Matcher arithmetic_matcher = arithmetic_pattern.matcher(st);
         Matcher int_matcher = int_pattern.matcher(st);
         Matcher paranthesis_matcher = parenthesis_pattern.matcher(st);
+        Matcher print_matcher = print_pattern.matcher(st);
         while (int_matcher.find()){
             int start = int_matcher.start();
             tokens.add(new Token(token_type.INT, int_matcher.group(), line_num, start));
@@ -57,6 +59,14 @@ public class Lexer {
             tokens.add(new Token(token_type.parenthesis,
                     paranthesis_matcher.group(), line_num, start));
         }
+        while (print_matcher.find()){
+            int start = print_matcher.start();
+            String function_name = print_matcher.group();
+            function_name = function_name.substring(0, function_name.indexOf("("));
+            tokens.add(new Token(token_type.function,
+                    function_name, line_num, start));
+        }
+
         tokens.add(new Token(token_type.new_line, "", line_num, st.length() - 1));
         return tokens;
     }
@@ -67,15 +77,16 @@ enum token_type{
     INT,
     arithmetic,
     new_line,
-    parenthesis
+    parenthesis,
+    function
 }
 
 
 class Token{
-    private token_type type;
-    private String value;
-    private int line;
-    private int start_pos;
+    final private token_type type;
+    final private String value;
+    final private int line;
+    final private int start_pos;
     public Token(token_type type, String value, int line, int start_pos){
         this.type = type;
         this.value = value;
@@ -84,7 +95,15 @@ class Token{
     }
 
     public String toString(){
-        return type + " " + value + " " + line + " " + start_pos;
+        StringBuilder sb = new StringBuilder();
+        sb.append(type);
+        sb.append(" ");
+        sb.append(value);
+        sb.append(" ");
+        sb.append(line);
+        sb.append(" ");
+        sb.append(start_pos);
+        return sb.toString();
     }
 
     public token_type getType(){

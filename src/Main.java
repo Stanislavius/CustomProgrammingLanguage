@@ -8,7 +8,7 @@ public class Main {
         Parser parser = new Parser();
         try {
             LinkedList<Token> tokens = l.read();
-            LinkedList<ParsedTree> ps = parser.parse(tokens);
+            LinkedList<ParsedTokens> ps = parser.parse(tokens);
             LinkedList<String> result = Executor.execute(ps);
             for (String to_print: result){
                 System.out.println(to_print);

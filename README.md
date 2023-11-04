@@ -25,24 +25,26 @@ file: [statements]
 
 statements: statement+
 
-statement: |sum
+function_call: func_name(statement)
+
+func_name: str
+
+statement: |sum 
            |(sum)
 
-sum:
-        | sum '+' term
-        | sum '-' term
-        | term
+sum: | sum '+' term 
+     | sum '-' term 
+     | term
 
-term:
-        | term '*' factor
-        | term '/' factor
-        | factor
+term: | term '*' factor 
+      | term '/' factor 
+      | factor
 
-factor:
-        | INT
+factor: | INT 
         | -factor
 
-INT     : [0-9]+
+INT : [0-9]+ 
+STR : [a-zA-Z]+
 
 ## How to use?
 Write program code in txt file. Pass path to file as command line argument and run it.
