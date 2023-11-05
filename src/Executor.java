@@ -6,12 +6,15 @@ public class Executor {
         LinkedList<String> output = new LinkedList<String>();
         for (ParsedTokens line: program){
             ExecutionToken current_line = getExecutionTree(line);
-            System.out.println(line.toString());
+            //System.out.println(line.toString());
             try {
                 ReturnType result = current_line.execute();
                 boolean flag = true;
                 if (result.getType() == ReturnTypes.EMPTY)
                     flag = false;
+                if (result.getType() == ReturnTypes.PRINT){
+                    System.out.println(result.execute());
+                }
                 if (flag)
                     output.add(result+ "");
             }
@@ -212,6 +215,10 @@ class NumericFunction extends  ExecutionToken {
                 if (args.size() != 1)
                     throw new WrongNumberOfArgumentsException(token, 1, args.size());
                 return NumericFunction.convertToFloat(args.get(0).execute());
+            case "print":
+                if (args.size() != 1)
+                    throw new WrongNumberOfArgumentsException(token, 1, args.size());
+                return new ReturnType<>(args.get(0).execute(), ReturnTypes.PRINT);
             default:
                 throw new NoSuchFunctionException(token);
         }
