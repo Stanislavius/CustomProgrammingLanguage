@@ -42,7 +42,23 @@ class ParsedTokens{
 
     public ParsedTokens(LinkedList<ParsedTokens> tokens, Token token) throws ParsingException {
         this.token = token;
-        ParsedTokens pt = new ParsedTokens(tokens);
+        LinkedList<ParsedTokens> arg = new LinkedList<ParsedTokens>();
+        int level = 0;
+        for (int i = 0; i < tokens.size(); ++i) {
+            if (tokens.get(i).getType() == token_type.parenthesis){
+                if (tokens.get(i).getValue().equals("(")) level++;
+                else level --;
+            }
+            if (level == 0 && tokens.get(i).getType() == token_type.separator) {
+                ParsedTokens pt = new ParsedTokens(arg);
+                children.add(pt);
+                arg.clear();
+            }
+            else{
+                arg.add(tokens.get(i));
+            }
+        }
+        ParsedTokens pt = new ParsedTokens(arg);
         children.add(pt); //divide into args
     }
 
@@ -138,7 +154,6 @@ class ParsedTokens{
                         if (function_is_expected) { //TODO THIS, FUNCTION CAN HAVE MANY ARGS
                             operands.add(new ParsedTokens(new LinkedList<ParsedTokens>(tokens.subList(start + 1, end + 1)),
                                     tokens.get(function_inx).getToken()));
-                            //there we should divide into args of func, will be done later
                             function_is_expected = false;
                             function_inx = -1;
                         } else

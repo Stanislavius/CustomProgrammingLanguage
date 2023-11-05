@@ -17,6 +17,7 @@ public class Lexer {
     //final static Pattern function_pattern = Pattern.compile("[a-zA-Z]+\\(.*\\)");
     final static Pattern function_pattern = Pattern.compile("[a-zA-Z]+\\(");
     final static Pattern variablePattern = Pattern.compile("[a-zA-Z]+(?!\\()\\b");
+    final static Pattern separatorPattern = Pattern.compile(",");
     final private String filename;
 
     public Lexer(String filename) {
@@ -84,6 +85,7 @@ public class Lexer {
         Matcher function_matcher = function_pattern.matcher(st);
         Matcher assignment_matcher = assignment_pattern.matcher(st);
         Matcher variableMatcher = variablePattern.matcher(st);
+        Matcher separatorMatcher = separatorPattern.matcher(st);
         while (int_matcher.find()){
             int start = int_matcher.start();
             tokens.add(new Token(token_type.INT, int_matcher.group(), line_num, start));
@@ -122,6 +124,10 @@ public class Lexer {
             tokens.add(new Token(token_type.variable, variableMatcher.group(), line_num, start));
         }
 
+        while (separatorMatcher.find()){
+            int start = separatorMatcher.start();
+            tokens.add(new Token(token_type.separator, separatorMatcher.group(), line_num, start));
+        }
 
         tokens.add(new Token(token_type.new_line, "", line_num, st.length() - 1));
         return tokens;
@@ -137,7 +143,8 @@ enum token_type{
     parenthesis,
     function,
     assignment,
-    variable
+    variable,
+    separator
 }
 
 

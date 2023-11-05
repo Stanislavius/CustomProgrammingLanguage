@@ -56,7 +56,7 @@ public class Executor {
             LinkedList<ParsedTokens> args = pt.getChildren();
             for(int i = 0; i < args.size(); ++i)
                 children.add(getExecutionTree(args.get(i)));
-            result = new NumericFunction(pt.getToken(), children);
+            result = new FunctionToken(pt.getToken(), children);
         }
 
         if(pt.getType().equals(token_type.variable)){
@@ -190,9 +190,9 @@ class ReturnType<T>{
 }
 
 
-class NumericFunction extends  ExecutionToken {
+class FunctionToken extends  ExecutionToken {
     LinkedList< ExecutionToken> args;
-    public NumericFunction(Token token, LinkedList< ExecutionToken> args){
+    public FunctionToken(Token token, LinkedList< ExecutionToken> args){
         super(token);
         this.args = args;
     }
@@ -202,23 +202,27 @@ class NumericFunction extends  ExecutionToken {
             case "abs":
                 if (args.size() != 1)
                     throw new WrongNumberOfArgumentsException(token, 1, args.size());
-                return NumericFunction.abs(args.get(0).execute());
+                return FunctionToken.abs(args.get(0).execute());
             case "neg":
                 if (args.size() != 1)
                     throw new WrongNumberOfArgumentsException(token, 1, args.size());
-                return NumericFunction.neg(args.get(0).execute());
+                return FunctionToken.neg(args.get(0).execute());
             case "int":
                 if (args.size() != 1)
                     throw new WrongNumberOfArgumentsException(token, 1, args.size());
-                return NumericFunction.convertToInt(args.get(0).execute());
+                return FunctionToken.convertToInt(args.get(0).execute());
             case "float":
                 if (args.size() != 1)
                     throw new WrongNumberOfArgumentsException(token, 1, args.size());
-                return NumericFunction.convertToFloat(args.get(0).execute());
+                return FunctionToken.convertToFloat(args.get(0).execute());
             case "print":
                 if (args.size() != 1)
                     throw new WrongNumberOfArgumentsException(token, 1, args.size());
                 return new ReturnType<>(args.get(0).execute(), ReturnTypes.PRINT);
+            case "argmax":
+                if (args.size() != 2)
+                    throw new WrongNumberOfArgumentsException(token, 2, args.size());
+                return FunctionToken.argMax(args.get(0).execute(), args.get(1).execute());
             default:
                 throw new NoSuchFunctionException(token);
         }
@@ -271,6 +275,33 @@ class NumericFunction extends  ExecutionToken {
             return new ReturnType(-Math.abs(floatInt), ReturnTypes.FLOAT);
         }
         return new ReturnType(null, ReturnTypes.ERROR);
+    }
+
+    static ReturnType argMax(ReturnType arg1, ReturnType arg2){
+        float f1, f2;
+        if (arg1.getType() == ReturnTypes.INT){
+            f1 = (float)((int) arg1.getValue());
+        }
+        else{
+            f1 = (float) arg1.getValue();
+        }
+        if (arg2.getType() == ReturnTypes.INT){
+            f2 = (float)((int) arg2.getValue());
+        }
+        else{
+            f2 = (float) arg2.getValue();
+        }
+        int res = 0;
+        if (f1 > f2){
+            res = 1;
+        }
+        if (f1 < f2){
+            res = -1;
+        }
+        if (f1 == f2){
+            res = 0;
+        }
+        return new ReturnType(res, ReturnTypes.INT);
     }
 }
 
