@@ -27,24 +27,41 @@ statements: statement+
 
 function_call: func_name(statement)
 
-func_name: str
+func_name: STR
 
-statement: |sum 
-           |(sum)
+statement: 
 
-sum: | sum '+' term 
-     | sum '-' term 
-     | term
+    | sum 
+  
+    | (sum)
 
-term: | term '*' factor 
-      | term '/' factor 
-      | factor
+sum: 
 
-factor: | INT 
-        | -factor
+    | sum '+' term 
+     
+    | sum '-' term 
+     
+    | term
+
+term: 
+
+    | term '*' factor 
+     
+    | term '/' factor 
+      
+    | factor
+
+factor: 
+
+    | INT 
+    | -factor
+    | FLOAT
 
 INT : [0-9]+ 
+
 STR : [a-zA-Z]+
+
+FLOAT : [0-9]+.[0-9]+
 
 ## How to use?
 Write program code in txt file. Pass path to file as command line argument and run it.

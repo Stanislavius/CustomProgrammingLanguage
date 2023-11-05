@@ -4,33 +4,6 @@ import java.util.*;
 public class Parser {
     public LinkedList<ParsedTokens> parse(LinkedList<Token> tokens){
         LinkedList<ParsedTokens> program= new LinkedList<ParsedTokens>();
-        Collections.sort(tokens, new Comparator<Token>() {
-            public int compare(Token t1, Token t2) {
-                // compare two instance of `Score` and return `int` as result.
-                int result = 0;
-                if (t1.getLine() > t2.getLine()){
-                    result = 1;
-                }
-                else{
-                    if (t1.getLine() < t2.getLine())
-                        result = - 1;
-                    else{
-                        if (t1.getPos() > t2.getPos()){
-                            result = 1;
-                        }
-                        else{
-                            if (t1.getPos() < t2.getPos()){
-                                result = -1;
-                            }
-                            else{
-                                result = 0;
-                            }
-                        }
-                    }
-                }
-                return result;
-            }
-        });
         try {
             LinkedList<ParsedTokens> block = new LinkedList<ParsedTokens>();
             for (Token token : tokens) {

@@ -2,17 +2,20 @@ import java.io.BufferedReader;
 import java.io.FileNotFoundException;
 import java.io.FileReader;
 import java.io.IOException;
+import java.util.Collections;
+import java.util.Comparator;
 import java.util.LinkedList;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 public class Lexer {
-    final static Pattern arithmetic_pattern = Pattern.compile("[+-/*]{1}");
-    final static Pattern int_pattern = Pattern.compile("[0-9]+");
+    final static Pattern arithmetic_pattern = Pattern.compile("[\\+\\-\\/\\*]");
+    final static Pattern int_pattern = Pattern.compile("\\b(?<!\\.)[0-9]+(?!\\.)\\b");
+    final static Pattern float_pattern = Pattern.compile("[0-9]+\\.[0-9]+");
     final static Pattern parenthesis_pattern = Pattern.compile("[\\(\\)]{1}");
     final private String filename;
+    final static Pattern function_pattern = Pattern.compile("[a-zA-Z]+\\(.*\\)");
 
-    final static Pattern print_pattern = Pattern.compile("[a-zA-Z]+\\(.*\\)");
     public Lexer(String filename) {
         this.filename = filename;
     }
@@ -21,34 +24,71 @@ public class Lexer {
 
     public LinkedList<Token> read() throws Exception {
         LinkedList<Token> tokens = new LinkedList<Token>();
-            BufferedReader br = new BufferedReader(new FileReader(filename));
-            String st = null;
-            int line_num = 0;
-            while ((st = br.readLine()) != null) {
-                tokens.addAll(this.readline(st, line_num));
-                line_num++;
-            }
-            return tokens;
+        BufferedReader br = new BufferedReader(new FileReader(filename));
+        String st = null;
+        int line_num = 0;
+        while ((st = br.readLine()) != null) {
+            tokens.addAll(this.readline(st, line_num));
+            line_num++;
+        }
+        return sort(tokens);
     }
 
+    public static LinkedList<Token> sort(LinkedList<Token> tokens){
+        Collections.sort(tokens, new Comparator<Token>() {
+            public int compare(Token t1, Token t2) {
+                // compare two instance of `Score` and return `int` as result.
+                int result = 0;
+                if (t1.getLine() > t2.getLine()){
+                    result = 1;
+                }
+                else{
+                    if (t1.getLine() < t2.getLine())
+                        result = - 1;
+                    else{
+                        if (t1.getPos() > t2.getPos()){
+                            result = 1;
+                        }
+                        else{
+                            if (t1.getPos() < t2.getPos()){
+                                result = -1;
+                            }
+                            else{
+                                result = 0;
+                            }
+                        }
+                    }
+                }
+                return result;
+            }
+        });
+        return tokens;
+    }
     public LinkedList<Token> read(String[] code){
         LinkedList<Token> tokens = new LinkedList<Token>();
         for(int line_num = 0; line_num < code.length; ++line_num){
             tokens.addAll(this.readline(code[line_num], line_num));
         }
-        return tokens;
+        return sort(tokens);
     }
 
     public LinkedList<Token> readline(String st, int line_num){
         LinkedList<Token> tokens = new LinkedList<Token>();
         Matcher arithmetic_matcher = arithmetic_pattern.matcher(st);
         Matcher int_matcher = int_pattern.matcher(st);
+        Matcher float_matcher = float_pattern.matcher(st);
         Matcher paranthesis_matcher = parenthesis_pattern.matcher(st);
-        Matcher print_matcher = print_pattern.matcher(st);
+        Matcher function_matcher = function_pattern.matcher(st);
         while (int_matcher.find()){
             int start = int_matcher.start();
             tokens.add(new Token(token_type.INT, int_matcher.group(), line_num, start));
         }
+
+        while (float_matcher.find()){
+            int start = float_matcher.start();
+            tokens.add(new Token(token_type.FLOAT, float_matcher.group(), line_num, start));
+        }
+
         while (arithmetic_matcher.find()){
             int start = arithmetic_matcher.start();
             tokens.add(new Token(token_type.arithmetic,
@@ -59,9 +99,9 @@ public class Lexer {
             tokens.add(new Token(token_type.parenthesis,
                     paranthesis_matcher.group(), line_num, start));
         }
-        while (print_matcher.find()){
-            int start = print_matcher.start();
-            String function_name = print_matcher.group();
+        while (function_matcher.find()){
+            int start = function_matcher.start();
+            String function_name = function_matcher.group();
             function_name = function_name.substring(0, function_name.indexOf("("));
             tokens.add(new Token(token_type.function,
                     function_name, line_num, start));
@@ -75,6 +115,7 @@ public class Lexer {
 
 enum token_type{
     INT,
+    FLOAT,
     arithmetic,
     new_line,
     parenthesis,
