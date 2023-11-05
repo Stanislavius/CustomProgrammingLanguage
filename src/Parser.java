@@ -105,7 +105,9 @@ class ParsedTokens{
                 if (tokens.get(i).OperandsCount() == 0) {
                     function_is_expected = true;
                     function_inx = i;
-                    //if there is --abs(a) - error, because function will be droped after operands - abs()
+                }
+                else{
+                    operands.add(tokens.get(i));
                 }
 
                 i++;
