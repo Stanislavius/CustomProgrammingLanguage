@@ -14,7 +14,8 @@ public class Lexer {
     final static Pattern float_pattern = Pattern.compile("[0-9]+\\.[0-9]+");
     final static Pattern parenthesis_pattern = Pattern.compile("[\\(\\)]{1}");
     final static Pattern assignment_pattern = Pattern.compile("=");
-    final static Pattern function_pattern = Pattern.compile("[a-zA-Z]+\\(.*\\)");
+    //final static Pattern function_pattern = Pattern.compile("[a-zA-Z]+\\(.*\\)");
+    final static Pattern function_pattern = Pattern.compile("[a-zA-Z]+\\(");
     final static Pattern variablePattern = Pattern.compile("[a-zA-Z]+(?!\\()\\b");
     final private String filename;
 
