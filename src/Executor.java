@@ -190,7 +190,7 @@ class BinaryNumericalOperation extends NumericExecutionToken {
             case "-":
                 lRes = left.execute();
                 rRes = right.execute();
-                result = BinaryNumericalOperation.sub(lRes, rRes);
+                result = BinaryNumericalOperation.sub(rRes, lRes);
                 break;
             case "*":
                 lRes = left.execute();
@@ -200,7 +200,7 @@ class BinaryNumericalOperation extends NumericExecutionToken {
             case "/":
                 lRes = left.execute();
                 rRes = right.execute();
-                result = BinaryNumericalOperation.div(lRes, rRes, this.token);
+                result = BinaryNumericalOperation.div(rRes, lRes, this.token);
                 break;
             default:
                 result = new ReturnType<String>(null, ReturnTypes.ERROR);
