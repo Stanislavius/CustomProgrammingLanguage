@@ -65,25 +65,31 @@ class ParsedTokens{
             this.ifSizeIsOne(tokens);
         }
         else {
-            LinkedList<ParsedTokens> operands = this.getOperands(tokens);
-            Iterator iter = operands.iterator();
-            while (iter.hasNext()) {
-                ParsedTokens pt = (ParsedTokens) iter.next();
-                if (pt.getType().equals(token_type.parenthesis)) iter.remove();
+            if (tokens.get(1).getType() == token_type.assignment) {
+                this.token = tokens.get(1).getToken();
+                setLeftAndRight(tokens.get(0), new ParsedTokens(new LinkedList<ParsedTokens>(tokens.subList(2, tokens.size()))));
             }
-            //now we should have operands without any parentheses
-            if (operands.size() == 1) {
-                this.ifSizeIsOne(operands);
-            } else {
-                if (token == null) {
-                    divideByOperands(operands, secondPriority);
+            else{
+                LinkedList<ParsedTokens> operands = this.getOperands(tokens);
+                Iterator iter = operands.iterator();
+                while (iter.hasNext()) {
+                    ParsedTokens pt = (ParsedTokens) iter.next();
+                    if (pt.getType().equals(token_type.parenthesis)) iter.remove();
                 }
-                if (token == null) {
-                   divideByOperands(operands, firstPriority);
-                }
+                //now we should have operands without any parentheses
+                if (operands.size() == 1) {
+                    this.ifSizeIsOne(operands);
+                } else {
+                    if (token == null) {
+                        divideByOperands(operands, secondPriority);
+                    }
+                    if (token == null) {
+                        divideByOperands(operands, firstPriority);
+                    }
 
+                }
             }
-        }
+            }
     }
 
     public void ifSizeIsOne(LinkedList<ParsedTokens> tokens){

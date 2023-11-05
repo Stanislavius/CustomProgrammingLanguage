@@ -13,8 +13,10 @@ public class Lexer {
     final static Pattern int_pattern = Pattern.compile("\\b(?<!\\.)[0-9]+(?!\\.)\\b");
     final static Pattern float_pattern = Pattern.compile("[0-9]+\\.[0-9]+");
     final static Pattern parenthesis_pattern = Pattern.compile("[\\(\\)]{1}");
-    final private String filename;
+    final static Pattern assignment_pattern = Pattern.compile("=");
     final static Pattern function_pattern = Pattern.compile("[a-zA-Z]+\\(.*\\)");
+    final static Pattern variablePattern = Pattern.compile("[a-zA-Z]+(?!\\()\\b");
+    final private String filename;
 
     public Lexer(String filename) {
         this.filename = filename;
@@ -79,6 +81,8 @@ public class Lexer {
         Matcher float_matcher = float_pattern.matcher(st);
         Matcher paranthesis_matcher = parenthesis_pattern.matcher(st);
         Matcher function_matcher = function_pattern.matcher(st);
+        Matcher assignment_matcher = assignment_pattern.matcher(st);
+        Matcher variableMatcher = variablePattern.matcher(st);
         while (int_matcher.find()){
             int start = int_matcher.start();
             tokens.add(new Token(token_type.INT, int_matcher.group(), line_num, start));
@@ -107,6 +111,17 @@ public class Lexer {
                     function_name, line_num, start));
         }
 
+        while (assignment_matcher.find()){
+            int start = assignment_matcher.start();
+            tokens.add(new Token(token_type.assignment, " = ", line_num, start));
+        }
+
+        while (variableMatcher.find()){
+            int start = variableMatcher.start();
+            tokens.add(new Token(token_type.variable, variableMatcher.group(), line_num, start));
+        }
+
+
         tokens.add(new Token(token_type.new_line, "", line_num, st.length() - 1));
         return tokens;
     }
@@ -119,7 +134,9 @@ enum token_type{
     arithmetic,
     new_line,
     parenthesis,
-    function
+    function,
+    assignment,
+    variable
 }
 
 
