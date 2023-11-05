@@ -76,6 +76,11 @@ public class Lexer {
         return sort(tokens);
     }
 
+    public LinkedList<Token> read(String code){
+        String[] splitCode = code.split(System.lineSeparator());
+        return this.read(splitCode);
+    }
+
     public LinkedList<Token> readline(String st, int line_num){
         LinkedList<Token> tokens = new LinkedList<Token>();
         Matcher arithmetic_matcher = arithmetic_pattern.matcher(st);

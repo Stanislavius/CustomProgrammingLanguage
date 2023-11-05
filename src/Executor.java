@@ -85,8 +85,15 @@ public class Executor {
             }
             return value;
         }
+
+        static public void clear(){
+            variables.clear();
+        }
     }
 
+    static void clearVariables(){
+        Variables.clear();
+    }
     static void setVariable(String name, ReturnType value){
         Variables.setVariable(name, value);
     }
@@ -479,8 +486,8 @@ class UnaryNumericalOperation extends ExecutionToken {
             return new ReturnType<Integer>(-argInt, ReturnTypes.INT);
         }
         if (arg.getType() == ReturnTypes.FLOAT){
-            int argFloat = (int) arg.getValue();
-            return new ReturnType<Integer>(-argFloat, ReturnTypes.FLOAT);
+            float argFloat = (float) arg.getValue();
+            return new ReturnType<Float>(-argFloat, ReturnTypes.FLOAT);
         }
         return new ReturnType(null, ReturnTypes.ERROR);
     }
