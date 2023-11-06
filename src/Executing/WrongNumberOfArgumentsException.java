@@ -15,15 +15,15 @@ public class WrongNumberOfArgumentsException extends ExecutionException {
     public String toString() {
         StringBuilder sb = new StringBuilder();
         sb.append("Function ");
-        sb.append(error_token.getValue());
+        sb.append(errorToken.getValue());
         sb.append(" expects ");
         sb.append(needed);
         sb.append(" arguments, ");
         sb.append(provided);
         sb.append(" is given in line");
-        sb.append(error_token.getLine());
+        sb.append(errorToken.getLine());
         sb.append(", position is ");
-        sb.append(error_token.getPos());
+        sb.append(errorToken.getPos());
         return sb.toString();
     }
 }

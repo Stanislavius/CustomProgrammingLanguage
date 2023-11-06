@@ -3,11 +3,11 @@ package Lexing;
 public enum TokenTypes {
     INT,
     FLOAT,
-    arithmetic,
-    new_line,
-    parenthesis,
-    function,
-    assignment,
-    variable,
-    separator
+    ARITHMETIC,
+    NEWLINE,
+    PARENTHESIS,
+    FUNCTION,
+    ASSIGNMENT,
+    VARIABLE,
+    SEPARATOR
 }

@@ -10,9 +10,9 @@ public class FunctionStartException extends ParsingException {
     public String toString() {
         StringBuilder sb = new StringBuilder();
         sb.append("At this position are expected parentheses: ");
-        sb.append(error_token.getLine());
+        sb.append(errorToken.getLine());
         sb.append(" line, position is ");
-        sb.append(error_token.getPos());
+        sb.append(errorToken.getPos());
         return sb.toString();
     }
 

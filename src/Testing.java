@@ -24,6 +24,7 @@ public class Testing {
         testCases.add(new TestCase("a = 2\r\ns = 34 + a \r\n s", "36"));
         testCases.add(new TestCase("abs(-4)", "4"));
         testCases.add(new TestCase("abs(-4.0)", "4.0"));
+        testCases.add(new TestCase("abs(-4.0)", "4.0"));
         Lexer l = new Lexer();
         Parser parser = new Parser();
         int i = 0;
@@ -63,6 +64,5 @@ class TestCase{
 
     public String getInput() {return input;}
     public String getOutput() {return output;}
-
 
 }

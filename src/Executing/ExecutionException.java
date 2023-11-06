@@ -3,18 +3,18 @@ package Executing;
 import Lexing.Token;
 
 public class ExecutionException extends Exception {
-    protected Token error_token;
+    protected Token errorToken;
 
     public ExecutionException(Token t) {
-        error_token = t;
+        errorToken = t;
     }
 
     public String toString() {
         StringBuilder sb = new StringBuilder();
         sb.append("Runtime error in line ");
-        sb.append(error_token.getLine());
+        sb.append(errorToken.getLine());
         sb.append(", position is ");
-        sb.append(error_token.getPos());
+        sb.append(errorToken.getPos());
         return sb.toString();
     }
 

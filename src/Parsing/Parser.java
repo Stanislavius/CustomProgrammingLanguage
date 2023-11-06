@@ -2,8 +2,6 @@ package Parsing;
 
 import Lexing.Token;
 import Lexing.TokenTypes;
-import Parsing.ParsedTokens;
-import Parsing.ParsingException;
 
 import java.util.*;
 
@@ -13,7 +11,7 @@ public class Parser {
         try {
             LinkedList<ParsedTokens> block = new LinkedList<ParsedTokens>();
             for (Token token : tokens) {
-                if (token.getType().equals(TokenTypes.new_line)) {
+                if (token.getType().equals(TokenTypes.NEWLINE)) {
                     program.add(new ParsedTokens(block));
                     block = new LinkedList<ParsedTokens>();
                 } else {

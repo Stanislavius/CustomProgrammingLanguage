@@ -1,6 +1,5 @@
 package Executing;
 
-import Lexing.Token;
 import Lexing.TokenTypes;
 import Parsing.ParsedTokens;
 
@@ -32,12 +31,12 @@ public class Executor {
 
     public static ExecutionToken getExecutionTree(ParsedTokens pt) {
         ExecutionToken result = null;
-        if (pt.getType().equals(TokenTypes.assignment)) {
+        if (pt.getType().equals(TokenTypes.ASSIGNMENT)) {
             ExecutionToken left = getExecutionTree(pt.getLeft());
             ExecutionToken right = getExecutionTree(pt.getRight());
             result = new AssignmentToken(pt.getToken(), left, right);
         }
-        if (pt.getType().equals(TokenTypes.arithmetic)) {
+        if (pt.getType().equals(TokenTypes.ARITHMETIC)) {
             if (pt.hasLeft()) {
                 ExecutionToken left = getExecutionTree(pt.getLeft());
                 ExecutionToken right = getExecutionTree(pt.getRight());
@@ -55,7 +54,7 @@ public class Executor {
             result = new NumericType(pt.getToken());
         }
 
-        if (pt.getType().equals(TokenTypes.function)) {
+        if (pt.getType().equals(TokenTypes.FUNCTION)) {
             LinkedList<ExecutionToken> children = new LinkedList<ExecutionToken>();
             LinkedList<ParsedTokens> args = pt.getChildren();
             for (int i = 0; i < args.size(); ++i)
@@ -63,7 +62,7 @@ public class Executor {
             result = new FunctionToken(pt.getToken(), children);
         }
 
-        if (pt.getType().equals(TokenTypes.variable)) {
+        if (pt.getType().equals(TokenTypes.VARIABLE)) {
             result = new VariableExecutionToken(pt.getToken());
         }
         return result;

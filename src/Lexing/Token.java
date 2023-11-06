@@ -4,13 +4,13 @@ public class Token {
     final private TokenTypes type;
     final private String value;
     final private int line;
-    final private int start_pos;
+    final private int startPos;
 
-    public Token(TokenTypes type, String value, int line, int start_pos) {
+    public Token(TokenTypes type, String value, int line, int startPos) {
         this.type = type;
         this.value = value;
         this.line = line;
-        this.start_pos = start_pos;
+        this.startPos = startPos;
     }
 
     public String toString() {
@@ -21,23 +21,23 @@ public class Token {
         sb.append(" ");
         sb.append(line);
         sb.append(" ");
-        sb.append(start_pos);
+        sb.append(startPos);
         return sb.toString();
     }
 
-    public TokenTypes getType() {
+    public final TokenTypes getType() {
         return this.type;
     }
 
-    public String getValue() {
+    public final String getValue() {
         return this.value;
     }
 
-    public int getLine() {
+    public final int getLine() {
         return this.line;
     }
 
-    public int getPos() {
-        return this.start_pos;
+    public final int getPos() {
+        return this.startPos;
     }
 }

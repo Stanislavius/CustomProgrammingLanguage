@@ -29,11 +29,11 @@ public class ParsedTokens {
         LinkedList<ParsedTokens> arg = new LinkedList<ParsedTokens>();
         int level = 0;
         for (int i = 0; i < tokens.size(); ++i) {
-            if (tokens.get(i).getType() == TokenTypes.parenthesis) {
+            if (tokens.get(i).getType() == TokenTypes.PARENTHESIS) {
                 if (tokens.get(i).getValue().equals("(")) level++;
                 else level--;
             }
-            if (level == 0 && tokens.get(i).getType() == TokenTypes.separator) {
+            if (level == 0 && tokens.get(i).getType() == TokenTypes.SEPARATOR) {
                 ParsedTokens pt = new ParsedTokens(arg);
                 children.add(pt);
                 arg.clear();
@@ -47,7 +47,7 @@ public class ParsedTokens {
 
     public void divideByOperands(LinkedList<ParsedTokens> operands, HashSet<String> operations) throws ParsingException {
         for (int i = 0; i < operands.size(); ++i) {
-            if (operands.get(i).is_single() && operands.get(i).getType().equals(TokenTypes.arithmetic)) {
+            if (operands.get(i).isSingle() && operands.get(i).getType().equals(TokenTypes.ARITHMETIC)) {
                 if (operations.contains(operands.get(i).getValue())) {
                     setRight(new ParsedTokens(new LinkedList<ParsedTokens>(operands.subList(i + 1, operands.size()))));
                     if (i != 0)
@@ -63,7 +63,7 @@ public class ParsedTokens {
         if (tokens.size() == 1) {
             this.ifSizeIsOne(tokens);
         } else {
-            if (tokens.get(1).getType() == TokenTypes.assignment) {
+            if (tokens.get(1).getType() == TokenTypes.ASSIGNMENT) {
                 this.token = tokens.get(1).getToken();
                 setLeftAndRight(tokens.get(0), new ParsedTokens(new LinkedList<ParsedTokens>(tokens.subList(2, tokens.size()))));
             } else {
@@ -71,7 +71,7 @@ public class ParsedTokens {
                 Iterator iter = operands.iterator();
                 while (iter.hasNext()) {
                     ParsedTokens pt = (ParsedTokens) iter.next();
-                    if (pt.getType().equals(TokenTypes.parenthesis)) iter.remove();
+                    if (pt.getType().equals(TokenTypes.PARENTHESIS)) iter.remove();
                 }
                 //now we should have operands without any parentheses
                 if (operands.size() == 1) {
@@ -90,7 +90,7 @@ public class ParsedTokens {
     }
 
     public void ifSizeIsOne(LinkedList<ParsedTokens> tokens) {
-        if (tokens.get(0).is_single())
+        if (tokens.get(0).isSingle())
             this.token = tokens.get(0).getToken();
         else {
             children = tokens.get(0).getChildren();
@@ -104,8 +104,8 @@ public class ParsedTokens {
         boolean function_is_expected = false;
         int function_inx = -1;
         while (i < tokens.size()) {
-            if (tokens.get(i).getType() == TokenTypes.function) {
-                if (tokens.get(i).OperandsCount() == 0) {
+            if (tokens.get(i).getType() == TokenTypes.FUNCTION) {
+                if (tokens.get(i).operandsCount() == 0) {
                     function_is_expected = true;
                     function_inx = i;
                 } else {
@@ -114,12 +114,12 @@ public class ParsedTokens {
 
                 i++;
             } else {
-                if (tokens.get(i).getType() == TokenTypes.parenthesis) {
+                if (tokens.get(i).getType() == TokenTypes.PARENTHESIS) {
                     int balance = 1;
                     int start = i;
                     while (i < tokens.size() - 1) {
                         i = i + 1;
-                        if (tokens.get(i).getType() == TokenTypes.parenthesis) {
+                        if (tokens.get(i).getType() == TokenTypes.PARENTHESIS) {
                             if (tokens.get(i).getValue().equals("(")) {
                                 balance++;
                             } else {
@@ -131,7 +131,7 @@ public class ParsedTokens {
                     }
                     int end = i - 1;
                     if (balance == 0) {
-                        if (function_is_expected) { //TODO THIS, FUNCTION CAN HAVE MANY ARGS
+                        if (function_is_expected) {
                             operands.add(new ParsedTokens(new LinkedList<ParsedTokens>(tokens.subList(start + 1, end + 1)),
                                     tokens.get(function_inx).getToken()));
                             function_is_expected = false;
@@ -155,7 +155,7 @@ public class ParsedTokens {
         return this.children;
     }
 
-    public boolean is_single() {
+    public boolean isSingle() {
         return (children.isEmpty());
     }
 
@@ -181,7 +181,7 @@ public class ParsedTokens {
         return this.token.getLine();
     }
 
-    public int OperandsCount() {
+    public int operandsCount() {
         return children.size();
     }
 
@@ -213,7 +213,7 @@ public class ParsedTokens {
     }
 
     public String toString() {
-        if (this.token.getType() == TokenTypes.function) {
+        if (this.token.getType() == TokenTypes.FUNCTION) {
             StringBuilder st = new StringBuilder();
             st.append(token.getValue());
             st.append("(");
