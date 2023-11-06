@@ -1,7 +1,7 @@
+package Lexing;
+
 import java.io.BufferedReader;
-import java.io.FileNotFoundException;
 import java.io.FileReader;
-import java.io.IOException;
 import java.util.Collections;
 import java.util.Comparator;
 import java.util.LinkedList;
@@ -93,103 +93,48 @@ public class Lexer {
         Matcher separatorMatcher = separatorPattern.matcher(st);
         while (int_matcher.find()){
             int start = int_matcher.start();
-            tokens.add(new Token(token_type.INT, int_matcher.group(), line_num, start));
+            tokens.add(new Token(TokenTypes.INT, int_matcher.group(), line_num, start));
         }
 
         while (float_matcher.find()){
             int start = float_matcher.start();
-            tokens.add(new Token(token_type.FLOAT, float_matcher.group(), line_num, start));
+            tokens.add(new Token(TokenTypes.FLOAT, float_matcher.group(), line_num, start));
         }
 
         while (arithmetic_matcher.find()){
             int start = arithmetic_matcher.start();
-            tokens.add(new Token(token_type.arithmetic,
+            tokens.add(new Token(TokenTypes.arithmetic,
                     arithmetic_matcher.group(), line_num, start));
         }
         while (paranthesis_matcher.find()){
             int start = paranthesis_matcher.start();
-            tokens.add(new Token(token_type.parenthesis,
+            tokens.add(new Token(TokenTypes.parenthesis,
                     paranthesis_matcher.group(), line_num, start));
         }
         while (function_matcher.find()){
             int start = function_matcher.start();
             String function_name = function_matcher.group();
             function_name = function_name.substring(0, function_name.indexOf("("));
-            tokens.add(new Token(token_type.function,
+            tokens.add(new Token(TokenTypes.function,
                     function_name, line_num, start));
         }
 
         while (assignment_matcher.find()){
             int start = assignment_matcher.start();
-            tokens.add(new Token(token_type.assignment, " = ", line_num, start));
+            tokens.add(new Token(TokenTypes.assignment, " = ", line_num, start));
         }
 
         while (variableMatcher.find()){
             int start = variableMatcher.start();
-            tokens.add(new Token(token_type.variable, variableMatcher.group(), line_num, start));
+            tokens.add(new Token(TokenTypes.variable, variableMatcher.group(), line_num, start));
         }
 
         while (separatorMatcher.find()){
             int start = separatorMatcher.start();
-            tokens.add(new Token(token_type.separator, separatorMatcher.group(), line_num, start));
+            tokens.add(new Token(TokenTypes.separator, separatorMatcher.group(), line_num, start));
         }
 
-        tokens.add(new Token(token_type.new_line, "", line_num, st.length() - 1));
+        tokens.add(new Token(TokenTypes.new_line, "", line_num, st.length() - 1));
         return tokens;
-    }
-}
-
-
-enum token_type{
-    INT,
-    FLOAT,
-    arithmetic,
-    new_line,
-    parenthesis,
-    function,
-    assignment,
-    variable,
-    separator
-}
-
-
-class Token{
-    final private token_type type;
-    final private String value;
-    final private int line;
-    final private int start_pos;
-    public Token(token_type type, String value, int line, int start_pos){
-        this.type = type;
-        this.value = value;
-        this.line = line;
-        this.start_pos = start_pos;
-    }
-
-    public String toString(){
-        StringBuilder sb = new StringBuilder();
-        sb.append(type);
-        sb.append(" ");
-        sb.append(value);
-        sb.append(" ");
-        sb.append(line);
-        sb.append(" ");
-        sb.append(start_pos);
-        return sb.toString();
-    }
-
-    public token_type getType(){
-        return this.type;
-    }
-
-    public String getValue(){
-        return this.value;
-    }
-
-    public int getLine(){
-        return this.line;
-    }
-
-    public int getPos(){
-        return this.start_pos;
     }
 }

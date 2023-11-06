@@ -67,8 +67,8 @@ FLOAT : [0-9]+.[0-9]+
 Write program code in txt file. Pass path to file as command line argument and run it.
 
 # Structure of project
-1. src/Lexer.java - finds tokens inside program text.
-2. src/Parser.java - builds syntax tree using tokens.
-3. src/Executor.java - executes code after text of program is parsed.
-4. src/Main.java - receives path to file with program, creates Lexer, Parser and Executor, guarantees communication between them.
+1. src/Lexing.Lexer.java - finds tokens inside program text.
+2. src/Parsing.Parser.java - builds syntax tree using tokens.
+3. src/Executing.Executor.java - executes code after text of program is parsed.
+4. src/Main.java - receives path to file with program, creates Lexing.Lexer, Parsing.Parser and Executing.Executor, guarantees communication between them.
 5. src/Testing.java - to test if program returns desired output.

@@ -1,3 +1,9 @@
+import Executing.Executor;
+import Lexing.Lexer;
+import Lexing.Token;
+import Parsing.ParsedTokens;
+import Parsing.Parser;
+
 import java.util.LinkedList;
 
 public class Testing {
@@ -20,7 +26,8 @@ public class Testing {
         testCases.add(new TestCase("abs(-4.0)", "4.0"));
         Lexer l = new Lexer();
         Parser parser = new Parser();
-        for(int i = 0; i < testCases.size(); ++i){
+        int i = 0;
+        for(i = 0; i < testCases.size(); ++i){
             LinkedList<Token> tokens = l.read(testCases.get(i).getInput());
             LinkedList<ParsedTokens> ps = parser.parse(tokens);
             LinkedList<String> result = Executor.execute(ps);
@@ -40,7 +47,8 @@ public class Testing {
             }
             Executor.clearVariables();
         }
-        System.out.println("All tests are passed");
+        if (i == testCases.size())
+            System.out.println("All tests are passed");
 
     }
 }
