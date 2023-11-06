@@ -25,30 +25,34 @@ file: [statements]
 
 statements: statement+
 
-function_call: func_name(statement)
+statement: 
+
+    | VARIABLE_NAME '=' expression
+    | expression
+    | function_call
+
+function_call: 
+
+    | func_name(expression [',' expression]*)
+    | func_name()
 
 func_name: STR
 
-statement: 
+expression: 
 
     | sum 
-  
     | (sum)
 
 sum: 
 
     | sum '+' term 
-     
     | sum '-' term 
-     
     | term
 
 term: 
 
     | term '*' factor 
-     
     | term '/' factor 
-      
     | factor
 
 factor: 
@@ -56,19 +60,23 @@ factor:
     | INT 
     | -factor
     | FLOAT
+    | VARIABLE_NAME
 
-INT : [0-9]+ 
+VARIABLE_NAME: STR
 
-STR : [a-zA-Z]+
+INT: [0-9]+ 
 
-FLOAT : [0-9]+.[0-9]+
+STR: [a-zA-Z]+
+
+FLOAT: [0-9]+.[0-9]+
 
 ## How to use?
 Write program code in txt file. Pass path to file as command line argument and run it.
 
 # Structure of project
-1. src/Lexing.Lexer.java - finds tokens inside program text.
-2. src/Parsing.Parser.java - builds syntax tree using tokens.
-3. src/Executing.Executor.java - executes code after text of program is parsed.
+Program divided into three packages: Lexing, Parsing, Executing.  And two classes that can be executing: Main.java and Testing.java
+1. Lexing, main class is src/Lexing.Lexer.java - finds tokens inside program text.
+2. Parsing, main class is src/Parsing.Parser.java - builds syntax tree using tokens.
+3. Executing, main class is src/Executing.Executor.java - executes code after text of program is parsed.
 4. src/Main.java - receives path to file with program, creates Lexing.Lexer, Parsing.Parser and Executing.Executor, guarantees communication between them.
 5. src/Testing.java - to test if program returns desired output.
