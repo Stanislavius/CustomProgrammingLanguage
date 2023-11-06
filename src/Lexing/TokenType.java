@@ -1,6 +1,6 @@
 package Lexing;
 
-public enum TokenTypes {
+public enum TokenType {
     INT,
     FLOAT,
     ARITHMETIC,
@@ -9,5 +9,6 @@ public enum TokenTypes {
     FUNCTION,
     ASSIGNMENT,
     VARIABLE,
-    SEPARATOR
+    SEPARATOR,
+    COMPARISON
 }

@@ -10,25 +10,25 @@ public class UnaryNumericalOperation extends ExecutionToken {
         this.right = right;
     }
 
-    public ReturnType execute() throws ExecutionException {
+    public ReturnValue execute() throws ExecutionException {
         switch (token.getValue()) {
             case "+":
                 return right.execute();
             case "-":
                 return UnaryNumericalOperation.sub(right.execute());
         }
-        return new ReturnType<>(null, ReturnTypes.ERROR);
+        return new ReturnValue<>(null, ReturnType.ERROR);
     }
 
-    public static ReturnType sub(ReturnType arg) {
-        if (arg.getType() == ReturnTypes.INT) {
+    public static ReturnValue sub(ReturnValue arg) {
+        if (arg.getType() == ReturnType.INT) {
             int argInt = (int) arg.getValue();
-            return new ReturnType<Integer>(-argInt, ReturnTypes.INT);
+            return new ReturnValue<Integer>(-argInt, ReturnType.INT);
         }
-        if (arg.getType() == ReturnTypes.FLOAT) {
+        if (arg.getType() == ReturnType.FLOAT) {
             float argFloat = (float) arg.getValue();
-            return new ReturnType<Float>(-argFloat, ReturnTypes.FLOAT);
+            return new ReturnValue<Float>(-argFloat, ReturnType.FLOAT);
         }
-        return new ReturnType(null, ReturnTypes.ERROR);
+        return new ReturnValue(null, ReturnType.ERROR);
     }
 }

@@ -12,10 +12,10 @@ public class BinaryNumericalOperation extends ExecutionToken {
         this.right = right;
     }
 
-    public ReturnType execute() throws ExecutionException {
-        ReturnType result;
-        ReturnType lRes;
-        ReturnType rRes;
+    public ReturnValue execute() throws ExecutionException {
+        ReturnValue result;
+        ReturnValue lRes;
+        ReturnValue rRes;
         switch (token.getValue()) {
             case "+":
                 lRes = left.execute();
@@ -38,116 +38,116 @@ public class BinaryNumericalOperation extends ExecutionToken {
                 result = BinaryNumericalOperation.div(rRes, lRes, this.token);
                 break;
             default:
-                result = new ReturnType<String>(null, ReturnTypes.ERROR);
+                result = new ReturnValue<String>(null, ReturnType.ERROR);
         }
         return result;
     }
 
-    static ReturnType mul(ReturnType lRes, ReturnType rRes) throws ExecutionException {
-        if (lRes.getType() == ReturnTypes.INT && rRes.getType() == ReturnTypes.INT) {
+    static ReturnValue mul(ReturnValue lRes, ReturnValue rRes) throws ExecutionException {
+        if (lRes.getType() == ReturnType.INT && rRes.getType() == ReturnType.INT) {
             int lInt = (int) lRes.getValue();
             int rInt = (int) rRes.getValue();
-            return new ReturnType<Integer>(rInt * lInt, ReturnTypes.INT);
+            return new ReturnValue<Integer>(rInt * lInt, ReturnType.INT);
         }
-        if (lRes.getType() == ReturnTypes.FLOAT && rRes.getType() == ReturnTypes.INT) {
+        if (lRes.getType() == ReturnType.FLOAT && rRes.getType() == ReturnType.INT) {
             float lInt = (float) lRes.getValue();
             int rInt = (int) rRes.getValue();
-            return new ReturnType<Float>(rInt * lInt, ReturnTypes.FLOAT);
+            return new ReturnValue<Float>(rInt * lInt, ReturnType.FLOAT);
         }
-        if (lRes.getType() == ReturnTypes.INT && rRes.getType() == ReturnTypes.FLOAT) {
+        if (lRes.getType() == ReturnType.INT && rRes.getType() == ReturnType.FLOAT) {
             int lInt = (int) lRes.getValue();
             float rInt = (float) rRes.getValue();
-            return new ReturnType<Float>(rInt * lInt, ReturnTypes.FLOAT);
+            return new ReturnValue<Float>(rInt * lInt, ReturnType.FLOAT);
         }
-        if (lRes.getType() == ReturnTypes.FLOAT && rRes.getType() == ReturnTypes.FLOAT) {
+        if (lRes.getType() == ReturnType.FLOAT && rRes.getType() == ReturnType.FLOAT) {
             float lInt = (float) lRes.getValue();
             float rInt = (float) rRes.getValue();
-            return new ReturnType<Float>(rInt * lInt, ReturnTypes.FLOAT);
+            return new ReturnValue<Float>(rInt * lInt, ReturnType.FLOAT);
         }
-        return new ReturnType(null, ReturnTypes.ERROR);
+        return new ReturnValue(null, ReturnType.ERROR);
     }
 
-    static ReturnType div(ReturnType lRes, ReturnType rRes, Token t) throws ExecutionException {
-        if (lRes.getType() == ReturnTypes.INT && rRes.getType() == ReturnTypes.INT) {
+    static ReturnValue div(ReturnValue lRes, ReturnValue rRes, Token t) throws ExecutionException {
+        if (lRes.getType() == ReturnType.INT && rRes.getType() == ReturnType.INT) {
             int lInt = (int) lRes.getValue();
             int rInt = (int) rRes.getValue();
             if (rInt == 0) {
                 throw new ZeroDivisionException(t);
             }
-            return new ReturnType<Integer>(rInt / lInt, ReturnTypes.INT);
+            return new ReturnValue<Integer>(rInt / lInt, ReturnType.INT);
         }
-        if (lRes.getType() == ReturnTypes.FLOAT && rRes.getType() == ReturnTypes.INT) {
+        if (lRes.getType() == ReturnType.FLOAT && rRes.getType() == ReturnType.INT) {
             float lInt = (float) lRes.getValue();
             int rInt = (int) rRes.getValue();
             if (rInt == 0) {
                 throw new ZeroDivisionException(t);
             }
-            return new ReturnType<Float>(rInt / lInt, ReturnTypes.FLOAT);
+            return new ReturnValue<Float>(rInt / lInt, ReturnType.FLOAT);
         }
-        if (lRes.getType() == ReturnTypes.INT && rRes.getType() == ReturnTypes.FLOAT) {
+        if (lRes.getType() == ReturnType.INT && rRes.getType() == ReturnType.FLOAT) {
             int lInt = (int) lRes.getValue();
             float rInt = (float) rRes.getValue();
             if (rInt == 0.0) {
                 throw new ZeroDivisionException(t);
             }
-            return new ReturnType<Float>(rInt / lInt, ReturnTypes.FLOAT);
+            return new ReturnValue<Float>(rInt / lInt, ReturnType.FLOAT);
         }
-        if (lRes.getType() == ReturnTypes.FLOAT && rRes.getType() == ReturnTypes.FLOAT) {
+        if (lRes.getType() == ReturnType.FLOAT && rRes.getType() == ReturnType.FLOAT) {
             float lInt = (float) lRes.getValue();
             float rInt = (float) rRes.getValue();
             if (rInt == 0.0) {
                 throw new ZeroDivisionException(t);
             }
-            return new ReturnType<Float>(rInt / lInt, ReturnTypes.FLOAT);
+            return new ReturnValue<Float>(rInt / lInt, ReturnType.FLOAT);
         }
-        return new ReturnType(null, ReturnTypes.ERROR);
+        return new ReturnValue(null, ReturnType.ERROR);
     }
 
-    static ReturnType sum(ReturnType lRes, ReturnType rRes) {
-        if (lRes.getType() == ReturnTypes.INT && rRes.getType() == ReturnTypes.INT) {
+    static ReturnValue sum(ReturnValue lRes, ReturnValue rRes) {
+        if (lRes.getType() == ReturnType.INT && rRes.getType() == ReturnType.INT) {
             int lInt = (int) lRes.getValue();
             int rInt = (int) rRes.getValue();
-            return new ReturnType<Integer>(rInt + lInt, ReturnTypes.INT);
+            return new ReturnValue<Integer>(rInt + lInt, ReturnType.INT);
         }
-        if (lRes.getType() == ReturnTypes.FLOAT && rRes.getType() == ReturnTypes.INT) {
+        if (lRes.getType() == ReturnType.FLOAT && rRes.getType() == ReturnType.INT) {
             float lInt = (float) lRes.getValue();
             int rInt = (int) rRes.getValue();
-            return new ReturnType<Float>(rInt + lInt, ReturnTypes.FLOAT);
+            return new ReturnValue<Float>(rInt + lInt, ReturnType.FLOAT);
         }
-        if (lRes.getType() == ReturnTypes.INT && rRes.getType() == ReturnTypes.FLOAT) {
+        if (lRes.getType() == ReturnType.INT && rRes.getType() == ReturnType.FLOAT) {
             int lInt = (int) lRes.getValue();
             float rInt = (float) rRes.getValue();
-            return new ReturnType<Float>(rInt + lInt, ReturnTypes.FLOAT);
+            return new ReturnValue<Float>(rInt + lInt, ReturnType.FLOAT);
         }
-        if (lRes.getType() == ReturnTypes.FLOAT && rRes.getType() == ReturnTypes.FLOAT) {
+        if (lRes.getType() == ReturnType.FLOAT && rRes.getType() == ReturnType.FLOAT) {
             float lInt = (float) lRes.getValue();
             float rInt = (float) rRes.getValue();
-            return new ReturnType<Float>(rInt + lInt, ReturnTypes.FLOAT);
+            return new ReturnValue<Float>(rInt + lInt, ReturnType.FLOAT);
         }
-        return new ReturnType(null, ReturnTypes.ERROR);
+        return new ReturnValue(null, ReturnType.ERROR);
     }
 
-    static ReturnType sub(ReturnType lRes, ReturnType rRes) {
-        if (lRes.getType() == ReturnTypes.INT && rRes.getType() == ReturnTypes.INT) {
+    static ReturnValue sub(ReturnValue lRes, ReturnValue rRes) {
+        if (lRes.getType() == ReturnType.INT && rRes.getType() == ReturnType.INT) {
             int lInt = (int) lRes.getValue();
             int rInt = (int) rRes.getValue();
-            return new ReturnType<Integer>(rInt - lInt, ReturnTypes.INT);
+            return new ReturnValue<Integer>(rInt - lInt, ReturnType.INT);
         }
-        if (lRes.getType() == ReturnTypes.FLOAT && rRes.getType() == ReturnTypes.INT) {
+        if (lRes.getType() == ReturnType.FLOAT && rRes.getType() == ReturnType.INT) {
             float lInt = (float) lRes.getValue();
             int rInt = (int) rRes.getValue();
-            return new ReturnType<Float>(rInt - lInt, ReturnTypes.FLOAT);
+            return new ReturnValue<Float>(rInt - lInt, ReturnType.FLOAT);
         }
-        if (lRes.getType() == ReturnTypes.INT && rRes.getType() == ReturnTypes.FLOAT) {
+        if (lRes.getType() == ReturnType.INT && rRes.getType() == ReturnType.FLOAT) {
             int lInt = (int) lRes.getValue();
             float rInt = (float) rRes.getValue();
-            return new ReturnType<Float>(rInt - lInt, ReturnTypes.FLOAT);
+            return new ReturnValue<Float>(rInt - lInt, ReturnType.FLOAT);
         }
-        if (lRes.getType() == ReturnTypes.FLOAT && rRes.getType() == ReturnTypes.FLOAT) {
+        if (lRes.getType() == ReturnType.FLOAT && rRes.getType() == ReturnType.FLOAT) {
             float lInt = (float) lRes.getValue();
             float rInt = (float) rRes.getValue();
-            return new ReturnType<Float>(rInt - lInt, ReturnTypes.FLOAT);
+            return new ReturnValue<Float>(rInt - lInt, ReturnType.FLOAT);
         }
-        return new ReturnType(null, ReturnTypes.ERROR);
+        return new ReturnValue(null, ReturnType.ERROR);
     }
 }

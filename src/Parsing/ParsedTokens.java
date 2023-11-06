@@ -1,7 +1,7 @@
 package Parsing;
 
 import Lexing.Token;
-import Lexing.TokenTypes;
+import Lexing.TokenType;
 
 import java.util.Arrays;
 import java.util.HashSet;
@@ -12,6 +12,7 @@ public class ParsedTokens {
     Token token = null;
     static final HashSet<String> firstPriority = new HashSet<String>(Arrays.asList("*", "/"));
     static final HashSet<String> secondPriority = new HashSet<String>(Arrays.asList("+", "-"));
+    static final HashSet<String> COMPARISON_OPERATIONS = new HashSet<String>(Arrays.asList("=="));
     LinkedList<ParsedTokens> children = new LinkedList<ParsedTokens>();
 
     public ParsedTokens(Token t) {
@@ -29,11 +30,11 @@ public class ParsedTokens {
         LinkedList<ParsedTokens> arg = new LinkedList<ParsedTokens>();
         int level = 0;
         for (int i = 0; i < tokens.size(); ++i) {
-            if (tokens.get(i).getType() == TokenTypes.PARENTHESIS) {
+            if (tokens.get(i).getType() == TokenType.PARENTHESIS) {
                 if (tokens.get(i).getValue().equals("(")) level++;
                 else level--;
             }
-            if (level == 0 && tokens.get(i).getType() == TokenTypes.SEPARATOR) {
+            if (level == 0 && tokens.get(i).getType() == TokenType.SEPARATOR) {
                 ParsedTokens pt = new ParsedTokens(arg);
                 children.add(pt);
                 arg.clear();
@@ -45,9 +46,9 @@ public class ParsedTokens {
         children.add(pt); //divide into args
     }
 
-    public void divideByOperands(LinkedList<ParsedTokens> operands, HashSet<String> operations) throws ParsingException {
+    public void divideByOperands(LinkedList<ParsedTokens> operands, HashSet<String> operations, TokenType tokenType) throws ParsingException {
         for (int i = 0; i < operands.size(); ++i) {
-            if (operands.get(i).isSingle() && operands.get(i).getType().equals(TokenTypes.ARITHMETIC)) {
+            if (operands.get(i).isSingle() && operands.get(i).getType() == tokenType) {
                 if (operations.contains(operands.get(i).getValue())) {
                     setRight(new ParsedTokens(new LinkedList<ParsedTokens>(operands.subList(i + 1, operands.size()))));
                     if (i != 0)
@@ -63,7 +64,7 @@ public class ParsedTokens {
         if (tokens.size() == 1) {
             this.ifSizeIsOne(tokens);
         } else {
-            if (tokens.get(1).getType() == TokenTypes.ASSIGNMENT) {
+            if (tokens.get(1).getType() == TokenType.ASSIGNMENT) {
                 this.token = tokens.get(1).getToken();
                 setLeftAndRight(tokens.get(0), new ParsedTokens(new LinkedList<ParsedTokens>(tokens.subList(2, tokens.size()))));
             } else {
@@ -71,17 +72,20 @@ public class ParsedTokens {
                 Iterator iter = operands.iterator();
                 while (iter.hasNext()) {
                     ParsedTokens pt = (ParsedTokens) iter.next();
-                    if (pt.getType().equals(TokenTypes.PARENTHESIS)) iter.remove();
+                    if (pt.getType().equals(TokenType.PARENTHESIS)) iter.remove();
                 }
                 //now we should have operands without any parentheses
                 if (operands.size() == 1) {
                     this.ifSizeIsOne(operands);
                 } else {
                     if (token == null) {
-                        divideByOperands(operands, secondPriority);
+                        divideByOperands(operands, secondPriority, TokenType.ARITHMETIC);
                     }
                     if (token == null) {
-                        divideByOperands(operands, firstPriority);
+                        divideByOperands(operands, firstPriority, TokenType.ARITHMETIC);
+                    }
+                    if (token == null) {
+                        divideByOperands(operands, COMPARISON_OPERATIONS, TokenType.COMPARISON);
                     }
 
                 }
@@ -104,7 +108,7 @@ public class ParsedTokens {
         boolean function_is_expected = false;
         int function_inx = -1;
         while (i < tokens.size()) {
-            if (tokens.get(i).getType() == TokenTypes.FUNCTION) {
+            if (tokens.get(i).getType() == TokenType.FUNCTION) {
                 if (tokens.get(i).operandsCount() == 0) {
                     function_is_expected = true;
                     function_inx = i;
@@ -114,12 +118,12 @@ public class ParsedTokens {
 
                 i++;
             } else {
-                if (tokens.get(i).getType() == TokenTypes.PARENTHESIS) {
+                if (tokens.get(i).getType() == TokenType.PARENTHESIS) {
                     int balance = 1;
                     int start = i;
                     while (i < tokens.size() - 1) {
                         i = i + 1;
-                        if (tokens.get(i).getType() == TokenTypes.PARENTHESIS) {
+                        if (tokens.get(i).getType() == TokenType.PARENTHESIS) {
                             if (tokens.get(i).getValue().equals("(")) {
                                 balance++;
                             } else {
@@ -208,12 +212,12 @@ public class ParsedTokens {
         this.setLeft(left);
     }
 
-    public TokenTypes getType() {
+    public TokenType getType() {
         return this.token.getType();
     }
 
     public String toString() {
-        if (this.token.getType() == TokenTypes.FUNCTION) {
+        if (this.token.getType() == TokenType.FUNCTION) {
             StringBuilder st = new StringBuilder();
             st.append(token.getValue());
             st.append("(");

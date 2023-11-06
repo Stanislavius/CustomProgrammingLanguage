@@ -1,6 +1,6 @@
 package Executing;
 
-import Lexing.TokenTypes;
+import Lexing.TokenType;
 import Parsing.ParsedTokens;
 
 import java.util.HashMap;
@@ -13,11 +13,11 @@ public class Executor {
             ExecutionToken current_line = getExecutionTree(line);
             //System.out.println(line.toString());
             try {
-                ReturnType result = current_line.execute();
+                ReturnValue result = current_line.execute();
                 boolean flag = true;
-                if (result.getType() == ReturnTypes.EMPTY)
+                if (result.getType() == ReturnType.EMPTY)
                     flag = false;
-                if (result.getType() == ReturnTypes.PRINT) {
+                if (result.getType() == ReturnType.PRINT) {
                     System.out.println(result.execute());
                 }
                 if (flag)
@@ -31,12 +31,12 @@ public class Executor {
 
     public static ExecutionToken getExecutionTree(ParsedTokens pt) {
         ExecutionToken result = null;
-        if (pt.getType().equals(TokenTypes.ASSIGNMENT)) {
+        if (pt.getType().equals(TokenType.ASSIGNMENT)) {
             ExecutionToken left = getExecutionTree(pt.getLeft());
             ExecutionToken right = getExecutionTree(pt.getRight());
             result = new AssignmentToken(pt.getToken(), left, right);
         }
-        if (pt.getType().equals(TokenTypes.ARITHMETIC)) {
+        if (pt.getType().equals(TokenType.ARITHMETIC)) {
             if (pt.hasLeft()) {
                 ExecutionToken left = getExecutionTree(pt.getLeft());
                 ExecutionToken right = getExecutionTree(pt.getRight());
@@ -46,15 +46,15 @@ public class Executor {
                 result = new UnaryNumericalOperation(pt.getToken(), right);
             }
         }
-        if (pt.getType().equals(TokenTypes.INT)) {
+        if (pt.getType().equals(TokenType.INT)) {
             result = new NumericType(pt.getToken());
         }
 
-        if (pt.getType().equals(TokenTypes.FLOAT)) {
+        if (pt.getType().equals(TokenType.FLOAT)) {
             result = new NumericType(pt.getToken());
         }
 
-        if (pt.getType().equals(TokenTypes.FUNCTION)) {
+        if (pt.getType().equals(TokenType.FUNCTION)) {
             LinkedList<ExecutionToken> children = new LinkedList<ExecutionToken>();
             LinkedList<ParsedTokens> args = pt.getChildren();
             for (int i = 0; i < args.size(); ++i)
@@ -62,25 +62,32 @@ public class Executor {
             result = new FunctionToken(pt.getToken(), children);
         }
 
-        if (pt.getType().equals(TokenTypes.VARIABLE)) {
+        if (pt.getType().equals(TokenType.VARIABLE)) {
             result = new VariableExecutionToken(pt.getToken());
         }
+
+        if (pt.getType().equals(TokenType.COMPARISON)) {
+            ExecutionToken left = getExecutionTree(pt.getLeft());
+            ExecutionToken right = getExecutionTree(pt.getRight());
+            result = new ComparisonExecutionToken(pt.getToken(), left, right);
+        }
+
         return result;
     }
 
     static class Variables {
-        static HashMap<String, ReturnType> variables = new HashMap<String, ReturnType>();
+        static HashMap<String, ReturnValue> variables = new HashMap<String, ReturnValue>();
 
-        public void addVariable(String name, ReturnType value) {
+        public void addVariable(String name, ReturnValue value) {
 
         }
 
-        static public void setVariable(String name, ReturnType value) {
+        static public void setVariable(String name, ReturnValue value) {
             variables.put(name, value);
         }
 
-        static public ReturnType getVariable(String name) {
-            ReturnType value = null;
+        static public ReturnValue getVariable(String name) {
+            ReturnValue value = null;
             if (variables.containsKey(name)) {
                 value = variables.get(name);
             } else {
@@ -98,11 +105,11 @@ public class Executor {
         Variables.clear();
     }
 
-    static void setVariable(String name, ReturnType value) {
+    static void setVariable(String name, ReturnValue value) {
         Variables.setVariable(name, value);
     }
 
-    static public ReturnType getVariable(String name) {
+    static public ReturnValue getVariable(String name) {
         return Variables.getVariable(name);
     }
 }

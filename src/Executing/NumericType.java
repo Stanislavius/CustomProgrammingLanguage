@@ -1,23 +1,23 @@
 package Executing;
 
 import Lexing.Token;
-import Lexing.TokenTypes;
+import Lexing.TokenType;
 
 public class NumericType extends ExecutionToken {
-    ReturnType value;
+    ReturnValue value;
 
     public NumericType(Token token) {
         super(token);
     }
 
-    public ReturnType execute() {
-        if (this.token.getType() == TokenTypes.INT) {
-            return new ReturnType<Integer>(Integer.parseInt(this.token.getValue()), ReturnTypes.INT);
+    public ReturnValue execute() {
+        if (this.token.getType() == TokenType.INT) {
+            return new ReturnValue<Integer>(Integer.parseInt(this.token.getValue()), ReturnType.INT);
         }
-        if (this.token.getType() == TokenTypes.FLOAT) {
-            return new ReturnType<Float>(Float.parseFloat(this.token.getValue()), ReturnTypes.FLOAT);
+        if (this.token.getType() == TokenType.FLOAT) {
+            return new ReturnValue<Float>(Float.parseFloat(this.token.getValue()), ReturnType.FLOAT);
         }
-        return new ReturnType(null, ReturnTypes.ERROR);
+        return new ReturnValue(null, ReturnType.ERROR);
     }
 
 }

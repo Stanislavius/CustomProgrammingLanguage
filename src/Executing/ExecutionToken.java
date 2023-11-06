@@ -13,5 +13,5 @@ public abstract class ExecutionToken {
         return token;
     }
 
-    public abstract ReturnType execute() throws ExecutionException;
+    public abstract ReturnValue execute() throws ExecutionException;
 }

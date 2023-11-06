@@ -12,7 +12,7 @@ public class FunctionToken extends ExecutionToken {
         this.args = args;
     }
 
-    public ReturnType execute() throws ExecutionException {
+    public ReturnValue execute() throws ExecutionException {
         switch (token.getValue()) {
             case "abs":
                 if (args.size() != 1)
@@ -33,7 +33,7 @@ public class FunctionToken extends ExecutionToken {
             case "print":
                 if (args.size() != 1)
                     throw new WrongNumberOfArgumentsException(token, 1, args.size());
-                return new ReturnType<>(args.get(0).execute(), ReturnTypes.PRINT);
+                return new ReturnValue<>(args.get(0).execute(), ReturnType.PRINT);
             case "argmax":
                 if (args.size() != 2)
                     throw new WrongNumberOfArgumentsException(token, 2, args.size());
@@ -44,62 +44,62 @@ public class FunctionToken extends ExecutionToken {
 
     }
 
-    static ReturnType abs(ReturnType arg) {
-        if (arg.getType() == ReturnTypes.INT) {
+    static ReturnValue abs(ReturnValue arg) {
+        if (arg.getType() == ReturnType.INT) {
             int argInt = (int) arg.getValue();
-            return new ReturnType(Math.abs(argInt), ReturnTypes.INT);
+            return new ReturnValue(Math.abs(argInt), ReturnType.INT);
         }
-        if (arg.getType() == ReturnTypes.FLOAT) {
+        if (arg.getType() == ReturnType.FLOAT) {
             float floatInt = (float) arg.getValue();
-            return new ReturnType(Math.abs(floatInt), ReturnTypes.FLOAT);
+            return new ReturnValue(Math.abs(floatInt), ReturnType.FLOAT);
         }
-        return new ReturnType(null, ReturnTypes.ERROR);
+        return new ReturnValue(null, ReturnType.ERROR);
     }
 
-    static ReturnType convertToInt(ReturnType arg) {
-        if (arg.getType() == ReturnTypes.INT) {
+    static ReturnValue convertToInt(ReturnValue arg) {
+        if (arg.getType() == ReturnType.INT) {
             return arg;
         }
-        if (arg.getType() == ReturnTypes.FLOAT) {
+        if (arg.getType() == ReturnType.FLOAT) {
             float val = (float) arg.getValue();
             int floatInt = (int) val;
-            return new ReturnType(floatInt, ReturnTypes.INT);
+            return new ReturnValue(floatInt, ReturnType.INT);
         }
-        return new ReturnType(null, ReturnTypes.ERROR);
+        return new ReturnValue(null, ReturnType.ERROR);
     }
 
-    static ReturnType convertToFloat(ReturnType arg) {
-        if (arg.getType() == ReturnTypes.INT) {
+    static ReturnValue convertToFloat(ReturnValue arg) {
+        if (arg.getType() == ReturnType.INT) {
             int val = (int) arg.getValue();
             float floatInt = (float) val;
-            return new ReturnType(floatInt, ReturnTypes.FLOAT);
+            return new ReturnValue(floatInt, ReturnType.FLOAT);
         }
-        if (arg.getType() == ReturnTypes.FLOAT) {
+        if (arg.getType() == ReturnType.FLOAT) {
             return arg;
         }
-        return new ReturnType(null, ReturnTypes.ERROR);
+        return new ReturnValue(null, ReturnType.ERROR);
     }
 
-    static ReturnType neg(ReturnType arg) {
-        if (arg.getType() == ReturnTypes.INT) {
+    static ReturnValue neg(ReturnValue arg) {
+        if (arg.getType() == ReturnType.INT) {
             int argInt = (int) arg.getValue();
-            return new ReturnType(-Math.abs(argInt), ReturnTypes.INT);
+            return new ReturnValue(-Math.abs(argInt), ReturnType.INT);
         }
-        if (arg.getType() == ReturnTypes.FLOAT) {
+        if (arg.getType() == ReturnType.FLOAT) {
             float floatInt = (int) arg.getValue();
-            return new ReturnType(-Math.abs(floatInt), ReturnTypes.FLOAT);
+            return new ReturnValue(-Math.abs(floatInt), ReturnType.FLOAT);
         }
-        return new ReturnType(null, ReturnTypes.ERROR);
+        return new ReturnValue(null, ReturnType.ERROR);
     }
 
-    static ReturnType argMax(ReturnType arg1, ReturnType arg2) {
+    static ReturnValue argMax(ReturnValue arg1, ReturnValue arg2) {
         float f1, f2;
-        if (arg1.getType() == ReturnTypes.INT) {
+        if (arg1.getType() == ReturnType.INT) {
             f1 = (float) ((int) arg1.getValue());
         } else {
             f1 = (float) arg1.getValue();
         }
-        if (arg2.getType() == ReturnTypes.INT) {
+        if (arg2.getType() == ReturnType.INT) {
             f2 = (float) ((int) arg2.getValue());
         } else {
             f2 = (float) arg2.getValue();
@@ -114,6 +114,6 @@ public class FunctionToken extends ExecutionToken {
         if (f1 == f2) {
             res = 0;
         }
-        return new ReturnType(res, ReturnTypes.INT);
+        return new ReturnValue(res, ReturnType.INT);
     }
 }

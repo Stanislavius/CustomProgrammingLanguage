@@ -12,11 +12,11 @@ public class AssignmentToken extends ExecutionToken {
         this.value = value;
     }
 
-    public ReturnType execute() throws ExecutionException {
+    public ReturnValue execute() throws ExecutionException {
         String name = assignTo.getToken().getValue();
-        ReturnType val = value.execute();
+        ReturnValue val = value.execute();
         Executor.setVariable(name, val);
-        return new ReturnType(null, ReturnTypes.EMPTY);
+        return new ReturnValue(null, ReturnType.EMPTY);
     }
 
 }

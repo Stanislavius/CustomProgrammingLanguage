@@ -1,12 +1,12 @@
 package Lexing;
 
 public class Token {
-    final private TokenTypes type;
+    final private TokenType type;
     final private String value;
     final private int line;
     final private int startPos;
 
-    public Token(TokenTypes type, String value, int line, int startPos) {
+    public Token(TokenType type, String value, int line, int startPos) {
         this.type = type;
         this.value = value;
         this.line = line;
@@ -25,7 +25,7 @@ public class Token {
         return sb.toString();
     }
 
-    public final TokenTypes getType() {
+    public final TokenType getType() {
         return this.type;
     }
 

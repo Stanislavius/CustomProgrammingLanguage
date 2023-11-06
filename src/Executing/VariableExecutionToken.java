@@ -7,7 +7,7 @@ public class VariableExecutionToken extends ExecutionToken {
         super(t);
     }
 
-    public ReturnType execute() throws ExecutionException {
+    public ReturnValue execute() throws ExecutionException {
         return Executor.getVariable(token.getValue());
     }
 
