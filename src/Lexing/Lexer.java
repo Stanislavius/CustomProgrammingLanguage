@@ -94,6 +94,17 @@ public class Lexer {
         Matcher variableMatcher = variablePattern.matcher(st);
         Matcher separatorMatcher = separatorPattern.matcher(st);
         Matcher comparisonMatcher = comparisonPattern.matcher(st);
+        int indentation = 0;
+        int i = 0;
+        int count = 0;
+        while(i < st.length() && st.substring(i, i+1).equals(" ")){
+            count++;
+            if (count == 4) {
+                tokens.add(new Token(TokenType.INDENTATION, "\t", lineNum, i));
+                count = 0;
+            }
+            i++;
+        }
         while (intMatcher.find()){
             int start = intMatcher.start();
             tokens.add(new Token(TokenType.INT, intMatcher.group(), lineNum, start));

@@ -10,5 +10,6 @@ public enum TokenType {
     ASSIGNMENT,
     VARIABLE,
     SEPARATOR,
-    COMPARISON
+    COMPARISON,
+    INDENTATION
 }

@@ -10,6 +10,7 @@ import java.util.LinkedList;
 
 public class ParsedTokens {
     Token token = null;
+    int indentationLevel = 0;
     static final HashSet<String> firstPriority = new HashSet<String>(Arrays.asList("*", "/"));
     static final HashSet<String> secondPriority = new HashSet<String>(Arrays.asList("+", "-"));
     static final HashSet<String> COMPARISON_OPERATIONS = new HashSet<String>(Arrays.asList("=="));
@@ -61,6 +62,15 @@ public class ParsedTokens {
     }
 
     public ParsedTokens(LinkedList<ParsedTokens> tokens) throws ParsingException {
+        Iterator iter = tokens.iterator();
+        while (iter.hasNext()) {
+            ParsedTokens pt = (ParsedTokens) iter.next();
+            if (pt.getType() == TokenType.INDENTATION) {
+                iter.remove();
+                indentationLevel++;
+            }
+            else break;
+        }
         if (tokens.size() == 1) {
             this.ifSizeIsOne(tokens);
         } else {
@@ -69,7 +79,7 @@ public class ParsedTokens {
                 setLeftAndRight(tokens.get(0), new ParsedTokens(new LinkedList<ParsedTokens>(tokens.subList(2, tokens.size()))));
             } else {
                 LinkedList<ParsedTokens> operands = this.getOperands(tokens);
-                Iterator iter = operands.iterator();
+                iter = operands.iterator();
                 while (iter.hasNext()) {
                     ParsedTokens pt = (ParsedTokens) iter.next();
                     if (pt.getType().equals(TokenType.PARENTHESIS)) iter.remove();
@@ -169,6 +179,10 @@ public class ParsedTokens {
 
     public Token getToken() {
         return this.token;
+    }
+
+    public int getIndentationLevel(){
+        return this.indentationLevel;
     }
 
     public ParsedTokens getRight() {
