@@ -13,7 +13,7 @@ public class ParsedTokens {
     int indentationLevel = 0;
     static final HashSet<String> firstPriority = new HashSet<String>(Arrays.asList("*", "/"));
     static final HashSet<String> secondPriority = new HashSet<String>(Arrays.asList("+", "-"));
-    static final HashSet<String> COMPARISON_OPERATIONS = new HashSet<String>(Arrays.asList("=="));
+    static final HashSet<String> COMPARISON_OPERATIONS = new HashSet<String>(Arrays.asList("==", "<", ">"));
     LinkedList<ParsedTokens> children = new LinkedList<ParsedTokens>();
 
     public ParsedTokens(Token t) {
