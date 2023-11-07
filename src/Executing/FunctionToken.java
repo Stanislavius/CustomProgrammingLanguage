@@ -33,6 +33,7 @@ public class FunctionToken extends ExecutionToken {
             case "print":
                 if (args.size() != 1)
                     throw new WrongNumberOfArgumentsException(token, 1, args.size());
+                System.out.println(args.get(0).execute());
                 return new ReturnValue<>(args.get(0).execute(), ReturnType.PRINT);
             case "argmax":
                 if (args.size() != 2)

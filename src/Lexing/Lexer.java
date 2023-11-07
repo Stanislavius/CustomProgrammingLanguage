@@ -19,6 +19,7 @@ public class Lexer {
     final static Pattern functionPattern = Pattern.compile("[a-zA-Z]+\\(");
     final static Pattern variablePattern = Pattern.compile("[a-zA-Z]+(?!\\()\\b");
     final static Pattern separatorPattern = Pattern.compile(",");
+    //final static Pattern keywordPattern = Pattern.compile("if ");
     final private String filename;
 
     public Lexer(String filename) {
@@ -85,6 +86,42 @@ public class Lexer {
 
     public LinkedList<Token> readLine(String st, int lineNum){
         LinkedList<Token> tokens = new LinkedList<Token>();
+        int indentation = 0;
+        int i = 0;
+        int count = 0;
+        while(i < st.length() && st.substring(i, i+1).equals(" ")){
+            count++;
+            if (count == 4) {
+                tokens.add(new Token(TokenType.INDENTATION, "\t", lineNum, i));
+                count = 0;
+                indentation++;
+            }
+            i++;
+        }
+        if (count != 0){
+            //throw error
+        }
+
+        if ((indentation * 4+ 3) < st.length())
+        if (st.substring(indentation * 4, indentation * 4+ 3).equals("if ")){
+            int start = indentation * 4;
+            tokens.add(new Token(TokenType.KEYWORD, "if", lineNum, start));
+            st = st.substring(0, indentation*4) + " " + st.substring(indentation*4 + 2, st.length());
+        }
+
+        if ((indentation * 4+ 6) < st.length())
+        if (st.substring(indentation * 4, indentation * 4+ 6).equals("while ")){
+            int start = indentation * 4;
+            tokens.add(new Token(TokenType.KEYWORD, "while", lineNum, start));
+            st = st.substring(0, indentation*4) + " " + st.substring(indentation*4 + 5, st.length());
+        }
+
+        if (st.substring(indentation * 4, indentation * 4+ 5).equals("else ")){
+            int start = indentation * 4;
+            tokens.add(new Token(TokenType.KEYWORD, "if", lineNum, start));
+            st = st.substring(0, indentation*4) + " " + st.substring(indentation*4 + 4, st.length());
+        }
+
         Matcher arithmeticMatcher = arithmeticPattern.matcher(st);
         Matcher intMatcher = intPattern.matcher(st);
         Matcher floatMatcher = floatPattern.matcher(st);
@@ -94,17 +131,7 @@ public class Lexer {
         Matcher variableMatcher = variablePattern.matcher(st);
         Matcher separatorMatcher = separatorPattern.matcher(st);
         Matcher comparisonMatcher = comparisonPattern.matcher(st);
-        int indentation = 0;
-        int i = 0;
-        int count = 0;
-        while(i < st.length() && st.substring(i, i+1).equals(" ")){
-            count++;
-            if (count == 4) {
-                tokens.add(new Token(TokenType.INDENTATION, "\t", lineNum, i));
-                count = 0;
-            }
-            i++;
-        }
+
         while (intMatcher.find()){
             int start = intMatcher.start();
             tokens.add(new Token(TokenType.INT, intMatcher.group(), lineNum, start));

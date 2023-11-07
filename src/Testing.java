@@ -57,9 +57,11 @@ public class Testing {
 class TestCase{
     String input;
     String output;
+    String commentary;
     public TestCase(String input, String output){
         this.input = input;
         this.output = output;
+        //this.commentary = commentary;
     }
 
     public String getInput() {return input;}

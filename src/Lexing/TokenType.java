@@ -11,5 +11,6 @@ public enum TokenType {
     VARIABLE,
     SEPARATOR,
     COMPARISON,
-    INDENTATION
+    INDENTATION,
+    KEYWORD
 }

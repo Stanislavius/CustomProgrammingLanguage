@@ -18,7 +18,7 @@ public class Executor {
                 if (result.getType() == ReturnType.EMPTY)
                     flag = false;
                 if (result.getType() == ReturnType.PRINT) {
-                    System.out.println(result.execute());
+                    //System.out.println(result.execute());
                 }
                 if (flag)
                     output.add(result + "");
@@ -31,6 +31,15 @@ public class Executor {
 
     public static ExecutionToken getExecutionTree(ParsedTokens pt) {
         ExecutionToken result = null;
+        if (pt.getType() == TokenType.KEYWORD){
+            LinkedList<ParsedTokens> list = pt.getChildren();
+            ExecutionToken condition = getExecutionTree(list.get(0));
+            LinkedList<ExecutionToken> toDo = new LinkedList<ExecutionToken>();
+            for(int i = 1; i < list.size(); ++i){
+                toDo.add(getExecutionTree(list.get(i)));
+            }
+            result = new BlockExecutionToken(pt.getToken(), condition, toDo);
+        }
         if (pt.getType().equals(TokenType.ASSIGNMENT)) {
             ExecutionToken left = getExecutionTree(pt.getLeft());
             ExecutionToken right = getExecutionTree(pt.getRight());
