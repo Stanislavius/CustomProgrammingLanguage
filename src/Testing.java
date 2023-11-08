@@ -4,66 +4,70 @@ import Lexing.Token;
 import Parsing.ParsedTokens;
 import Parsing.Parser;
 
+import java.io.BufferedReader;
+import java.io.FileReader;
+import java.io.IOException;
 import java.util.LinkedList;
 
 public class Testing {
+    final static String[] testFiles = {"Arithmetic_int.txt", "Arithmetic_float.txt"};
     public static void main(String[] args){
-        LinkedList<TestCase> testCases = new LinkedList<TestCase>();
-        testCases.add(new TestCase("1", "1"));
-        testCases.add(new TestCase("1 + 3", "4"));
-        testCases.add(new TestCase("1 - 3", "-2"));
-        testCases.add(new TestCase("1 * 3", "3"));
-        testCases.add(new TestCase("3 / 3", "1"));
-        testCases.add(new TestCase("(1+4)", "5"));
-        testCases.add(new TestCase("(1 + 3)*(4+4)", "32"));
-        testCases.add(new TestCase("4*(1+5)", "24"));
-        testCases.add(new TestCase("float(4)", "4.0"));
-        testCases.add(new TestCase("int(25.0)", "25"));
-        testCases.add(new TestCase("4.0+4", "8.0"));
-        testCases.add(new TestCase("s = 4 \r\ns", "4"));
-        testCases.add(new TestCase("a = 2\r\ns = 34 + a \r\ns", "36"));
-        testCases.add(new TestCase("abs(-4)", "4"));
-        testCases.add(new TestCase("abs(-4.0)", "4.0"));
-        testCases.add(new TestCase("abs(-4.0)", "4.0"));
-        Lexer l = new Lexer();
-        Parser parser = new Parser();
-        int i = 0;
-        for(i = 0; i < testCases.size(); ++i){
-            LinkedList<Token> tokens = l.read(testCases.get(i).getInput());
-            LinkedList<ParsedTokens> ps = parser.parse(tokens);
-            String result = Executor.execute(ps);
-            //String[] splitOutput = testCases.get(i).getOutput().split(System.lineSeparator());
-            String expectedResult = testCases.get(i).getOutput();
-            if (result.length() != expectedResult.length()){
-                System.out.println("Test " + i + " failed!");
-            }
-            else{
-                if (result.equals(expectedResult)){
-                    System.out.println("Test " + i + " is passed!");
+        for(int i = 0; i < testFiles.length; ++i){
+            LinkedList<TestCase> testCases = TestCase.readFile("tests/" + testFiles[i]);
+            for (int j = 0; j < testCases.size(); ++j){
+                Lexer l = new Lexer();
+                LinkedList<Token> tokens = l.read(testCases.get(i).getInput());
+                Parser parser = new Parser();
+                LinkedList<ParsedTokens> ps = parser.parse(tokens);
+                String result = Executor.execute(ps);
+                if (result.equals(testCases.get(i).getOutput())){
+                    System.out.println("Test " + j + " from " + testFiles[i] + " file is passed");
                 }
                 else{
-                        System.out.println("Test " + i + " failed!");
-                    }
+                    System.out.println("Test " + j + " from " + testFiles[i] + " file is failed");
+                    System.out.println(testCases.get(i).getTitle());
+                    System.out.println(testCases.get(i).getCommentary());
+                    System.out.println("Desired output is " + testCases.get(i).getOutput() + "got " + result + " instead");
+                }
+                Executor.clearVariables();
             }
-            Executor.clearVariables();
         }
-        if (i == testCases.size())
-            System.out.println("All tests are passed");
-
     }
 }
 
 class TestCase{
+    String title;
     String input;
     String output;
     String commentary;
-    public TestCase(String input, String output){
+    public TestCase(String title, String input, String output, String commentary){
+        this.title = title;
         this.input = input;
         this.output = output;
-        //this.commentary = commentary;
+        this.commentary = commentary;
     }
 
     public String getInput() {return input;}
     public String getOutput() {return output;}
+    public String getTitle(){return title;}
+    public String getCommentary(){return commentary;};
+
+    public static LinkedList<TestCase> readFile(String filepath){
+        LinkedList<TestCase> tests = new LinkedList<TestCase>();
+            try {
+                BufferedReader br = new BufferedReader(new FileReader(filepath));
+                String testName;
+                while (((testName = br.readLine()) != null)){
+                    String inputString = br.readLine().substring("input = ".length());
+                    String outputString = br.readLine().substring("output = ".length());
+                    String commentaryString = br.readLine().substring("commentary = ".length());
+                    tests.add(new TestCase(testName, inputString, outputString, commentaryString));
+                }
+            } catch (IOException e) {
+                System.out.println(e.getMessage());
+            }
+
+        return tests;
+    }
 
 }

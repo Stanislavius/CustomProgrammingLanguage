@@ -1,0 +1,48 @@
+test1 plus operator
+input = 1 + 1
+output = 2
+commentary = Testing arithmetic operator + for two integers.
+test2 minus operator
+input = 1 - 1
+output = 0
+commentary = Testing arithmetic operator - for two integers.
+test3 division operator
+input = 1 / 1
+output = 1
+commentary = Testing arithmetic operator / for two integers.
+test4 multiplication operator
+input = 1 * 2
+output = 2
+commentary = Testing arithmetic operator * for two integers.
+test5 combine + and * operators
+input = 1 + 1 * 2
+output = 3
+commentary = Testing variants of combining different operators for two integers.
+test6 combine + and * operators
+input = 1*2 + 1
+output = 3
+commentary = Testing variants of combining different operators for two integers.
+test7 combine + and - operators
+input = 1 + 1 - 1
+output = 1
+commentary = Testing variants of combining different operators for two integers.
+test8 combine + and - operators
+input = 1 - 1 + 1
+output = 1
+commentary = Testing variants of combining different operators for two integers.
+test9 combine + and / operators
+input = 1 + 8 / 4
+output = 3
+commentary = Testing variants of combining different operators for two integers.
+test10 combine 4 operators
+input = 4/2 + 2*4
+output = 10
+commentary = Testing variants of combining different operators for two integers.
+test11 negative numbers
+input = 1 - 2
+output = -1
+commentary = Testing that negative number can be returned.
+test12 multiplication negative number
+input = 1 + -4*4
+output = -15
+commentary = Testing that multiplication of negative number will return negaive number

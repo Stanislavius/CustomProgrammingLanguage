@@ -1,0 +1,48 @@
+test1 plus operator
+input = 1.0 + 1.0
+output = 2.0
+commentary = Testing arithmetic operator + for two floats.
+test2 minus operator
+input = 1.0 - 1.0
+output = 0.0
+commentary = Testing arithmetic operator - for two floats.
+test3 division operator
+input = 1.0 / 1.0
+output = 1.0
+commentary = Testing arithmetic operator / for two floats.
+test4 multiplication operator
+input = 1.0 * 2.0
+output = 2.0
+commentary = Testing arithmetic operator * for two floats.
+test5 combine + and * operators
+input = 1.0 + 1.0 * 2.0
+output = 3.0
+commentary = Testing variants of combining different operators for two floats.
+test6 combine + and * operators
+input = 1.0*2.0 + 1.0
+output = 3.0
+commentary = Testing variants of combining different operators for two floats.
+test7 combine + and - operators
+input = 1.0 + 1.0 - 1.0
+output = 1.0
+commentary = Testing variants of combining different operators for two floats.
+test8 combine + and - operators
+input = 1.0 - 1.0 + 1.0
+output = 1.0
+commentary = Testing variants of combining different operators for two floats.
+test9 combine + and / operators
+input = 1.0 + 8.0 / 4.0
+output = 3.0
+commentary = Testing variants of combining different operators for two floats.
+test10 combine 4 operators
+input = 4.0/2.0 + 2.0*4.0
+output = 10.0
+commentary = Testing variants of combining different operators for two floats.
+test11 negative numbers
+input = 1.0 - 2.0
+output = -1.0
+commentary = Testing that negative number can be returned.
+test12 multiplication negative number
+input = 1.0 + -4.0*4.0
+output = -15.0
+commentary = Testing that multiplication of negative number will return negaive number
