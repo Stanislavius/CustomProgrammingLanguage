@@ -36,6 +36,7 @@ public class BlockExecutionToken extends ExecutionToken{
                     result = toDo.get(i).execute();
                 }
             }
+            flag = false;
         }
         if (flag == false) {
             for (int i = 0; i < elseConditions.size(); ++i) {

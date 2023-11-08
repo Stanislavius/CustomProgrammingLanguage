@@ -46,7 +46,7 @@ public class Executor {
                         if (curToken.getValue().equals("else")) {
                             elseConditions.add(new ElseExecutionToken(curToken.getToken()));
                             LinkedList<ExecutionToken> elseToDo = new LinkedList<ExecutionToken>();
-                            for (int j = 1; j < curToken.operandsCount(); ++j)
+                            for (int j = 0; j < curToken.operandsCount(); ++j)
                                 elseToDo.add(getExecutionTree(curToken.getChildren().get(j)));
                             elseToDos.add(elseToDo);
                         } else {
