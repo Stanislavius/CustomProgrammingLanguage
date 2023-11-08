@@ -7,38 +7,55 @@ import java.util.HashMap;
 import java.util.LinkedList;
 
 public class Executor {
-    public static LinkedList<String> execute(LinkedList<ParsedTokens> program) {
+    public static String execute(LinkedList<ParsedTokens> program) {
         LinkedList<String> output = new LinkedList<String>();
         for (ParsedTokens line : program) {
             ExecutionToken current_line = getExecutionTree(line);
             //System.out.println(line.toString());
             try {
                 ReturnValue result = current_line.execute();
-                boolean flag = true;
-                if (result.getType() == ReturnType.EMPTY)
-                    flag = false;
-                if (result.getType() == ReturnType.PRINT) {
-                    //System.out.println(result.execute());
-                }
-                if (flag)
-                    output.add(result + "");
+                output.add(result.toString() + "");
             } catch (ExecutionException e) {
                 System.out.println(e.toString());
             }
         }
-        return output;
+        return output.get(output.size()-1);
     }
 
     public static ExecutionToken getExecutionTree(ParsedTokens pt) {
         ExecutionToken result = null;
-        if (pt.getType() == TokenType.KEYWORD){
-            LinkedList<ParsedTokens> list = pt.getChildren();
-            ExecutionToken condition = getExecutionTree(list.get(0));
-            LinkedList<ExecutionToken> toDo = new LinkedList<ExecutionToken>();
-            for(int i = 1; i < list.size(); ++i){
-                toDo.add(getExecutionTree(list.get(i)));
+        if (pt.getType() == TokenType.BLOCKWORD){
+            if (pt.getValue().equals("else")){
+                //
             }
-            result = new BlockExecutionToken(pt.getToken(), condition, toDo);
+            else {
+                LinkedList<ParsedTokens> list = pt.getChildren();
+                ExecutionToken condition = getExecutionTree(list.get(0));
+                LinkedList<ExecutionToken> toDo = new LinkedList<ExecutionToken>();
+                LinkedList<ExecutionToken> elseConditions = new LinkedList<ExecutionToken>();
+                LinkedList<LinkedList<ExecutionToken>> elseToDos = new LinkedList<LinkedList<ExecutionToken>>();
+                for (int i = 1; i < list.size(); ++i) {
+                    ParsedTokens curToken = list.get(i);
+                    if (curToken.getValue().equals("elif")) {
+                        elseConditions.add(getExecutionTree(curToken.getChildren().get(0)));
+                        LinkedList<ExecutionToken> elseToDo = new LinkedList<ExecutionToken>();
+                        for (int j = 1; j < curToken.operandsCount(); ++j)
+                            elseToDo.add(getExecutionTree(curToken.getChildren().get(j)));
+                        elseToDos.add(elseToDo);
+                    } else {
+                        if (curToken.getValue().equals("else")) {
+                            elseConditions.add(new ElseExecutionToken(curToken.getToken()));
+                            LinkedList<ExecutionToken> elseToDo = new LinkedList<ExecutionToken>();
+                            for (int j = 1; j < curToken.operandsCount(); ++j)
+                                elseToDo.add(getExecutionTree(curToken.getChildren().get(j)));
+                            elseToDos.add(elseToDo);
+                        } else {
+                            toDo.add(getExecutionTree(list.get(i)));
+                        }
+                    }
+                }
+                result = new BlockExecutionToken(pt.getToken(), condition, toDo, elseConditions, elseToDos);
+            }
         }
         if (pt.getType().equals(TokenType.ASSIGNMENT)) {
             ExecutionToken left = getExecutionTree(pt.getLeft());

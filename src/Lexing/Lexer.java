@@ -2,6 +2,7 @@ package Lexing;
 
 import java.io.BufferedReader;
 import java.io.FileReader;
+import java.util.Arrays;
 import java.util.Collections;
 import java.util.Comparator;
 import java.util.LinkedList;
@@ -19,6 +20,7 @@ public class Lexer {
     final static Pattern functionPattern = Pattern.compile("[a-zA-Z]+\\(");
     final static Pattern variablePattern = Pattern.compile("[a-zA-Z]+(?!\\()\\b");
     final static Pattern separatorPattern = Pattern.compile(",");
+    final static LinkedList<String> blockWords = new LinkedList<String>(Arrays.asList("if", "elif", "else", "while"));
     //final static Pattern keywordPattern = Pattern.compile("if ");
     final private String filename;
 
@@ -102,24 +104,23 @@ public class Lexer {
             //throw error
         }
 
-        if ((indentation * 4+ 3) < st.length())
-        if (st.substring(indentation * 4, indentation * 4+ 3).equals("if ")){
-            int start = indentation * 4;
-            tokens.add(new Token(TokenType.KEYWORD, "if", lineNum, start));
-            st = st.substring(0, indentation*4) + " " + st.substring(indentation*4 + 2, st.length());
-        }
+        for(i = 0; i < blockWords.size(); ++i){
+            String word = blockWords.get(i);
+            if (((indentation * 4+ word.length()+1) < st.length()) || (word.equals("else") && st.equals("else"))) {
+                if (word.equals("else") && st.equals("else")){
+                    int start = indentation * 4;
+                    tokens.add(new Token(TokenType.BLOCKWORD, word, lineNum, start));
+                    st = st.substring(0, indentation * 4) + " " + st.substring(indentation * 4 + word.length(), st.length());
+                }
+                else {
+                    if (st.substring(indentation * 4, indentation * 4 + word.length() + 1).equals(word + " ")) {
+                        int start = indentation * 4;
+                        tokens.add(new Token(TokenType.BLOCKWORD, word, lineNum, start));
+                        st = st.substring(0, indentation * 4) + " " + st.substring(indentation * 4 + word.length(), st.length());
+                    }
+                }
+            }
 
-        if ((indentation * 4+ 6) < st.length())
-        if (st.substring(indentation * 4, indentation * 4+ 6).equals("while ")){
-            int start = indentation * 4;
-            tokens.add(new Token(TokenType.KEYWORD, "while", lineNum, start));
-            st = st.substring(0, indentation*4) + " " + st.substring(indentation*4 + 5, st.length());
-        }
-
-        if (st.substring(indentation * 4, indentation * 4+ 5).equals("else ")){
-            int start = indentation * 4;
-            tokens.add(new Token(TokenType.KEYWORD, "if", lineNum, start));
-            st = st.substring(0, indentation*4) + " " + st.substring(indentation*4 + 4, st.length());
         }
 
         Matcher arithmeticMatcher = arithmeticPattern.matcher(st);

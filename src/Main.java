@@ -14,10 +14,8 @@ public class Main {
         try {
             LinkedList<Token> tokens = l.read();
             LinkedList<ParsedTokens> ps = parser.parse(tokens);
-            LinkedList<String> result = Executor.execute(ps);
-            for (String to_print: result){
-                //System.out.println(to_print);
-            }
+            String result = Executor.execute(ps);
+            System.out.println(result);
 
         }
         catch(Exception e){

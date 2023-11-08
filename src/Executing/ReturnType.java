@@ -3,7 +3,7 @@ package Executing;
 public enum ReturnType {
     INT,
     FLOAT,
-    EMPTY,
+    VOID,
     PRINT,
     RETURN,
     ERROR

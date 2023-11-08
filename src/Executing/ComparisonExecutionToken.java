@@ -1,10 +1,8 @@
 package Executing;
 
 import Lexing.Token;
-import Lexing.TokenType;
 
 public class ComparisonExecutionToken extends ExecutionToken {
-    ReturnValue value;
     ExecutionToken left;
     ExecutionToken right;
 
@@ -37,7 +35,7 @@ public class ComparisonExecutionToken extends ExecutionToken {
                     res = 1;
                 return new ReturnValue(res, ReturnType.INT);
             }
-            return new ReturnValue(null, ReturnType.EMPTY);
+            return new ReturnValue(null, ReturnType.VOID);
         }
 
     public static ReturnValue greaterOperation (ReturnValue left, ReturnValue right) {
@@ -51,7 +49,7 @@ public class ComparisonExecutionToken extends ExecutionToken {
                 res = 0;
             return new ReturnValue(res, ReturnType.INT);
         }
-        return new ReturnValue(null, ReturnType.EMPTY);
+        return new ReturnValue(null, ReturnType.VOID);
     }
 
     public static ReturnValue lesserOperation (ReturnValue left, ReturnValue right) {
@@ -65,7 +63,7 @@ public class ComparisonExecutionToken extends ExecutionToken {
                 res = 1;
             return new ReturnValue(res, ReturnType.INT);
         }
-        return new ReturnValue(null, ReturnType.EMPTY);
+        return new ReturnValue(null, ReturnType.VOID);
     }
 
 

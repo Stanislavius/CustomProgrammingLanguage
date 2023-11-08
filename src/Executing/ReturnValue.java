@@ -22,6 +22,9 @@ public class ReturnValue<T> {
     }
 
     public String toString() {
-        return value.toString();
+        if (this.type == ReturnType.VOID)
+            return "void";
+        else
+            return value.toString();
     }
 }

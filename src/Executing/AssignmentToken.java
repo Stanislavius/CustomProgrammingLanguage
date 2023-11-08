@@ -16,7 +16,7 @@ public class AssignmentToken extends ExecutionToken {
         String name = assignTo.getToken().getValue();
         ReturnValue val = value.execute();
         Executor.setVariable(name, val);
-        return new ReturnValue(null, ReturnType.EMPTY);
+        return new ReturnValue(null, ReturnType.VOID);
     }
 
 }

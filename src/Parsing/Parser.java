@@ -39,7 +39,7 @@ public class Parser {
             Iterator iter = tokens.iterator();
             while (iter.hasNext()) {
                 ParsedTokens curLine = (ParsedTokens) iter.next();
-                if (curLine.getType() == TokenType.KEYWORD && curLine.getIndentationLevel() == lowerIndent - 1) {
+                if (curLine.getType() == TokenType.BLOCKWORD && curLine.getIndentationLevel() == lowerIndent - 1) {
                     if (head == null)
                         head = curLine;
                     else {
@@ -68,7 +68,7 @@ public class Parser {
                     }
                 }
             }
-            lowerIndent--;
+
             if (block.size() > 0){
                 Iterator iter2 = block.iterator();
                 while(iter2.hasNext()){
@@ -77,8 +77,29 @@ public class Parser {
                 head = null;
                 block.clear();
             }
+
+            //now finding if elif else
+            iter = tokens.iterator();
+            while (iter.hasNext()) {
+                ParsedTokens curLine = (ParsedTokens) iter.next();
+                if (curLine.getType() == TokenType.BLOCKWORD && curLine.getIndentationLevel() == lowerIndent - 1) {
+                    if (curLine.getValue().equals("if") || curLine.getValue().equals("while"))
+                        head = curLine;
+                    if (curLine.getValue().equals("elif")) {
+                        iter.remove();
+                        head.addChild(curLine);
+                    }
+                    if (curLine.getValue().equals("else")) {
+                        iter.remove();
+                        head.addChild(curLine);
+                        head = null;
+                    }
+
+                }
+
+            }
+            lowerIndent--;
         }
-        System.out.println(lowerIndent);
         return tokens;
     }
 }

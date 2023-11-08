@@ -71,8 +71,12 @@ public class ParsedTokens {
             }
             else break;
         }
-        if (tokens.get(0).getType() == TokenType.KEYWORD){
+        if (tokens.get(0).getType() == TokenType.BLOCKWORD){
             if (tokens.get(0).getValue().equals("if")){
+                this.token = tokens.get(0).token;
+                addChild(new ParsedTokens(new LinkedList<ParsedTokens>(tokens.subList(1, tokens.size()))));
+            }
+            if (tokens.get(0).getValue().equals("elif")){
                 this.token = tokens.get(0).token;
                 addChild(new ParsedTokens(new LinkedList<ParsedTokens>(tokens.subList(1, tokens.size()))));
             }
@@ -80,19 +84,29 @@ public class ParsedTokens {
                 this.token = tokens.get(0).getToken();
                 this.addChild(new ParsedTokens(new LinkedList<ParsedTokens>(tokens.subList(1, tokens.size()))));
             }
+            if (tokens.get(0).getValue().equals("else")) {
+                this.token = tokens.get(0).getToken();
+            }
         }
         else{
             if (tokens.size() == 1) {
                 this.ifSizeIsOne(tokens);
             } else {
-                if (tokens.get(0).getType() == TokenType.KEYWORD) {
+                if (tokens.get(0).getType() == TokenType.BLOCKWORD) {
                     if (tokens.get(0).getValue().equals("if")) {
                         this.token = tokens.get(0).getToken();
                         this.addChild(new ParsedTokens(new LinkedList<ParsedTokens>(tokens.subList(1, tokens.size()))));
                     }
+                    if (tokens.get(0).getValue().equals("elif")){
+                        this.token = tokens.get(0).token;
+                        addChild(new ParsedTokens(new LinkedList<ParsedTokens>(tokens.subList(1, tokens.size()))));
+                    }
                     if (tokens.get(0).getValue().equals("while")) {
                         this.token = tokens.get(0).getToken();
                         this.addChild(new ParsedTokens(new LinkedList<ParsedTokens>(tokens.subList(1, tokens.size()))));
+                    }
+                    if (tokens.get(0).getValue().equals("else")) {
+                        this.token = tokens.get(0).getToken();
                     }
                 } else {
                     if (tokens.get(1).getType() == TokenType.ASSIGNMENT) {
