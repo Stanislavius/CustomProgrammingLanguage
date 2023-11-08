@@ -7,6 +7,9 @@ import java.util.HashMap;
 import java.util.LinkedList;
 
 public class Executor {
+    static Variables globalVariables = new Variables();
+    static LinkedList<FunctionDefinitionToken> stack = new LinkedList<FunctionDefinitionToken>();
+    static LinkedList<Variables> namespaces = new LinkedList<Variables>();
     public static String execute(LinkedList<ParsedTokens> program) {
         LinkedList<String> output = new LinkedList<String>();
         for (ParsedTokens line : program) {
@@ -22,11 +25,31 @@ public class Executor {
         return output.get(output.size()-1);
     }
 
+    public static void addToStack(FunctionDefinitionToken curFunc){
+        stack.add(curFunc);
+        namespaces.add(new Variables());
+    }
+
+    public static void removeFromStack(){
+        stack.remove(stack.size()-1);
+        namespaces.remove(namespaces.size()-1);
+    }
+
     public static ExecutionToken getExecutionTree(ParsedTokens pt) {
         ExecutionToken result = null;
         if (pt.getType() == TokenType.BLOCKWORD){
-            if (pt.getValue().equals("else")){
-                //
+            if (pt.getValue().equals("def")){
+                LinkedList<ExecutionToken> toDo = new LinkedList<ExecutionToken>();
+                for(int i = 1; i < pt.operandsCount(); ++i){
+                    toDo.add(getExecutionTree(pt.getChildren().get(i)));
+                }
+                ParsedTokens declaration = pt.getChildren().get(0);
+                String name = declaration.getValue();
+                LinkedList<String> args = new LinkedList<String>();
+                for(int i = 0; i < declaration.operandsCount(); ++i){
+                    args.add(declaration.getChildren().get(i).getValue());
+                }
+                return new FunctionDefinitionToken(pt.getToken(), name, args, toDo);
             }
             else {
                 LinkedList<ParsedTokens> list = pt.getChildren();
@@ -101,42 +124,27 @@ public class Executor {
         return result;
     }
 
-    static class Variables {
-        static HashMap<String, ReturnValue> variables = new HashMap<String, ReturnValue>();
-
-        public void addVariable(String name, ReturnValue value) {
-
-        }
-
-        static public void setVariable(String name, ReturnValue value) {
-            variables.put(name, value);
-        }
-
-        static public ReturnValue getVariable(String name) {
-            ReturnValue value = null;
-            if (variables.containsKey(name)) {
-                value = variables.get(name);
-            } else {
-                //throw error
-            }
-            return value;
-        }
-
-        static public void clear() {
-            variables.clear();
-        }
-    }
-
     public static void clearVariables() {
-        Variables.clear();
+        globalVariables.clear();
     }
 
     static void setVariable(String name, ReturnValue value) {
-        Variables.setVariable(name, value);
+        if (namespaces.size() > 0){
+            namespaces.get(namespaces.size() - 1).setVariable(name, value);
+        }
+        else {
+            globalVariables.setVariable(name, value);
+        }
     }
 
     static public ReturnValue getVariable(String name) {
-        return Variables.getVariable(name);
+        if (namespaces.size() > 0){
+            if (namespaces.get(namespaces.size() - 1).in(name))
+                return namespaces.get(namespaces.size() - 1).getVariable(name);
+            else
+                return globalVariables.getVariable(name);
+        }
+        return globalVariables.getVariable(name);
     }
 }
 

@@ -20,7 +20,7 @@ public class Lexer {
     final static Pattern functionPattern = Pattern.compile("[a-zA-Z]+\\(");
     final static Pattern variablePattern = Pattern.compile("[a-zA-Z]+(?!\\()\\b");
     final static Pattern separatorPattern = Pattern.compile(",");
-    final static LinkedList<String> blockWords = new LinkedList<String>(Arrays.asList("if", "elif", "else", "while"));
+    final static LinkedList<String> blockWords = new LinkedList<String>(Arrays.asList("if", "elif", "else", "while", "def"));
     //final static Pattern keywordPattern = Pattern.compile("if ");
     final private String filename;
 

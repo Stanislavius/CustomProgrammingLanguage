@@ -40,7 +40,14 @@ public class FunctionToken extends ExecutionToken {
                     throw new WrongNumberOfArgumentsException(token, 2, args.size());
                 return FunctionToken.argMax(args.get(0).execute(), args.get(1).execute());
             default:
-                throw new NoSuchFunctionException(token);
+                if (FunctionDefinitionToken.contains(token.getValue())){
+                    LinkedList <ReturnValue> executed_args = new LinkedList<ReturnValue>();
+                    for (int i = 0; i < args.size(); ++i)
+                        executed_args.add(args.get(i).execute());
+                    return FunctionDefinitionToken.get(token.getValue()).execute(executed_args);
+                }
+                else
+                    throw new NoSuchFunctionException(token);
         }
 
     }

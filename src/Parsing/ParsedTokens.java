@@ -76,6 +76,10 @@ public class ParsedTokens {
                 this.token = tokens.get(0).token;
                 addChild(new ParsedTokens(new LinkedList<ParsedTokens>(tokens.subList(1, tokens.size()))));
             }
+            if (tokens.get(0).getValue().equals("def")) {
+                this.token = tokens.get(0).getToken();
+                this.addChild(new ParsedTokens(new LinkedList<ParsedTokens>(tokens.subList(1, tokens.size()))));
+            }
             if (tokens.get(0).getValue().equals("elif")){
                 this.token = tokens.get(0).token;
                 addChild(new ParsedTokens(new LinkedList<ParsedTokens>(tokens.subList(1, tokens.size()))));
@@ -94,6 +98,10 @@ public class ParsedTokens {
             } else {
                 if (tokens.get(0).getType() == TokenType.BLOCKWORD) {
                     if (tokens.get(0).getValue().equals("if")) {
+                        this.token = tokens.get(0).getToken();
+                        this.addChild(new ParsedTokens(new LinkedList<ParsedTokens>(tokens.subList(1, tokens.size()))));
+                    }
+                    if (tokens.get(0).getValue().equals("def")) {
                         this.token = tokens.get(0).getToken();
                         this.addChild(new ParsedTokens(new LinkedList<ParsedTokens>(tokens.subList(1, tokens.size()))));
                     }
