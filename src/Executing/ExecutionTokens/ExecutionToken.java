@@ -1,9 +1,11 @@
-package Executing;
+package Executing.ExecutionTokens;
 
+import Executing.ExecutionExceptions.ExecutionException;
+import Executing.ReturnValue;
 import Lexing.Token;
 
 public abstract class ExecutionToken {
-    Token token;
+    protected Token token;
 
     public ExecutionToken(Token token) {
         this.token = token;

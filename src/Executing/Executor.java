@@ -1,9 +1,10 @@
 package Executing;
 
+import Executing.ExecutionExceptions.ExecutionException;
+import Executing.ExecutionTokens.*;
 import Lexing.TokenType;
 import Parsing.ParsedTokens;
 
-import java.util.HashMap;
 import java.util.LinkedList;
 
 public class Executor {
@@ -40,14 +41,14 @@ public class Executor {
         if (pt.getType() == TokenType.BLOCKWORD){
             if (pt.getValue().equals("def")){
                 LinkedList<ExecutionToken> toDo = new LinkedList<ExecutionToken>();
-                for(int i = 1; i < pt.operandsCount(); ++i){
-                    toDo.add(getExecutionTree(pt.getChildren().get(i)));
+                for(int i = 1; i < pt.ChildrenCount(); ++i){
+                    toDo.add(getExecutionTree(pt.getChild(i)));
                 }
-                ParsedTokens declaration = pt.getChildren().get(0);
+                ParsedTokens declaration = pt.getChild(0);
                 String name = declaration.getValue();
                 LinkedList<String> args = new LinkedList<String>();
-                for(int i = 0; i < declaration.operandsCount(); ++i){
-                    args.add(declaration.getChildren().get(i).getValue());
+                for(int i = 0; i < declaration.ChildrenCount(); ++i){
+                    args.add(declaration.getChild(i).getValue());
                 }
                 return new FunctionDefinitionToken(pt.getToken(), name, args, toDo);
             }
@@ -60,17 +61,17 @@ public class Executor {
                 for (int i = 1; i < list.size(); ++i) {
                     ParsedTokens curToken = list.get(i);
                     if (curToken.getValue().equals("elif")) {
-                        elseConditions.add(getExecutionTree(curToken.getChildren().get(0)));
+                        elseConditions.add(getExecutionTree(curToken.getChild(0)));
                         LinkedList<ExecutionToken> elseToDo = new LinkedList<ExecutionToken>();
-                        for (int j = 1; j < curToken.operandsCount(); ++j)
-                            elseToDo.add(getExecutionTree(curToken.getChildren().get(j)));
+                        for (int j = 1; j < curToken.ChildrenCount(); ++j)
+                            elseToDo.add(getExecutionTree(curToken.getChild(j)));
                         elseToDos.add(elseToDo);
                     } else {
                         if (curToken.getValue().equals("else")) {
                             elseConditions.add(new ElseExecutionToken(curToken.getToken()));
                             LinkedList<ExecutionToken> elseToDo = new LinkedList<ExecutionToken>();
-                            for (int j = 0; j < curToken.operandsCount(); ++j)
-                                elseToDo.add(getExecutionTree(curToken.getChildren().get(j)));
+                            for (int j = 0; j < curToken.ChildrenCount(); ++j)
+                                elseToDo.add(getExecutionTree(curToken.getChild(j)));
                             elseToDos.add(elseToDo);
                         } else {
                             toDo.add(getExecutionTree(list.get(i)));
@@ -128,7 +129,7 @@ public class Executor {
         globalVariables.clear();
     }
 
-    static void setVariable(String name, ReturnValue value) {
+    public static void setVariable(String name, ReturnValue value) {
         if (namespaces.size() > 0){
             namespaces.get(namespaces.size() - 1).setVariable(name, value);
         }
@@ -137,7 +138,7 @@ public class Executor {
         }
     }
 
-    static public ReturnValue getVariable(String name) {
+    public static ReturnValue getVariable(String name) {
         if (namespaces.size() > 0){
             if (namespaces.get(namespaces.size() - 1).in(name))
                 return namespaces.get(namespaces.size() - 1).getVariable(name);

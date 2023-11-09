@@ -1,5 +1,6 @@
-package Executing;
+package Executing.ExecutionExceptions;
 
+import Executing.ExecutionExceptions.ExecutionException;
 import Lexing.Token;
 
 public class NoSuchFunctionException extends ExecutionException {

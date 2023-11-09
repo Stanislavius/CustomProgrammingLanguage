@@ -164,7 +164,7 @@ public class ParsedTokens {
         int function_inx = -1;
         while (i < tokens.size()) {
             if (tokens.get(i).getType() == TokenType.FUNCTION) {
-                if (tokens.get(i).operandsCount() == 0) {
+                if (tokens.get(i).ChildrenCount() == 0) {
                     function_is_expected = true;
                     function_inx = i;
                 } else {
@@ -248,7 +248,7 @@ public class ParsedTokens {
         return this.token.getLine();
     }
 
-    public int operandsCount() {
+    public int ChildrenCount() {
         return children.size();
     }
 
@@ -273,6 +273,10 @@ public class ParsedTokens {
     public void setLeftAndRight(ParsedTokens left, ParsedTokens right) {
         this.setRight(right);
         this.setLeft(left);
+    }
+
+    public ParsedTokens getChild(int i){
+        return this.children.get(i);
     }
 
     public TokenType getType() {
