@@ -5,10 +5,10 @@ import Executing.ReturnType;
 import Executing.ReturnValue;
 import Lexing.Token;
 
-public class UnaryNumericalOperation extends ExecutionToken {
+public class UnaryOperation extends ExecutionToken {
     ExecutionToken right;
 
-    public UnaryNumericalOperation(Token token, ExecutionToken right) {
+    public UnaryOperation(Token token, ExecutionToken right) {
         super(token);
         this.right = right;
     }
@@ -18,7 +18,7 @@ public class UnaryNumericalOperation extends ExecutionToken {
             case "+":
                 return right.execute();
             case "-":
-                return UnaryNumericalOperation.sub(right.execute());
+                return UnaryOperation.sub(right.execute());
         }
         return new ReturnValue<>(null, ReturnType.ERROR);
     }

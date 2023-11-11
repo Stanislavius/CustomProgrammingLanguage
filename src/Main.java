@@ -1,7 +1,8 @@
 import Executing.Executor;
 import Lexing.Lexer;
 import Lexing.Token;
-import Parsing.ParsedTokens;
+import Parsing.ParsedTokens.ParsedAbstractStatement;
+import Parsing.ParsedTokens.ParsedToken;
 import Parsing.Parser;
 
 import java.util.LinkedList;
@@ -13,7 +14,7 @@ public class Main {
         Parser parser = new Parser();
         try {
             LinkedList<Token> tokens = l.read();
-            LinkedList<ParsedTokens> ps = parser.parse(tokens);
+            LinkedList<ParsedAbstractStatement> ps = parser.parse(tokens);
             String result = Executor.execute(ps);
             System.out.println(result);
 

@@ -6,11 +6,11 @@ import Executing.ReturnType;
 import Executing.ReturnValue;
 import Lexing.Token;
 
-public class BinaryNumericalOperation extends ExecutionToken {
+public class BinaryOperation extends ExecutionToken {
     ExecutionToken left;
     ExecutionToken right;
 
-    public BinaryNumericalOperation(Token token, ExecutionToken left, ExecutionToken right) {
+    public BinaryOperation(Token token, ExecutionToken left, ExecutionToken right) {
         super(token);
         this.left = left;
         this.right = right;
@@ -20,27 +20,27 @@ public class BinaryNumericalOperation extends ExecutionToken {
         ReturnValue result;
         ReturnValue lRes;
         ReturnValue rRes;
+        lRes = left.execute();
+        rRes = right.execute();
         switch (token.getValue()) {
             case "+":
-                lRes = left.execute();
-                rRes = right.execute();
-                result = BinaryNumericalOperation.sum(lRes, rRes);
+                result = BinaryOperation.sum(lRes, rRes);
                 break;
             case "-":
-                lRes = left.execute();
-                rRes = right.execute();
-                result = BinaryNumericalOperation.sub(rRes, lRes);
+                result = BinaryOperation.sub(rRes, lRes);
                 break;
             case "*":
-                lRes = left.execute();
-                rRes = right.execute();
-                result = BinaryNumericalOperation.mul(lRes, rRes);
+                result = BinaryOperation.mul(lRes, rRes);
                 break;
             case "/":
-                lRes = left.execute();
-                rRes = right.execute();
-                result = BinaryNumericalOperation.div(rRes, lRes, this.token);
+                result = BinaryOperation.div(rRes, lRes, this.token);
                 break;
+            case "==":
+                return equalsOperation(lRes, rRes);
+            case "<":
+                return lesserOperation(lRes, rRes);
+            case ">":
+                return greaterOperation(lRes, rRes);
             default:
                 result = new ReturnValue<String>(null, ReturnType.ERROR);
         }
@@ -154,4 +154,45 @@ public class BinaryNumericalOperation extends ExecutionToken {
         }
         return new ReturnValue(null, ReturnType.ERROR);
     }
+
+    public static ReturnValue equalsOperation (ReturnValue left, ReturnValue right) {
+        if (left.getType() == ReturnType.INT && right.getType() == ReturnType.INT) {
+            int val1 = (int) left.getValue();
+            int val2 = (int) right.getValue();
+            int res = 0;
+            if (val1 == val2)
+                res = 1;
+            return new ReturnValue(res, ReturnType.INT);
+        }
+        return new ReturnValue(null, ReturnType.VOID);
+    }
+
+    public static ReturnValue greaterOperation (ReturnValue left, ReturnValue right) {
+        if (left.getType() == ReturnType.INT && right.getType() == ReturnType.INT) {
+            int val1 = (int) left.getValue();
+            int val2 = (int) right.getValue();
+            int res = 0;
+            if (val1 > val2)
+                res = 1;
+            if(val1 < val2)
+                res = 0;
+            return new ReturnValue(res, ReturnType.INT);
+        }
+        return new ReturnValue(null, ReturnType.VOID);
+    }
+
+    public static ReturnValue lesserOperation (ReturnValue left, ReturnValue right) {
+        if (left.getType() == ReturnType.INT && right.getType() == ReturnType.INT) {
+            int val1 = (int) left.getValue();
+            int val2 = (int) right.getValue();
+            int res = 0;
+            if (val1 > val2)
+                res = 0;
+            if(val1 < val2)
+                res = 1;
+            return new ReturnValue(res, ReturnType.INT);
+        }
+        return new ReturnValue(null, ReturnType.VOID);
+    }
+
 }

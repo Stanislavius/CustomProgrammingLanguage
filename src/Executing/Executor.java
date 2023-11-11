@@ -2,8 +2,7 @@ package Executing;
 
 import Executing.ExecutionExceptions.ExecutionException;
 import Executing.ExecutionTokens.*;
-import Lexing.TokenType;
-import Parsing.ParsedTokens;
+import Parsing.ParsedTokens.*;
 
 import java.util.LinkedList;
 
@@ -11,9 +10,9 @@ public class Executor {
     static Variables globalVariables = new Variables();
     static LinkedList<FunctionDefinitionToken> stack = new LinkedList<FunctionDefinitionToken>();
     static LinkedList<Variables> namespaces = new LinkedList<Variables>();
-    public static String execute(LinkedList<ParsedTokens> program) {
+    public static String execute(LinkedList<ParsedAbstractStatement> program) {
         LinkedList<String> output = new LinkedList<String>();
-        for (ParsedTokens line : program) {
+        for (ParsedAbstractStatement line : program) {
             ExecutionToken current_line = getExecutionTree(line);
             //System.out.println(line.toString());
             try {
@@ -36,93 +35,88 @@ public class Executor {
         namespaces.remove(namespaces.size()-1);
     }
 
-    public static ExecutionToken getExecutionTree(ParsedTokens pt) {
-        ExecutionToken result = null;
-        if (pt.getType() == TokenType.BLOCKWORD){
-            if (pt.getValue().equals("def")){
-                LinkedList<ExecutionToken> toDo = new LinkedList<ExecutionToken>();
-                for(int i = 1; i < pt.ChildrenCount(); ++i){
-                    toDo.add(getExecutionTree(pt.getChild(i)));
-                }
-                ParsedTokens declaration = pt.getChild(0);
-                String name = declaration.getValue();
-                LinkedList<String> args = new LinkedList<String>();
-                for(int i = 0; i < declaration.ChildrenCount(); ++i){
-                    args.add(declaration.getChild(i).getValue());
-                }
-                return new FunctionDefinitionToken(pt.getToken(), name, args, toDo);
-            }
-            else {
-                LinkedList<ParsedTokens> list = pt.getChildren();
-                ExecutionToken condition = getExecutionTree(list.get(0));
-                LinkedList<ExecutionToken> toDo = new LinkedList<ExecutionToken>();
-                LinkedList<ExecutionToken> elseConditions = new LinkedList<ExecutionToken>();
-                LinkedList<LinkedList<ExecutionToken>> elseToDos = new LinkedList<LinkedList<ExecutionToken>>();
-                for (int i = 1; i < list.size(); ++i) {
-                    ParsedTokens curToken = list.get(i);
-                    if (curToken.getValue().equals("elif")) {
-                        elseConditions.add(getExecutionTree(curToken.getChild(0)));
-                        LinkedList<ExecutionToken> elseToDo = new LinkedList<ExecutionToken>();
-                        for (int j = 1; j < curToken.ChildrenCount(); ++j)
-                            elseToDo.add(getExecutionTree(curToken.getChild(j)));
-                        elseToDos.add(elseToDo);
-                    } else {
-                        if (curToken.getValue().equals("else")) {
-                            elseConditions.add(new ElseExecutionToken(curToken.getToken()));
-                            LinkedList<ExecutionToken> elseToDo = new LinkedList<ExecutionToken>();
-                            for (int j = 0; j < curToken.ChildrenCount(); ++j)
-                                elseToDo.add(getExecutionTree(curToken.getChild(j)));
-                            elseToDos.add(elseToDo);
-                        } else {
-                            toDo.add(getExecutionTree(list.get(i)));
-                        }
-                    }
-                }
-                result = new BlockExecutionToken(pt.getToken(), condition, toDo, elseConditions, elseToDos);
-            }
+    public static ExecutionToken getExecutionTree(ParsedAbstractStatement pt) {
+        if (pt.getParsedType() == ParsedTokenType.STATEMENT){
+            return getExecutionTreeExpression(((ParsedStatement)(pt)).getExpression());
         }
-        if (pt.getType().equals(TokenType.ASSIGNMENT)) {
-            ExecutionToken left = getExecutionTree(pt.getLeft());
-            ExecutionToken right = getExecutionTree(pt.getRight());
-            result = new AssignmentToken(pt.getToken(), left, right);
-        }
-        if (pt.getType().equals(TokenType.ARITHMETIC)) {
-            if (pt.hasLeft()) {
-                ExecutionToken left = getExecutionTree(pt.getLeft());
-                ExecutionToken right = getExecutionTree(pt.getRight());
-                result = new BinaryNumericalOperation(pt.getToken(), left, right);
-            } else {
-                ExecutionToken right = getExecutionTree(pt.getRight());
-                result = new UnaryNumericalOperation(pt.getToken(), right);
+        if (pt.getParsedType() == ParsedTokenType.CONDITIONAL){
+            ParsedConditionalStatement pcs = (ParsedConditionalStatement) pt;
+            LinkedList<LinkedList<ExecutionToken>> toDos = new  LinkedList<LinkedList<ExecutionToken>>();
+            LinkedList<ExecutionToken> conditions = new  LinkedList<ExecutionToken>();
+            LinkedList<ExecutionToken> toDo = getExecutionTreeForBlock(pcs.getToDo());
+            ExecutionToken condition = getExecutionTreeExpression(pcs.getCondition());
+            while (pcs.hasNext()){
+                pcs = pcs.getNext();
+                toDos.add(getExecutionTreeForBlock(pcs.getToDo()));
+                conditions.add(getExecutionTreeExpression(pcs.getCondition()));
             }
+            return new BlockExecutionToken(pt.getToken(), condition, toDo, conditions, toDos);
         }
-        if (pt.getType().equals(TokenType.INT)) {
-            result = new NumericType(pt.getToken());
+        if (pt.getParsedType() == ParsedTokenType.FUNCTION_DEFINITION){
+            ParsedFunctionDefinition PFD = (ParsedFunctionDefinition) pt;
+            String name = PFD.getFunctionName();
+            LinkedList<ParsedVariable> args = PFD.getArgs();
+            LinkedList<String> variableNames = new LinkedList<String>();
+            for(int i = 0; i < args.size(); ++i){
+                variableNames.add(args.get(i).getValue());
+            }
+            ParsedBlock toDos = PFD.getToDo();
+            LinkedList<ExecutionToken> executionToDos = new LinkedList<ExecutionToken>();
+            for (int i = 0; i < toDos.size(); ++i){
+                executionToDos.add(getExecutionTree(toDos.get(i)));
+            }
+            return new FunctionDefinitionToken(pt.getToken(), name, variableNames, executionToDos);
         }
 
-        if (pt.getType().equals(TokenType.FLOAT)) {
-            result = new NumericType(pt.getToken());
+        if (pt.getParsedType() == ParsedTokenType.ASSIGNMENT){
+            ParsedAssigmentStatement pat = (ParsedAssigmentStatement) pt;
+            return new AssignmentToken(pt.getToken(), new VariableExecutionToken(pat.getVariable().getToken()), getExecutionTreeExpression(pat.getExpression()));
+        }
+        return null;
+    }
+
+    public static LinkedList<ExecutionToken> getExecutionTreeForBlock(ParsedBlock pb){
+        LinkedList<ExecutionToken> tree = new LinkedList<ExecutionToken>();
+        for (int i = 0; i < pb.size(); ++i){
+            tree.add(getExecutionTree(pb.get(i)));
+        }
+        return tree;
+    }
+
+    public static ExecutionToken getExecutionTreeExpression(ParsedToken pt){
+        if (pt.getParsedType() == ParsedTokenType.BINARY_OPERATION) {
+            ExecutionToken left = getExecutionTreeExpression(((ParsedBinaryExpression)pt).getLeft());
+            ExecutionToken right = getExecutionTreeExpression(((ParsedBinaryExpression)pt).getRight());
+            return new BinaryOperation(pt.getToken(), left, right);
         }
 
-        if (pt.getType().equals(TokenType.FUNCTION)) {
+        if (pt.getParsedType() == ParsedTokenType.UNARY_OPERATION) {
+            ExecutionToken right = getExecutionTreeExpression(((ParsedUnaryExpression)pt).getRight());
+            return new UnaryOperation(pt.getToken(), right);
+        }
+
+        if (pt.getParsedType() == ParsedTokenType.INT) {
+            return new NumericType(pt.getToken());
+        }
+
+        if (pt.getParsedType() == ParsedTokenType.FLOAT) {
+            return new NumericType(pt.getToken());
+        }
+
+        if (pt.getParsedType() == ParsedTokenType.FUNCTION_CALL) {
+            ParsedFunctionCall PFC = (ParsedFunctionCall)  pt;
             LinkedList<ExecutionToken> children = new LinkedList<ExecutionToken>();
-            LinkedList<ParsedTokens> args = pt.getChildren();
+            LinkedList<ParsedToken> args = PFC.getArgs();
             for (int i = 0; i < args.size(); ++i)
-                children.add(getExecutionTree(args.get(i)));
-            result = new FunctionToken(pt.getToken(), children);
+                children.add(getExecutionTreeExpression(args.get(i)));
+            return new FunctionToken(pt.getToken(), children);
         }
 
-        if (pt.getType().equals(TokenType.VARIABLE)) {
-            result = new VariableExecutionToken(pt.getToken());
+        if (pt.getParsedType() == ParsedTokenType.VARIABLE) {
+            return new VariableExecutionToken(pt.getToken());
         }
 
-        if (pt.getType().equals(TokenType.COMPARISON)) {
-            ExecutionToken left = getExecutionTree(pt.getLeft());
-            ExecutionToken right = getExecutionTree(pt.getRight());
-            result = new ComparisonExecutionToken(pt.getToken(), left, right);
-        }
-
-        return result;
+        return null;
     }
 
     public static void clearVariables() {
