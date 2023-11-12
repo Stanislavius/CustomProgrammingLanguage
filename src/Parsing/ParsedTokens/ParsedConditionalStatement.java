@@ -58,7 +58,8 @@ public class ParsedConditionalStatement extends ParsedStatementWithBlock{
         StringBuilder sb = new StringBuilder();
         sb.append(token.getValue());
         sb.append(" ");
-        sb.append(condition.toString());
+        if (condition != null)
+            sb.append(condition.toString());
         return sb.toString();
     }
 }

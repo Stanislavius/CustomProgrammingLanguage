@@ -1,0 +1,43 @@
+test1 define func with no args
+input
+<
+def foo()
+    1
+foo()
+>
+output = 1
+commentary = function without args
+_______________________________________________________________
+test2 define func with 1 arg
+input
+<
+def foo(a)
+    1 + a
+foo(4)
+>
+output = 5
+commentary = function with one arg
+_______________________________________________________________
+test3 define func with multiple args
+input
+<
+def foo(a, b, c)
+    a + b + c
+foo(1, 2, 3)
+>
+output = 6
+commentary = function with multiple args
+_______________________________________________________________
+test4 define func with if
+input
+<
+def foo(a, b, c)
+    if a == 4
+        b
+    else
+        c
+foo(4, 2, 3)
+>
+output = 2
+commentary = function with if and else
+_______________________________________________________________

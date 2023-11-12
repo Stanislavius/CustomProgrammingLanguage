@@ -1,0 +1,43 @@
+test1
+input
+<
+a = 4
+a
+>
+output = 4
+commentary = should return variable value
+_______________________________________________________________
+test2
+input
+<
+a = 4
+def foo()
+    a = 5
+foo()
+a
+>
+output = 4
+commentary = should not change variable value
+_______________________________________________________________
+test3
+input
+<
+a = 4
+def foo()
+    b = a + 4
+    b
+foo()
+>
+output = 8
+commentary = should use  value of global variable
+_______________________________________________________________
+test4
+input
+<
+a = 4
+b = a + 4
+b
+>
+output = 8
+commentary = should use variable value
+_______________________________________________________________

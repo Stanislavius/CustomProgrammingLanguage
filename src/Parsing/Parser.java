@@ -27,11 +27,12 @@ public class Parser {
     static final HashSet<String> SECOND_PRIORITY = new HashSet<String>(Arrays.asList("+", "-"));
     static final HashSet<String> FIRST_PRIORITY = new HashSet<String>(Arrays.asList("*", "/"));
     static final HashSet<String> COMPARISON_OPERATIONS = new HashSet<String>(Arrays.asList("==", "<", ">"));
-    public LinkedList<ParsedAbstractStatement> parse (LinkedList<Token> tokens) throws ParsingException{
+    public LinkedList<ParsedAbstractStatement> parse (LinkedList<Token> tokens){
         LinkedList<LinkedList<Token>> lines = divideByLines(tokens);
         LinkedList<ParsedAbstractStatement> parsedLines = new LinkedList<ParsedAbstractStatement>();
         try {
-            logger.info("Start parsing");
+            if (logging)
+                logger.info("Start parsing");
             for(int i = 0; i < lines.size(); ++i){
                 if (logging) {
                     logger.info("Start parsing " + i + " line \r\n"+logger.tokensToString(lines.get(i)));
@@ -74,7 +75,7 @@ public class Parser {
         }
         else{
             //if not BLOCKWORD then expression or assignment
-            if (line.get(1).getType() == TokenType.ASSIGNMENT){
+            if (line.size() > 1 && line.get(1).getType() == TokenType.ASSIGNMENT){
                 return new ParsedAssigmentStatement(line.get(1),
                         indent,
                         new ParsedVariable(line.get(0)),
@@ -151,6 +152,7 @@ public class Parser {
     }
 
     public ParsedFunctionCall parseFunctionCall(LinkedList<ParsedToken> line) throws ParsingException {
+        //REWRITE THIS
         Token functionToken = line.get(0).getToken();
         LinkedList<ParsedToken> args = new LinkedList<ParsedToken>();
         LinkedList<ParsedToken> arg = new LinkedList<ParsedToken>();
@@ -162,7 +164,8 @@ public class Parser {
                 arg.add(line.get(i));
             }
         }
-        args.add(parseExpression(arg));
+        if (!arg.isEmpty())
+            args.add(parseExpression(arg));
         return new ParsedFunctionCall(functionToken, args);
     }
 
