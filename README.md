@@ -108,7 +108,7 @@ FLOAT: [0-9]+.[0-9]+
 Write program code in txt file. Pass path to file as command line argument and run it.
 
 # Structure of project
-Program divided into three packages: Lexing, Parsing, Executing.  And two classes that can be executing: Main.java and Testing.java
+Program divided into three packages: Lexing, Parsing, Executing.  And two classes that can be executing: Main.java and Testing.Testing.java
 1. Lexing, main class is src/Lexing.Lexer.java - finds tokens inside program text.
 2. Parsing, main class is src/Parsing.Parser.java - builds syntax tree using tokens.
 3. Executing, main class is src/Executing.Executor.java - executes code after text of program is parsed. Divided into two subpackages:
@@ -116,4 +116,4 @@ Program divided into three packages: Lexing, Parsing, Executing.  And two classe
    3.2 ExecutorTokens - represent all units of executions.
    
 4. src/Main.java - receives path to file with program, creates Lexing.Lexer, Parsing.Parser and Executing.Executor, guarantees communication between them.
-5. src/Testing.java - to test if program returns desired output.
+5. src/Testing.Testing.java - to test if program returns desired output.
