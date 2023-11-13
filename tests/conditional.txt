@@ -144,7 +144,7 @@ if a > 5
 elif a == 1
     3
 >
-output = 2
+output = void
 commentary = if inside if
 _______________________________________________________________
 test12 if inside if
