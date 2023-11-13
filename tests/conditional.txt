@@ -207,3 +207,24 @@ a
 output = 15
 commentary = while with else
 _______________________________________________________________
+test15 many nested if
+input
+<
+a = 2
+if a > 0
+    if a < 10
+        if a == 8
+            8
+        elif a == 9
+            9
+        else
+            if a == 4
+                4
+            if a > 1
+                2
+    elif a == 10
+        a
+>
+output = 2
+commentary = many nested if
+_______________________________________________________________
