@@ -12,16 +12,10 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 import java.util.logging.SimpleFormatter;
 
-public class Parser {
-    static ParsingLogger logger = new ParsingLogger();
-    boolean logging;
-    public Parser(){
-        logging = true;
-    }
+import static Parsing.ParsingLogger.createParsingLogger;
 
-    public Parser(boolean logging){
-        this.logging = logging;
-    }
+public class Parser {
+    static Logger logger = createParsingLogger();
 
 
     static final HashSet<String> SECOND_PRIORITY = new HashSet<String>(Arrays.asList("+", "-"));
@@ -31,16 +25,11 @@ public class Parser {
         LinkedList<LinkedList<Token>> lines = divideByLines(tokens);
         LinkedList<ParsedAbstractStatement> parsedLines = new LinkedList<ParsedAbstractStatement>();
         try {
-            if (logging)
-                logger.info("Start parsing");
+                logger.fine("Start parsing");
             for(int i = 0; i < lines.size(); ++i){
-                if (logging) {
-                    logger.info("Start parsing " + i + " line \r\n"+logger.tokensToString(lines.get(i)));
-                }
+                    logger.fine("Start parsing " + i + " line \r\n"+ParsingLogger.tokensToString(lines.get(i)));
                 parsedLines.add(parseLine(lines.get(i)));
-                if (logging) {
                     logger.info(i + " line is parsed \r\n" + parsedLines.getLast().toString());
-                }
             }
             parsedLines = processBlocks(parsedLines);
         }

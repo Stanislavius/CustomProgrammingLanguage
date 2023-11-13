@@ -41,3 +41,19 @@ foo(4, 2, 3)
 output = 2
 commentary = function with if and else
 _______________________________________________________________
+test5 conditional function definition
+input
+<
+def foo(a)
+    if a == 4
+        def bar()
+            4
+    else
+        def bar()
+            5
+foo(4)
+bar()
+>
+output = 4
+commentary = conditional functional definition
+_______________________________________________________________
