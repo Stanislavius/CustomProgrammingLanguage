@@ -91,6 +91,9 @@ public class Lexer {
         int indentation = 0;
         int i = 0;
         int count = 0;
+        if (st.contains("#")){
+            st = st.substring(0, st.indexOf("#"));
+        }
         while(i < st.length() && st.substring(i, i+1).equals(" ")){
             count++;
             if (count == 4) {
