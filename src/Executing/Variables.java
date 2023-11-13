@@ -4,7 +4,7 @@ package Executing;
 import java.util.HashMap;
 
 public class Variables {
-    static HashMap<String, ReturnValue> variables = new HashMap<String, ReturnValue>();
+    HashMap<String, ReturnValue> variables = new HashMap<String, ReturnValue>();
 
 
     public void setVariable(String name, ReturnValue value) {
@@ -26,5 +26,14 @@ public class Variables {
     }
     public void clear() {
         variables.clear();
+    }
+
+    public String toString(){
+        StringBuilder sb = new StringBuilder();
+        for(int i = 0; i < variables.size(); ++i) {
+            sb.append(variables.get(i));
+            sb.append(" ");
+        }
+        return sb.toString();
     }
 }
