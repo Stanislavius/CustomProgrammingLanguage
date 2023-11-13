@@ -27,17 +27,11 @@ statements: statement+
 
 statement: 
 
-    | VARIABLE_NAME '=' expression
-    | expression
-    | function_call
-    | if_statement
-    | while statement
-    | function_def
-
-function_call: 
-
-    | func_name(expression [',' expression]*)
-    | func_name()
+    | VARIABLE_NAME '=' expression NEWLINE
+    | expression NEWLINE
+    | if_statement NEWLINE
+    | while statement NEWLINE
+    | function_def NEWLINE
 
 func_name: STR
 
@@ -45,8 +39,15 @@ function_def: 'def' func_name'('[VARIABLE_NAME], [VARIABLE_NAME ',']+')' block
 
 expression: 
 
-    | sum 
-    | (sum)
+    | comparison
+    | '(comparison)'
+
+comparison:
+
+    | sum '>' sum
+    | sum '==' sum
+    | sum '<' sum
+    | sum
 
 sum: 
 
@@ -60,27 +61,27 @@ term:
     | term '/' factor 
     | factor
 
-comparison_expression:  expression comparsion expression
-
-block: NEWLINE INDENT statements
-
-comparison: 
-
-    | '>'
-    | '=='
-    | '<'
-
-    
 factor: 
 
     | INT 
-    | -factor
+    | '-'factor
     | FLOAT
     | VARIABLE_NAME
+    | '+' factor
+    | function_call
+
+function_call: 
+
+    | func_name(expression [',' expression]*)
+    | func_name()
+
+block: [NEWLINE INDENT statement]+
+
+
 
 while_stmt:
 
-    | 'while' expression block [else_block] 
+    | 'while' expression block [elif_stmt] 
 
 if_stmt:
 
@@ -93,6 +94,7 @@ elif_stmt:
 else_block:
 
     | 'else' block
+
     
 VARIABLE_NAME: STR
 
