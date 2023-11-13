@@ -30,10 +30,8 @@ public class ParsedUnaryExpression extends ParsedToken{
 
     public String toString(){
         StringBuilder sb = new StringBuilder();
-        sb.append("(");
         sb.append(token.getValue());
         sb.append(right.toString());
-        sb.append(")");
         return sb.toString();
     }
 }

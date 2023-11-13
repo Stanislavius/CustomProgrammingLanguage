@@ -1,10 +1,10 @@
 test1 empty parentheses
 input
 <
-()
+(4.1)
 >
-output = void
-commentary = Testing empty parentheses
+output = 4.1
+commentary = should return float inside
 _______________________________________________________________
 test2 parentheses with int
 input
@@ -25,7 +25,7 @@ _______________________________________________________________
 test4 parentheses with digit
 input
 <
-(3) * 4
+(3) * (4)
 >
 output = 12
 commentary = should return digit inside multiplied on 4

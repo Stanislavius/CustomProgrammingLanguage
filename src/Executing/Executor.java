@@ -48,7 +48,10 @@ public class Executor {
             while (pcs.hasNext()){
                 pcs = pcs.getNext();
                 toDos.add(getExecutionTreeForBlock(pcs.getToDo()));
-                conditions.add(getExecutionTreeExpression(pcs.getCondition()));
+                if (pcs.getValue().equals("else"))
+                    conditions.add(new ElseExecutionToken(pcs.getToken()));
+                else
+                    conditions.add(getExecutionTreeExpression(pcs.getCondition()));
             }
             return new BlockExecutionToken(pt.getToken(), condition, toDo, conditions, toDos);
         }

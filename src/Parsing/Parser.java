@@ -171,7 +171,7 @@ public class Parser {
 
     public ParsedToken divideByOperands(LinkedList<ParsedToken> operands, HashSet<String> operations) throws ParsingException {
         ParsedToken result = null;
-        for (int i = 0; i < operands.size(); ++i) {
+        for (int i = operands.size()-1; i >= 0; --i) {
             if (operations.contains(operands.get(i).getValue()) && operands.get(i).getParsedType() == ParsedTokenType.UNPARSED) {
                 LinkedList<ParsedToken> right = new LinkedList<ParsedToken>(operands.subList(i + 1, operands.size()));
                 if (i != 0) {
@@ -186,6 +186,40 @@ public class Parser {
         return null;
     }
 
+    public LinkedList<ParsedToken> divideByUnaryOperands(LinkedList<ParsedToken> operands) throws ParsingException {
+        ParsedToken result = null;
+        HashSet<String> unaryOperations = new HashSet<String>(Arrays.asList("-", "+"));
+        Iterator iter = operands.iterator();
+        LinkedList<ParsedToken> newOperands = new LinkedList<ParsedToken>();
+        LinkedList<ParsedToken> q = new LinkedList<ParsedToken>();
+        for (int i = 0; i < operands.size(); ++i) {
+            if (operands.get(i).getParsedType() == ParsedTokenType.UNPARSED && unaryOperations.contains(operands.get(i).getValue())){
+                q.add(operands.get(i));
+            }
+            else {
+                if (q.size() > 1){
+                    ParsedToken op = operands.get(i);
+                    int j = q.size() - 1;
+                    while (j >= 1){
+                        op = new ParsedUnaryExpression(q.get(j).getToken(), op);
+                        j--;
+                    }
+                    newOperands.add(q.get(0));
+                    newOperands.add(op);
+                    q.clear();
+                }
+                else {
+                    if (q.isEmpty() == false)
+                        newOperands.add(q.get(0));
+                    newOperands.add(operands.get(i));
+                    q.clear();
+                }
+            }
+
+        }
+        return newOperands;
+    }
+
     public ParsedToken parseExpression(LinkedList<ParsedToken> line) throws ParsingException {
         Iterator iter = line.iterator();
         int balance = 0;
@@ -193,10 +227,10 @@ public class Parser {
         boolean func_call = false;
         LinkedList<ParsedToken> operands = new LinkedList<ParsedToken>();
         LinkedList<ParsedToken> operand = new LinkedList<ParsedToken>();
-        if (line.get(0).getType() == TokenType.PARENTHESIS && line.getLast().getType() == TokenType.PARENTHESIS){
-            line.removeFirst();
-            line.removeLast();
-        }
+        //if (line.get(0).getType() == TokenType.PARENTHESIS && line.getLast().getType() == TokenType.PARENTHESIS){
+            //line.removeFirst();
+            //line.removeLast();
+        //}
         if (line.isEmpty()) {
             return null;
         }
@@ -249,6 +283,9 @@ public class Parser {
             }
         }
         ParsedToken result = null;
+        operands = divideByUnaryOperands(operands);
+        if (operands.size() == 1)
+            return operands.get(0);
         result = divideByOperands(operands, SECOND_PRIORITY);
         if (result != null) return result;
         result = divideByOperands(operands, FIRST_PRIORITY);
@@ -278,7 +315,7 @@ public class Parser {
                     else {
                         head.setToDo(block);
                         head = (ParsedStatementWithBlock)curLine;
-                        block = null;
+                        block = new ParsedBlock(curLine.getToken());
                     }
                 }
                 else {
@@ -317,7 +354,7 @@ public class Parser {
                     if (curLine.getValue().equals("else")) {
                         iter.remove();
                         ((ParsedConditionalStatement)head1).append((ParsedConditionalStatement)curLine);
-                        head = null;
+                        head1 = null;
                     }
 
                 }
