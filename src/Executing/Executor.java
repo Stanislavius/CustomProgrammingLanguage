@@ -136,13 +136,16 @@ public class Executor {
     }
 
     public static ReturnValue getVariable(String name) {
-        if (namespaces.size() > 0){
-            if (namespaces.get(namespaces.size() - 1).in(name))
-                return namespaces.get(namespaces.size() - 1).getVariable(name);
-            else
-                return globalVariables.getVariable(name);
+        int i = namespaces.size()-1;
+        while (i!= -1 && !namespaces.get(i).in(name)) {
+            i--;
         }
-        return globalVariables.getVariable(name);
+        if (i == - 1){
+            return globalVariables.getVariable(name);
+        }
+        else{
+            return namespaces.get(i).getVariable(name);
+        }
     }
 }
 

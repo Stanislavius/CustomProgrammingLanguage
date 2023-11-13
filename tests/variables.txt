@@ -41,3 +41,21 @@ b
 output = 8
 commentary = should use variable value
 _______________________________________________________________
+test5
+input
+<
+a = 1
+def foo()
+    a = a + 1
+    bar()
+def bar()
+    a = a + 2
+    bara()
+def bara()
+    a = a + 3
+foo()
+a
+>
+output = 1
+commentary = testing local variables in stack
+_______________________________________________________________

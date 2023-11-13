@@ -104,7 +104,6 @@ public class Lexer {
             //throw error
         }
         st = st.substring(indentation * 4);
-
         for(i = 0; i < blockWords.size(); ++i){
             String word = blockWords.get(i);
             if (st.length() == "else".length()){
