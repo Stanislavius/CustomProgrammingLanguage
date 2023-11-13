@@ -76,7 +76,9 @@ public class Lexer {
     public LinkedList<Token> read(String[] code){
         LinkedList<Token> tokens = new LinkedList<Token>();
         for(int lineNum = 0; lineNum < code.length; ++lineNum){
-            tokens.addAll(this.readLine(code[lineNum], lineNum));
+            LinkedList<Token> cur = this.readLine(code[lineNum], lineNum);
+            if (cur.size() > 1)
+                tokens.addAll(this.readLine(code[lineNum], lineNum));
         }
         return sort(tokens);
     }
