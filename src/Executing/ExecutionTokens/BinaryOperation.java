@@ -68,6 +68,24 @@ public class BinaryOperation extends ExecutionToken {
             float rInt = (float) rRes.getValue();
             return new ReturnValue<Float>(rInt * lInt, ReturnType.FLOAT);
         }
+
+        if (lRes.getType() == ReturnType.STRING && rRes.getType() == ReturnType.INT) {
+            String lString = (String)lRes.getValue();
+            int rInt = (int) rRes.getValue();
+            StringBuilder result = new StringBuilder();
+            for(int i = 0; i < rInt; ++i)
+                result.append(lString);
+            return new ReturnValue<String>(result.toString(), ReturnType.STRING);
+        }
+
+        if (lRes.getType() == ReturnType.INT && rRes.getType() == ReturnType.STRING) {
+            String lString = (String)rRes.getValue();
+            int rInt = (int) lRes.getValue();
+            StringBuilder result = new StringBuilder();
+            for(int i = 0; i < rInt; ++i)
+                result.append(lString);
+            return new ReturnValue<String>(result.toString(), ReturnType.STRING);
+        }
         return new ReturnValue(null, ReturnType.ERROR);
     }
 
@@ -128,6 +146,25 @@ public class BinaryOperation extends ExecutionToken {
             float rInt = (float) rRes.getValue();
             return new ReturnValue<Float>(rInt + lInt, ReturnType.FLOAT);
         }
+
+        if (lRes.getType() == ReturnType.STRING && rRes.getType() == ReturnType.STRING) {
+            String lString = (String)lRes.getValue();
+            String rString = (String)rRes.getValue();
+            return new ReturnValue<String>(lString + rString, ReturnType.STRING);
+        }
+
+        if (lRes.getType() == ReturnType.INT && rRes.getType() == ReturnType.STRING) {
+            String rString = (String)rRes.getValue();
+            int lInt = (int) lRes.getValue();
+            return new ReturnValue<String>(lInt + rString, ReturnType.STRING);
+        }
+
+        if (lRes.getType() == ReturnType.STRING && rRes.getType() == ReturnType.INT) {
+            String lString = (String)lRes.getValue();
+            int rInt = (int) rRes.getValue();
+            return new ReturnValue<String>(lString + rInt, ReturnType.STRING);
+        }
+
         return new ReturnValue(null, ReturnType.ERROR);
     }
 
@@ -164,6 +201,17 @@ public class BinaryOperation extends ExecutionToken {
                 res = 1;
             return new ReturnValue(res, ReturnType.INT);
         }
+
+        if (left.getType() == ReturnType.FLOAT && right.getType() == ReturnType.FLOAT) {
+            float val1 = (float ) left.getValue();
+            float val2 = (float ) right.getValue();
+            int res = 0;
+            if (val1 == val2)
+                res = 1;
+            return new ReturnValue(res, ReturnType.INT);
+        }
+
+
         return new ReturnValue(null, ReturnType.VOID);
     }
 
