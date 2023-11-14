@@ -1,104 +1,91 @@
-test1 plus operator
-input
+#TESTCASE
 <
 1 + 1
 >
-output = 2
-commentary = Testing arithmetic operator + for two integers.
-_______________________________________________________________
-test2 minus operator
-input
+#output = 2
+#commentary = Testing arithmetic operator + for two integers.
+#_______________________________________________________________
+#TESTCASE
 <
 1 - 1
 >
-output = 0
-commentary = Testing arithmetic operator - for two integers.
-_______________________________________________________________
-test3 division operator
-input
+#output = 0
+#commentary = Testing arithmetic operator - for two integers.
+#_______________________________________________________________
+#TESTCASE
 <
 1 / 1
 >
-output = 1
-commentary = Testing arithmetic operator / for two integers.
-_______________________________________________________________
-test4 multiplication operator
-input
+#output = 1
+#commentary = Testing arithmetic operator / for two integers.
+#_______________________________________________________________
+#TESTCASE
 <
 1 * 2
 >
-output = 2
-commentary = Testing arithmetic operator * for two integers.
-_______________________________________________________________
-test5 combine + and * operators
-input
+#output = 2
+#commentary = Testing arithmetic operator * for two integers.
+#_______________________________________________________________
+#TESTCASE
 <
 1 + 1 * 2
 >
-output = 3
-commentary = Testing variants of combining different operators for two integers.
-_______________________________________________________________
-test6 combine + and * operators
-input
+#output = 3
+#commentary = Testing variants of combining different operators for two integers.
+#_______________________________________________________________
+#TESTCASE
 <
 1*2 + 1
 >
-output = 3
-commentary = Testing variants of combining different operators for two integers.
-_______________________________________________________________
-test7 combine + and - operators
-input
+#output = 3
+#commentary = Testing variants of combining different operators for two integers.
+#_______________________________________________________________
+#TESTCASE
 <
 1 + 1 - 1
 >
-output = 1
-commentary = Testing variants of combining different operators for two integers.
-_______________________________________________________________
-test8 combine + and - operators
-input
+#output = 1
+#commentary = Testing variants of combining different operators for two integers.
+#_______________________________________________________________
+#TESTCASE
 <
 1 - 1 + 1
 >
-output = 1
-commentary = Testing variants of combining different operators for two integers.
-_______________________________________________________________
-test8.2 combine + and - operators
-input
+#output = 1
+#commentary = Testing variants of combining different operators for two integers.
+#_______________________________________________________________
+#TESTCASE
 <
 -1 + 1 + 1
 >
-output = 1
-commentary = Testing variants of combining different operators for two integers.
-_______________________________________________________________
-test9 combine + and / operators
-input
+#output = 1
+#commentary = Testing variants of combining different operators for two integers.
+#_______________________________________________________________
+#TESTCASE
 <
 1 + 8 / 4
 >
-output = 3
-commentary = Testing variants of combining different operators for two integers.
-_______________________________________________________________
-test10 combine 4 operators
-input
+#output = 3
+#commentary = Testing variants of combining different operators for two integers.
+#_______________________________________________________________
+#TESTCASE
 <
 4/2 + 2*4
 >
-output = 10
-commentary = Testing variants of combining different operators for two integers.
-_______________________________________________________________
-test11 negative numbers
-input
+#output = 10
+#commentary = Testing variants of combining different operators for two integers.
+#_______________________________________________________________
+#TESTCASE
 <
 1 - 2
 >
-output = -1
-commentary = Testing that negative number can be returned.
-_______________________________________________________________
-test12 multiplication negative number
-input
+#output = -1
+#commentary = Testing that negative number can be returned.
+#_______________________________________________________________
+#TESTCASE
 <
 1 + -4*4
 >
-output = -15
-commentary = Testing that multiplication of negative number will return negaive number
-_______________________________________________________________
+#output = -15
+#commentary = Testing that multiplication of negative number will return negaive number
+#_______________________________________________________________

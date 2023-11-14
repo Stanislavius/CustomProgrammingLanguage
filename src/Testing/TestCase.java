@@ -3,19 +3,24 @@ package Testing;
 import java.io.BufferedReader;
 import java.io.FileReader;
 import java.io.IOException;
+import java.util.HashMap;
 import java.util.LinkedList;
 
 class TestCase {
-    String title;
+    static final String CASE_SEPARATOR  = "#TESTCASE";
+    static final String DEFAULT_OUTPUT  = "void";
+    static final String DEFAULT_TYPE  = "output";
+    static final String DEFAULT_COMMENTARY  = "No commentary provided.";
     String[] input;
     String output;
     String commentary;
+    String type = "output"; // 0 - output, 1 - LexerError, 2 - ParsingError, 3 - ExecutionError
 
-    public TestCase(String title, String[] input, String output, String commentary) {
-        this.title = title;
+    public TestCase(String[] input, HashMap<String, String> params) {
         this.input = input;
-        this.output = output;
-        this.commentary = commentary;
+        output = params.getOrDefault("output", DEFAULT_OUTPUT);
+        commentary = params.getOrDefault("commentary", DEFAULT_COMMENTARY);
+        type = params.getOrDefault("type", DEFAULT_TYPE);
     }
 
     public String[] getInput() {
@@ -26,37 +31,55 @@ class TestCase {
         return output;
     }
 
-    public String getTitle() {
-        return title;
-    }
-
     public String getCommentary() {
         return commentary;
     }
 
-    ;
 
     public static LinkedList<TestCase> readFile(String filepath) {
         LinkedList<TestCase> tests = new LinkedList<TestCase>();
+
         try {
             BufferedReader br = new BufferedReader(new FileReader(filepath));
-            String testName;
-            while (((testName = br.readLine()) != null)) {
-                LinkedList<String> inputStrings = new LinkedList<String>();
-                br.readLine();
-                br.readLine();
-                String last = null;
-                while (true) {
-                    last = br.readLine();
-                    if (last.equals(">")) {
-                        break;
-                    } else
-                        inputStrings.add(last);
+            HashMap<String, String> params = new HashMap<String, String>();
+            LinkedList<String> inputStrings = new LinkedList<String>();
+            String line;
+            boolean codeReading = false;
+            br.readLine();
+            while (((line = br.readLine()) != null)) {
+                if (line.equals("<")) {
+                    codeReading = true;
+                    continue;
                 }
-                String outputString = br.readLine().substring("output = ".length());
-                String commentaryString = br.readLine().substring("commentary = ".length());
-                br.readLine();
-                tests.add(new TestCase(testName, inputStrings.toArray(new String[0]), outputString, commentaryString));
+                if (line.equals(">")){
+                    codeReading = false;
+                    continue;
+                }
+                if (codeReading)
+                    inputStrings.add(line);
+                else
+                    try {
+                        if (line.contains("=")) {
+                            String param = line.substring(1, line.indexOf("=") - 1);
+                            String value = line.substring(line.indexOf("=") + 2);
+                            params.put(param, value);
+                        }
+                    }
+                    catch (Exception e){
+                        System.out.println(line);
+                        e.printStackTrace();
+                    }
+                if (line.equals(CASE_SEPARATOR)) {
+                    tests.add(new TestCase(inputStrings.toArray(new String[0]), params));
+                    params.clear();
+                    inputStrings.clear();
+                }
+            }
+
+            if (inputStrings.size() > 0){
+                tests.add(new TestCase(inputStrings.toArray(new String[0]), params));
+                params.clear();
+                inputStrings.clear();
             }
         } catch (IOException e) {
             System.out.println(e.getMessage());

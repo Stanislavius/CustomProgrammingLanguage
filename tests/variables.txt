@@ -1,14 +1,12 @@
-test1
-input
+#TESTCASE
 <
 a = 4
 a
 >
-output = 4
-commentary = should return variable value
-_______________________________________________________________
-test2
-input
+#output = 4
+#commentary = should return variable value
+#_______________________________________________________________
+#TESTCASE
 <
 a = 4
 def foo()
@@ -16,11 +14,10 @@ def foo()
 foo()
 a
 >
-output = 4
-commentary = should not change variable value
-_______________________________________________________________
-test3
-input
+#output = 4
+#commentary = should not change variable value
+#_______________________________________________________________
+#TESTCASE
 <
 a = 4
 def foo()
@@ -28,21 +25,19 @@ def foo()
     b
 foo()
 >
-output = 8
-commentary = should use  value of global variable
-_______________________________________________________________
-test4
-input
+#output = 8
+#commentary = should use  value of global variable
+#_______________________________________________________________
+#TESTCASE
 <
 a = 4
 b = a + 4
 b
 >
-output = 8
-commentary = should use variable value
-_______________________________________________________________
-test5
-input
+#output = 8
+#commentary = should use variable value
+#_______________________________________________________________
+#TESTCASE
 <
 a = 1
 def foo()
@@ -56,6 +51,6 @@ def bara()
 foo()
 a
 >
-output = 1
-commentary = testing local variables in stack
-_______________________________________________________________
+#output = 1
+#commentary = testing local variables in stack
+#_______________________________________________________________

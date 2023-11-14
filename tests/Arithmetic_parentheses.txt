@@ -1,104 +1,91 @@
-test1 empty parentheses
-input
+#TESTCASE
 <
 (4.1)
 >
-output = 4.1
-commentary = should return float inside
-_______________________________________________________________
-test2 parentheses with int
-input
+#output = 4.1
+#commentary = should return float inside
+#_______________________________________________________________
+#TESTCASE
 <
 (3)
 >
-output = 3
-commentary = should return digit inside
-_______________________________________________________________
-test3 parentheses with float
-input
+#output = 3
+#commentary = should return digit inside
+#_______________________________________________________________
+#TESTCASE
 <
 (3.0)
 >
-output = 3.0
-commentary = should return digit inside
-_______________________________________________________________
-test4 parentheses with digit
-input
+#output = 3.0
+#commentary = should return digit inside
+#_______________________________________________________________
+#TESTCASE
 <
 (3) * (4)
 >
-output = 12
-commentary = should return digit inside multiplied on 4
-_______________________________________________________________
-test5 parentheses with digit
-input
+#output = 12
+#commentary = should return digit inside multiplied on 4
+#_______________________________________________________________
+#TESTCASE
 <
 (3) * 4
 >
-output = 12
-commentary = should return digit inside multiplied on 4
-_______________________________________________________________
-test6 parentheses with digit
-input
+#output = 12
+#commentary = should return digit inside multiplied on 4
+#_______________________________________________________________
+#TESTCASE
 <
 (3) + 4
 >
-output = 7
-commentary = should return digit inside plus 4
-_______________________________________________________________
-test7 parentheses with digit
-input
+#output = 7
+#commentary = should return digit inside plus 4
+#_______________________________________________________________
+#TESTCASE
 <
 (3) + 4*4
 >
-output = 19
-commentary = should return digit inside + calculated expression on the right
-_______________________________________________________________
-test8 parentheses wigh expression
-input
+#output = 19
+#commentary = should return digit inside + calculated expression on the right
+#_______________________________________________________________
+#TESTCASE
 <
 (3+4) - 4*4
 >
-output = -9
-commentary = should return calculated expression inside parentheses  - calculated expression on the left
-_______________________________________________________________
-test9 parentheses wigh expression
-input
+#output = -9
+#commentary = should return calculated expression inside parentheses  - calculated expression on the left
+#_______________________________________________________________
+#TESTCASE
 <
 (3+4) + 4*4
 >
-output = 23
-commentary = should return calculated expression inside parentheses  + calculated expression on the left
+#output = 23
+#commentary = should return calculated expression inside parentheses  + calculated expression on the left
 _______________________________________________________________
-test10 parentheses wigh expression
-input
+#TESTCASE
 <
 (3+4) + 4*4 + 1
 >
-output = 24
-commentary = should return calculated expression inside parentheses  + calculated expression on the left + 1
-_______________________________________________________________
-test11 parentheses wigh expression
-input
+#output = 24
+#commentary = should return calculated expression inside parentheses  + calculated expression on the left + 1
+#_______________________________________________________________
+#TESTCASE
 <
 (3+4)*4 + 4*4
 >
-output = 44
-commentary = should return calculated expression inside parentheses * 4  + calculated expression on the left
-_______________________________________________________________
-test12 parentheses wigh expression
-input
+#output = 44
+#commentary = should return calculated expression inside parentheses * 4  + calculated expression on the left
+#_______________________________________________________________
+#TESTCASE
 <
 (3*5)*4 + 4*4
 >
-output = 76
-commentary = should return calculated expression inside parentheses * 4  + calculated expression on the left
-_______________________________________________________________
-test13 parentheses wigh expression
-input
+#output = 76
+#commentary = should return calculated expression inside parentheses * 4  + calculated expression on the left
+#_______________________________________________________________
+#TESTCASE
 <
 (3+1)*(4+2)
 >
-output = 24
-commentary = should return calculated expression inside parentheses * calculated expression inside parentheses
-_______________________________________________________________
+#output = 24
+#commentary = should return calculated expression inside parentheses * calculated expression inside parentheses
+#_______________________________________________________________
