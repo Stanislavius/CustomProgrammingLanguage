@@ -18,6 +18,8 @@ public class Executor {
             try {
                 ReturnValue result = current_line.execute();
                 output.add(result.toString() + "");
+                if (result.type == ReturnType.STRING)
+                    output.add("\""+output.removeLast() + "\"");
             } catch (ExecutionException e) {
                 System.out.println(e.toString());
             }

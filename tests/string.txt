@@ -19,7 +19,7 @@ a
 a = "1"
 len(a)
 >
-#output = "1"
+#output = 1
 #commentary = should return size 1
 #_______________________________________________________________
 #TESTCASE
@@ -27,7 +27,7 @@ len(a)
 a = "1" + 1
 len(a)
 >
-#output = "2"
+#output = 2
 #commentary = should add 1 to string
 #_______________________________________________________________
 #TESTCASE
@@ -78,8 +78,8 @@ len(a+b)
 <
 print("asd")
 >
-#output = asd
-#commentary = in print "" should vanish
+#output = "asd"
+#commentary = print should print value and return it
 #_______________________________________________________________
 #TESTCASE
 <

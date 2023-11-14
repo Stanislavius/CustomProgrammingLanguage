@@ -107,7 +107,7 @@ public class Lexer {
         for(i = 0; i < st.length(); ++i){
             if (st.charAt(i) == '\"'){
                 if (strIsExpected){
-                    tokens.add(new Token(TokenType.STRING, st.substring(startStr, i+1), lineNum, startStr));
+                    tokens.add(new Token(TokenType.STRING, st.substring(startStr+1, i), lineNum, startStr));
                     strIsExpected = false;
                 }
                 else{
