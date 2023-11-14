@@ -6,6 +6,8 @@ import Executing.ReturnType;
 import Executing.ReturnValue;
 import Lexing.Token;
 
+import java.util.LinkedList;
+
 public class BinaryOperation extends ExecutionToken {
     ExecutionToken left;
     ExecutionToken right;
@@ -165,6 +167,14 @@ public class BinaryOperation extends ExecutionToken {
             return new ReturnValue<String>(lString + rInt, ReturnType.STRING);
         }
 
+        if (lRes.getType() == ReturnType.LIST && rRes.getType() == ReturnType.LIST){
+            LinkedList<ExecutionToken> leftValues = (LinkedList<ExecutionToken>) lRes.getValue();
+            LinkedList<ExecutionToken> rightValues = (LinkedList<ExecutionToken>) rRes.getValue();
+            LinkedList<ExecutionToken> resultValue = new LinkedList<ExecutionToken>();
+            resultValue.addAll(leftValues);
+            resultValue.addAll(rightValues);
+            return new ReturnValue(resultValue, ReturnType.LIST);
+        }
         return new ReturnValue(null, ReturnType.ERROR);
     }
 
