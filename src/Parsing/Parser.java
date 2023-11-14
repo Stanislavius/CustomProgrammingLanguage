@@ -271,8 +271,15 @@ public class Parser {
         Token listToken = line.get(0).getToken();
         LinkedList<ParsedToken> args = new LinkedList<ParsedToken>();
         LinkedList<ParsedToken> arg = new LinkedList<ParsedToken>();
+        int balance = 1;
         for (int i = 1; i < line.size()-1; ++i) {
-            if (line.get(i).getType() == TokenType.SEPARATOR) {
+            if (line.get(i).getType() == TokenType.LIST) {
+                if (line.get(i).getValue().equals("["))
+                    balance++;
+                else
+                    balance--;
+            }
+            if (line.get(i).getType() == TokenType.SEPARATOR && balance == 1) {
                 args.add(parseExpression(arg));
                 arg = new LinkedList<ParsedToken>();
             } else {
