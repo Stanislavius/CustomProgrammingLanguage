@@ -16,7 +16,8 @@ public class Testing {
             "Arithmetic_parentheses.txt",
             "conditional.txt",
             "function_def.txt",
-            "variables.txt"};
+            "variables.txt",
+            "string.txt"};
     public static void main(String[] args){
         logger = TestingLogger.createTestingLogger();
         LinkedList<Integer[]> stats = new LinkedList<Integer[]>();
