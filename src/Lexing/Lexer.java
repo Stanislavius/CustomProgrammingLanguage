@@ -18,6 +18,7 @@ public class Lexer {
     final static Pattern comparisonPattern = Pattern.compile("[=]{2}|[<]|[>]");
     //final static Pattern function_pattern = Pattern.compile("[a-zA-Z]+\\(.*\\)");
     final static Pattern functionPattern = Pattern.compile("[a-zA-Z]+\\(");
+    final static Pattern listPattern = Pattern.compile("[\\[\\]}]");
     final static Pattern variablePattern = Pattern.compile("[a-zA-Z]+(?!\\()\\b");
     final static Pattern separatorPattern = Pattern.compile(",");
     final static LinkedList<String> blockWords = new LinkedList<String>(Arrays.asList("if", "elif", "else", "while", "def"));
@@ -157,6 +158,12 @@ public class Lexer {
         Matcher variableMatcher = variablePattern.matcher(st);
         Matcher separatorMatcher = separatorPattern.matcher(st);
         Matcher comparisonMatcher = comparisonPattern.matcher(st);
+        Matcher listMatcher = listPattern.matcher(st);
+
+        while (listMatcher.find()){
+            int start = indentation * 4 + listMatcher.start();
+            tokens.add(new Token(TokenType.LIST, listMatcher.group(), lineNum, start));
+        }
 
         while (intMatcher.find()){
             int start = indentation * 4 + intMatcher.start();

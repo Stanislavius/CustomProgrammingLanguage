@@ -38,8 +38,25 @@ public class FunctionToken extends ExecutionToken {
             case "print":
                 if (args.size() != 1)
                     throw new WrongNumberOfArgumentsException(token, 1, args.size());
-                System.out.println(args.get(0).execute());
-                return new ReturnValue<>(args.get(0).execute(), ReturnType.STRING);
+                ReturnValue returnValue = args.get(0).execute();
+                if (returnValue.getType() == ReturnType.LIST) {
+                    StringBuilder sb = new StringBuilder();
+                    LinkedList<ExecutionToken> values = (LinkedList<ExecutionToken>) returnValue.getValue();
+                    sb.append("[");
+                    for(int i = 0; i < values.size(); ++i){
+                        sb.append(values.get(i).execute().toString());
+                        if (i != values.size() - 1)
+                            sb.append(", ");
+                    }
+                    sb.append("]");
+                    System.out.println(sb.toString());
+                    return new ReturnValue<>(sb.toString(), ReturnType.STRING);
+
+                }
+                else {
+                    System.out.println(args.get(0).execute());
+                    return new ReturnValue<>(args.get(0).execute(), ReturnType.STRING);
+                }
             case "argmax":
                 if (args.size() != 2)
                     throw new WrongNumberOfArgumentsException(token, 2, args.size());

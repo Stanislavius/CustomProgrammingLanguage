@@ -89,6 +89,14 @@ public class Executor {
     }
 
     public static ExecutionToken getExecutionTreeExpression(ParsedToken pt){
+        if (pt.getParsedType() == ParsedTokenType.LIST){
+            ParsedListToken PLT = (ParsedListToken)pt;
+            LinkedList<ParsedToken> parsedValues = PLT.getValues();
+            LinkedList<ExecutionToken> values = new LinkedList<ExecutionToken>();
+            for (int i = 0; i < parsedValues.size(); ++i)
+                values.add(getExecutionTreeExpression(parsedValues.get(i)));
+            return new ListType(pt.getToken(), values);
+        }
         if (pt.getParsedType() == ParsedTokenType.BINARY_OPERATION) {
             ExecutionToken left = getExecutionTreeExpression(((ParsedBinaryExpression)pt).getLeft());
             ExecutionToken right = getExecutionTreeExpression(((ParsedBinaryExpression)pt).getRight());

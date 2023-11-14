@@ -5,5 +5,6 @@ public enum ReturnType {
     FLOAT,
     VOID,
     STRING,
-    ERROR
+    ERROR,
+    LIST
 }

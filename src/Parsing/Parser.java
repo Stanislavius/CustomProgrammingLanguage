@@ -140,6 +140,7 @@ public class Parser {
                 parsedLine.set(i, new ParsedIntToken(parsedLine.get(i).getToken()));
             }
         } // we can do that much for now
+
         return parseExpression(parsedLine);
     }
 
@@ -212,24 +213,13 @@ public class Parser {
         return newOperands;
     }
 
-    public ParsedToken parseExpression(LinkedList<ParsedToken> line) throws ParsingException {
+    public LinkedList<ParsedToken> processParantheses(LinkedList<ParsedToken> line) throws ParsingException {
         Iterator iter = line.iterator();
+        LinkedList<ParsedToken> operands = new LinkedList<ParsedToken>();
+        LinkedList<ParsedToken> operand = new LinkedList<ParsedToken>();
         int balance = 0;
         int start = -1;
         boolean func_call = false;
-        LinkedList<ParsedToken> operands = new LinkedList<ParsedToken>();
-        LinkedList<ParsedToken> operand = new LinkedList<ParsedToken>();
-        //if (line.get(0).getType() == TokenType.PARENTHESIS && line.getLast().getType() == TokenType.PARENTHESIS){
-            //line.removeFirst();
-            //line.removeLast();
-        //}
-        if (line.isEmpty()) {
-            return null;
-        }
-        if (line.size() == 1) {
-            return line.getFirst();
-        }
-        //checks
         boolean process_parentheses = false;
         while (iter.hasNext()){
             ParsedToken current = (ParsedToken)iter.next();
@@ -274,6 +264,64 @@ public class Parser {
                         operands.add(current);
             }
         }
+        return operands;
+    }
+
+    public ParsedListToken parseList(LinkedList<ParsedToken> line) throws ParsingException {
+        Token listToken = line.get(0).getToken();
+        LinkedList<ParsedToken> args = new LinkedList<ParsedToken>();
+        LinkedList<ParsedToken> arg = new LinkedList<ParsedToken>();
+        for (int i = 1; i < line.size()-1; ++i) {
+            if (line.get(i).getType() == TokenType.SEPARATOR) {
+                args.add(parseExpression(arg));
+                arg = new LinkedList<ParsedToken>();
+            } else {
+                arg.add(line.get(i));
+            }
+        }
+        if (!arg.isEmpty())
+            args.add(parseExpression(arg));
+        return new ParsedListToken(listToken, args);
+    }
+
+    public LinkedList<ParsedToken>  processList(LinkedList<ParsedToken> line) throws ParsingException {
+        int balance = 0;
+        LinkedList<ParsedToken> operands = new LinkedList<ParsedToken>();
+        LinkedList<ParsedToken> operand = new LinkedList<ParsedToken>();
+        for(int i = 0; i < line.size(); ++i){
+            if (line.get(i).getType() == TokenType.LIST){
+                if (line.get(i).getValue().equals("[")){
+                    balance++;
+                    operand.add(line.get(i));
+                }
+                else{
+                    balance--;
+                    operand.add(line.get(i));
+                    if (balance == 0){
+                        operands.add(parseList(operand));
+                        operand.clear();
+                    }
+                }
+            }
+            else{
+                if (balance == 0)
+                    operands.add(line.get(i));
+                else
+                    operand.add(line.get(i));
+            }
+        }
+        return operands;
+    }
+    public ParsedToken parseExpression(LinkedList<ParsedToken> line) throws ParsingException {
+        if (line.isEmpty()) {
+            return null;
+        }
+        if (line.size() == 1) {
+            return line.getFirst();
+        }
+        //checks
+        LinkedList<ParsedToken> operands = processParantheses(line);
+        operands = processList(operands);
         ParsedToken result = null;
         operands = divideByUnaryOperands(operands);
         if (operands.size() == 1)

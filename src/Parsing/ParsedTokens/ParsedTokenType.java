@@ -13,5 +13,6 @@ public enum ParsedTokenType {
     FUNCTION_CALL,
     ASSIGNMENT,
     UNPARSED,
-    STRING
+    STRING,
+    LIST
 }

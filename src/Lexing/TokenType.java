@@ -13,5 +13,6 @@ public enum TokenType {
     COMPARISON,
     INDENTATION,
     BLOCKWORD,
-    STRING
+    STRING,
+    LIST
 }
