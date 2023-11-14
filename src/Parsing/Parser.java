@@ -130,6 +130,9 @@ public class Parser {
             if (parsedLine.get(i).getType() == TokenType.VARIABLE){
                 parsedLine.set(i, new ParsedVariable(parsedLine.get(i).getToken()));
             }
+            if (parsedLine.get(i).getType() == TokenType.STRING){
+                parsedLine.set(i, new ParsedStringToken(parsedLine.get(i).getToken()));
+            }
             if (parsedLine.get(i).getType() == TokenType.INT){
                 parsedLine.set(i, new ParsedIntToken(parsedLine.get(i).getToken()));
             }

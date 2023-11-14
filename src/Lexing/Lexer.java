@@ -93,9 +93,6 @@ public class Lexer {
         int indentation = 0;
         int i = 0;
         int count = 0;
-        if (st.contains("#")){
-            st = st.substring(0, st.indexOf("#"));
-        }
         while(i < st.length() && st.substring(i, i+1).equals(" ")){
             count++;
             if (count == 4) {
@@ -104,6 +101,27 @@ public class Lexer {
                 indentation++;
             }
             i++;
+        }
+        boolean strIsExpected = false;
+        int startStr = -1;
+        for(i = 0; i < st.length(); ++i){
+            if (st.charAt(i) == '\"'){
+                if (strIsExpected){
+                    tokens.add(new Token(TokenType.STRING, st.substring(startStr, i+1), lineNum, startStr));
+                    strIsExpected = false;
+                }
+                else{
+                    startStr = i;
+                    strIsExpected = true;
+                }
+
+            }
+            if (st.charAt(i) == '#'){
+                if (!strIsExpected){
+                    st = st.substring(0, st.indexOf("#"));
+                    break;
+                }
+            }
         }
         if (count != 0){
             //throw error

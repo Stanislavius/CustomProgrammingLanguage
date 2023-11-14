@@ -12,5 +12,6 @@ public enum ParsedTokenType {
     CONDITIONAL,
     FUNCTION_CALL,
     ASSIGNMENT,
-    UNPARSED
+    UNPARSED,
+    STRING
 }

@@ -102,6 +102,10 @@ public class Executor {
             return new NumericType(pt.getToken());
         }
 
+        if (pt.getParsedType() == ParsedTokenType.STRING) {
+            return new StringType(pt.getToken());
+        }
+
         if (pt.getParsedType() == ParsedTokenType.FLOAT) {
             return new NumericType(pt.getToken());
         }

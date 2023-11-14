@@ -12,5 +12,6 @@ public enum TokenType {
     SEPARATOR,
     COMPARISON,
     INDENTATION,
-    BLOCKWORD
+    BLOCKWORD,
+    STRING
 }
