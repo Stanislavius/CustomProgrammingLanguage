@@ -44,6 +44,10 @@ public class FunctionToken extends ExecutionToken {
                 if (args.size() != 2)
                     throw new WrongNumberOfArgumentsException(token, 2, args.size());
                 return FunctionToken.argMax(args.get(0).execute(), args.get(1).execute());
+            case "len":
+                if (args.size() != 1)
+                    throw new WrongNumberOfArgumentsException(token, 1, args.size());
+                return FunctionToken.len(args.get(0).execute());
             default:
                 if (FunctionDefinitionToken.contains(token.getValue())){
                     LinkedList <ReturnValue> executed_args = new LinkedList<ReturnValue>();
@@ -65,6 +69,13 @@ public class FunctionToken extends ExecutionToken {
         if (arg.getType() == ReturnType.FLOAT) {
             float floatInt = (float) arg.getValue();
             return new ReturnValue(Math.abs(floatInt), ReturnType.FLOAT);
+        }
+        return new ReturnValue(null, ReturnType.ERROR);
+    }
+
+    static ReturnValue len(ReturnValue arg) {
+        if (arg.getType() == ReturnType.STRING) {
+            return new ReturnValue(((String)arg.getValue()).length(), ReturnType.INT);
         }
         return new ReturnValue(null, ReturnType.ERROR);
     }
