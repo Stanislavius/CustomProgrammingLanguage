@@ -254,8 +254,8 @@ public class Parser {
                     process_parentheses = true;
                     if (balance == 0) {
                         func_call = true;
-                        operand.add(current);
                     }
+                    operand.add(current);
                     break;
                 default:
                     if (process_parentheses)
