@@ -52,3 +52,21 @@ bar()
 #output = 4
 #commentary = conditional functional definition
 #_______________________________________________________________
+#TESTCASE
+<
+def fun2(a, b, c)
+    a + b + c
+fun2(4, 5, 6)
+>
+#output = 15
+#commentary = test that function names with digits are supported
+#_______________________________________________________________
+#TESTCASE
+<
+def f2u2n2(a, b, c)
+    a + b + c
+f2u2n2(4, 5, 6)
+>
+#output = 15
+#commentary = test that function names with digits are supported
+#_______________________________________________________________
