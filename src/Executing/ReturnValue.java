@@ -1,5 +1,10 @@
 package Executing;
 
+import Executing.ExecutionExceptions.ExecutionException;
+import Executing.ExecutionTokens.ExecutionToken;
+
+import java.util.LinkedList;
+
 public class ReturnValue<T> {
     T value;
     ReturnType type;
@@ -25,6 +30,23 @@ public class ReturnValue<T> {
         if (this.type == ReturnType.VOID)
             return "void";
         else
-            return value.toString();
+            if (this.type == ReturnType.LIST){
+                StringBuilder sb = new StringBuilder();
+                LinkedList<ExecutionToken> values = (LinkedList<ExecutionToken>) value;
+                sb.append("[");
+                for(int i = 0; i < values.size(); ++i){
+                    try {
+                        sb.append(values.get(i).execute().toString());
+                    } catch (ExecutionException e) {
+                        throw new RuntimeException(e);
+                    }
+                    if (i != values.size() - 1)
+                        sb.append(", ");
+                }
+                sb.append("]");
+                return sb.toString();
+            }
+            else
+                return value.toString();
     }
 }

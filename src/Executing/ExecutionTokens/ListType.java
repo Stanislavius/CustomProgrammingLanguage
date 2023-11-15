@@ -18,4 +18,5 @@ public class ListType extends ExecutionToken{
     public ReturnValue execute() throws ExecutionException {
         return new ReturnValue(values, ReturnType.LIST);
     }
+
 }
