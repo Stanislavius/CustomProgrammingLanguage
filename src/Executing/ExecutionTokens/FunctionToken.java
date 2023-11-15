@@ -77,6 +77,9 @@ public class FunctionToken extends ExecutionToken {
         if (arg.getType() == ReturnType.STRING) {
             return new ReturnValue(((String)arg.getValue()).length(), ReturnType.INT);
         }
+        if (arg.getType() == ReturnType.LIST) {
+            return new ReturnValue(((LinkedList<ExecutionToken>)arg.getValue()).size(), ReturnType.INT);
+        }
         return new ReturnValue(null, ReturnType.ERROR);
     }
 
