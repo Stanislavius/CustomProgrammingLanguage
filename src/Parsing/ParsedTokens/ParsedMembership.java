@@ -3,11 +3,11 @@ package Parsing.ParsedTokens;
 import Lexing.Token;
 
 public class ParsedMembership extends ParsedToken{
-    ParsedVariable object;
+    ParsedToken object;
     ParsedToken member;
 
 
-    public ParsedMembership(Token t, ParsedVariable object, ParsedToken member) {
+    public ParsedMembership(Token t, ParsedToken object, ParsedToken member) {
         super(t);
         this.object = object;
         this.member = member;

@@ -325,7 +325,7 @@ public class Parser {
         for (int i = 0; i < line.size(); ++i) {
             if (i + 1 < line.size() && line.get(i).getType() == TokenType.MEMBER) {
                 operands.removeLast();
-                operands.add(new ParsedMembership(line.get(i).getToken(), (ParsedVariable) line.get(i-1), line.get(i+1)));
+                operands.add(new ParsedMembership(line.get(i).getToken(), line.get(i-1), line.get(i+1)));
                 i = i +2;
             }
             else{
