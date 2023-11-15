@@ -17,7 +17,8 @@ public class Testing {
             "conditional.txt",
             "function_def.txt",
             "variables.txt",
-            "string.txt"};
+            "string.txt",
+            "list.txt"};
     public static void main(String[] args){
         logger = TestingLogger.createTestingLogger();
         LinkedList<Integer[]> stats = new LinkedList<Integer[]>();

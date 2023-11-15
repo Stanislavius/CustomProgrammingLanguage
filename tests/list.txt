@@ -1,0 +1,50 @@
+#TESTCASE
+<
+a = []
+a
+>
+#output = []
+#commentary = should  accept empty list
+#_______________________________________________________________
+#TESTCASE
+<
+a = [1]
+a
+>
+#output = [1]
+#commentary = should create list with values
+#_______________________________________________________________
+#TESTCASE
+<
+a = [1, "asd"]
+a
+>
+#output = [1, "asd"]
+#commentary = should create list with values of different types
+#_______________________________________________________________
+#TESTCASE
+<
+a = [1, ["asd"]]
+a
+>
+#output = [1, ["asd"]]
+#commentary = should create multidimensional list
+#_______________________________________________________________
+#TESTCASE
+<
+a = [1, 2]
+b = [3, 4]
+a+b
+>
+#output = [1, 2, 3, 4]
+#commentary = should support adding list to list
+#_______________________________________________________________
+#TESTCASE
+<
+a = [1, 2]
+b = [3, [4]]
+a+b
+>
+#output = [1, 2, 3, [4]]
+#commentary = should support adding list containing lists to list
+#_______________________________________________________________
