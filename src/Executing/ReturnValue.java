@@ -36,7 +36,11 @@ public class ReturnValue<T> {
                 sb.append("[");
                 for(int i = 0; i < values.size(); ++i){
                     try {
-                        sb.append(values.get(i).execute().toString());
+                        ReturnValue rt = values.get(i).execute();
+                        if (rt.getType() == ReturnType.STRING)
+                            sb.append("\"" + rt.toString() + "\"");
+                        else
+                            sb.append(rt.toString());
                     } catch (ExecutionException e) {
                         throw new RuntimeException(e);
                     }

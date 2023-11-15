@@ -11,7 +11,7 @@ public class ParsedStringToken extends ParsedToken{
         return ParsedTokenType.STRING;
     }
     public String toString(){
-        return token.getValue();
+        return "\"" + token.getValue() + "\"";
     }
 }
 
