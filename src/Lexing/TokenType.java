@@ -14,5 +14,7 @@ public enum TokenType {
     INDENTATION,
     BLOCKWORD,
     STRING,
-    LIST
+    LIST,
+    MEMBER,
+    COLON
 }

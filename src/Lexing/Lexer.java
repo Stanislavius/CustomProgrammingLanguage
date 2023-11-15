@@ -21,6 +21,8 @@ public class Lexer {
     final static Pattern listPattern = Pattern.compile("[\\[\\]}]");
     final static Pattern variablePattern = Pattern.compile("[a-zA-Z]+(?!\\()\\b");
     final static Pattern separatorPattern = Pattern.compile(",");
+    final static Pattern memberPattern = Pattern.compile("//.");
+    final static Pattern colonPattern = Pattern.compile("//:");
     final static LinkedList<String> blockWords = new LinkedList<String>(Arrays.asList("if", "elif", "else", "while", "def"));
     //final static Pattern keywordPattern = Pattern.compile("if ");
     final private String filename;
@@ -159,10 +161,22 @@ public class Lexer {
         Matcher separatorMatcher = separatorPattern.matcher(st);
         Matcher comparisonMatcher = comparisonPattern.matcher(st);
         Matcher listMatcher = listPattern.matcher(st);
+        Matcher memberMatcher = memberPattern.matcher(st);
+        Matcher colonMatcher = colonPattern.matcher(st);
 
         while (listMatcher.find()){
             int start = indentation * 4 + listMatcher.start();
             tokens.add(new Token(TokenType.LIST, listMatcher.group(), lineNum, start));
+        }
+
+        while (memberMatcher.find()){
+            int start = indentation * 4 + memberMatcher.start();
+            tokens.add(new Token(TokenType.MEMBER, memberMatcher.group(), lineNum, start));
+        }
+
+        while (colonMatcher.find()){
+            int start = indentation * 4 + colonMatcher.start();
+            tokens.add(new Token(TokenType.COLON, colonMatcher.group(), lineNum, start));
         }
 
         while (intMatcher.find()){
