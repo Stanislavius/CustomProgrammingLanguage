@@ -319,6 +319,23 @@ public class Parser {
         }
         return operands;
     }
+
+    public LinkedList<ParsedToken>  processMembership(LinkedList<ParsedToken> line) throws ParsingException {
+        LinkedList<ParsedToken> operands = new LinkedList<ParsedToken>();
+        for (int i = 0; i < line.size(); ++i) {
+            if (i + 1 < line.size() && line.get(i).getType() == TokenType.MEMBER) {
+                operands.removeLast();
+                operands.add(new ParsedMembership(line.get(i).getToken(), (ParsedVariable) line.get(i-1), line.get(i+1)));
+                i = i +2;
+            }
+            else{
+                operands.add(line.get(i));
+            }
+        }
+            return operands;
+    }
+
+
     public ParsedToken parseExpression(LinkedList<ParsedToken> line) throws ParsingException {
         if (line.isEmpty()) {
             return null;
@@ -329,6 +346,7 @@ public class Parser {
         //checks
         LinkedList<ParsedToken> operands = processParantheses(line);
         operands = processList(operands);
+        operands = processMembership(operands);
         ParsedToken result = null;
         operands = divideByUnaryOperands(operands);
         if (operands.size() == 1)

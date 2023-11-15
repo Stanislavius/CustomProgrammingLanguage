@@ -14,5 +14,7 @@ public enum ParsedTokenType {
     ASSIGNMENT,
     UNPARSED,
     STRING,
-    LIST
+    LIST,
+    MEMBERSHIP_FUNCTION_CALL,
+    MEMBERSHIP_VARIABLE
 }
