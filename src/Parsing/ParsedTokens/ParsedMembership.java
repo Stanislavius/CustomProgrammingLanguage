@@ -28,4 +28,13 @@ public class ParsedMembership extends ParsedToken{
             return ParsedTokenType.MEMBERSHIP_VARIABLE;
         return null;
     }
+
+    public ParsedToken getObject() {
+        return object;
+    }
+
+    public ParsedToken getMember() {
+        return member;
+    }
+
 }

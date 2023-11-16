@@ -112,6 +112,13 @@ public class Executor {
             return new NumericType(pt.getToken());
         }
 
+        if (pt.getParsedType() == ParsedTokenType.MEMBERSHIP_FUNCTION_CALL) {
+            ParsedMembership pm = (ParsedMembership) pt;
+            return new MemberExecutionToken(pm.getToken(),
+                    getExecutionTreeExpression(pm.getObject()),
+                    getExecutionTreeExpression(pm.getMember()));
+        }
+
         if (pt.getParsedType() == ParsedTokenType.STRING) {
             return new StringType(pt.getToken());
         }
