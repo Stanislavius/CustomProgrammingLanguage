@@ -36,7 +36,9 @@ public class ObjectType extends ExecutionToken{
             ObjectType objectValue = (ObjectType)object.getValue();
             if (objectValue.getMembers().containsKey(functionName)){
                 FunctionDefinitionToken fdt = (FunctionDefinitionToken) objectValue.getMembers().get(functionName);
-                return fdt.execute(ft.executeArgs());
+                LinkedList<ReturnValue> args = ft.executeArgs();
+                args.add(0, object);
+                return fdt.execute(args);
             }
 
         }
