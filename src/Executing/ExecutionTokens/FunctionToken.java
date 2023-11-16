@@ -49,14 +49,19 @@ public class FunctionToken extends ExecutionToken {
                     throw new WrongNumberOfArgumentsException(token, 1, args.size());
                 return FunctionToken.len(args.get(0).execute());
             default:
-                if (FunctionDefinitionToken.contains(token.getValue())){
-                    LinkedList <ReturnValue> executed_args = new LinkedList<ReturnValue>();
-                    for (int i = 0; i < args.size(); ++i)
-                        executed_args.add(args.get(i).execute());
-                    return FunctionDefinitionToken.get(token.getValue()).execute(executed_args);
+                if (ClassDefinitionToken.contains(token.getValue())) {
+                    ReturnValue object = ClassDefinitionToken.get(token.getValue()).execute(executeArgs(args), token);
+                    return object;
                 }
-                else
-                    throw new NoSuchFunctionException(token);
+                else {
+                    if (FunctionDefinitionToken.contains(token.getValue())) {
+                        LinkedList<ReturnValue> executed_args = new LinkedList<ReturnValue>();
+                        for (int i = 0; i < args.size(); ++i)
+                            executed_args.add(args.get(i).execute());
+                        return FunctionDefinitionToken.get(token.getValue()).execute(executed_args);
+                    } else
+                        throw new NoSuchFunctionException(token);
+                }
         }
 
     }
@@ -142,5 +147,25 @@ public class FunctionToken extends ExecutionToken {
             res = 0;
         }
         return new ReturnValue(res, ReturnType.INT);
+    }
+
+    public LinkedList<ExecutionToken> getArgs() {
+        return args;
+    }
+
+    public LinkedList<ReturnValue> executeArgs() throws ExecutionException {
+        LinkedList<ReturnValue> executedArgs = new LinkedList<ReturnValue>();
+        for(int i = 0; i < args.size(); ++i){
+            executedArgs.add(args.get(i).execute());
+        }
+        return executedArgs;
+    }
+
+    public static LinkedList<ReturnValue> executeArgs (LinkedList<ExecutionToken> argsToExecute) throws ExecutionException {
+        LinkedList<ReturnValue> executedArgs = new LinkedList<ReturnValue>();
+        for(int i = 0; i < argsToExecute.size(); ++i){
+            executedArgs.add(argsToExecute.get(i).execute());
+        }
+        return executedArgs;
     }
 }

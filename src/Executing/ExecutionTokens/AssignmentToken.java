@@ -4,6 +4,7 @@ import Executing.ExecutionExceptions.ExecutionException;
 import Executing.Executor;
 import Executing.ReturnType;
 import Executing.ReturnValue;
+import Executing.Variables;
 import Lexing.Token;
 
 public class AssignmentToken extends ExecutionToken {
@@ -17,9 +18,20 @@ public class AssignmentToken extends ExecutionToken {
     }
 
     public ReturnValue execute() throws ExecutionException {
-        String name = assignTo.getToken().getValue();
-        ReturnValue val = value.execute();
-        Executor.setVariable(name, val);
+        if (assignTo.getClass() == VariableExecutionToken.class) {
+            String name = assignTo.getToken().getValue();
+            ReturnValue val = value.execute();
+            Executor.setVariable(name, val);
+        }
+        else{
+            if (assignTo.getClass() == MemberExecutionToken.class) {
+                MemberExecutionToken met = (MemberExecutionToken)  assignTo;
+                String name = met.getObject().getToken().getValue();
+                ReturnValue rObject = Executor.getVariable(name);
+                ObjectType object = (ObjectType) rObject.getValue();
+                object.setVariable(((VariableExecutionToken)met.getMember()).getToken().getValue(), value.execute());
+            }
+        }
         return new ReturnValue(null, ReturnType.VOID);
     }
 

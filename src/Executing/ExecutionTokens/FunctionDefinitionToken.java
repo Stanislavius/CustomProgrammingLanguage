@@ -25,6 +25,10 @@ public class FunctionDefinitionToken extends ExecutionToken{
         return new ReturnValue(null, ReturnType.VOID);
     }
 
+    public static void addFun(String funName, FunctionDefinitionToken fun){
+        definedFunctions.put(funName, fun);
+    }
+
     public ReturnValue execute(LinkedList<ReturnValue> funcArgs) throws ExecutionException {
         Executor.addToStack(this);
         for (int i = 0; i < args.size(); ++i){
@@ -44,5 +48,9 @@ public class FunctionDefinitionToken extends ExecutionToken{
 
     public static FunctionDefinitionToken get(String name){
         return definedFunctions.get(name);
+    }
+
+    public String getName(){
+        return name;
     }
 }

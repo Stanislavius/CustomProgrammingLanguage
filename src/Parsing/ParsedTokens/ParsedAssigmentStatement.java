@@ -4,7 +4,7 @@ import Lexing.Token;
 
 public class ParsedAssigmentStatement extends ParsedAbstractStatement{
     ParsedToken expression; // in fact ParsedExpression
-    ParsedVariable variable;
+    ParsedToken variable;
 
     public ParsedAssigmentStatement(Token t, int indent){
         super(t);
@@ -16,15 +16,12 @@ public class ParsedAssigmentStatement extends ParsedAbstractStatement{
         this.expression = expression;
     }
 
-    public ParsedAssigmentStatement(Token t, int indent, ParsedVariable variable, ParsedToken expression){
+    public ParsedAssigmentStatement(Token t, int indent, ParsedToken variable, ParsedToken expression){
         this(t, indent);
         this.variable = variable;
         this.expression = expression;
     }
 
-    public ParsedAssigmentStatement(Token t, int indent, ParsedToken variable, ParsedToken expression){
-        this(t, indent, (ParsedVariable) variable, expression);
-    }
 
     public void setExpression(ParsedToken expression){
         this.expression = expression;
@@ -38,7 +35,7 @@ public class ParsedAssigmentStatement extends ParsedAbstractStatement{
         return this.expression;
     }
 
-    public ParsedVariable getVariable(){
+    public ParsedToken getVariable(){
         return this.variable;
     }
     public String toString(){

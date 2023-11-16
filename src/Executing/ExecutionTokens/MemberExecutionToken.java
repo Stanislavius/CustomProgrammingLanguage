@@ -16,8 +16,21 @@ public class MemberExecutionToken extends ExecutionToken {
 
     public ReturnValue execute() throws ExecutionException {
         ReturnValue objectValue = object.execute();
+
         if (objectValue.getType() == ReturnType.LIST)
             return ListType.accessMember(objectValue, member);
+        if (objectValue.getType() == ReturnType.OBJECT)
+            return ObjectType.accessMember(objectValue, member);
+        if (objectValue.getType() == ReturnType.CLASS)
+            return ObjectType.accessMember(objectValue, member);
         return null;
+    }
+
+    public ExecutionToken getObject(){
+        return object;
+    }
+
+    public ExecutionToken getMember(){
+        return member;
     }
 }

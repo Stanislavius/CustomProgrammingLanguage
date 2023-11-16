@@ -6,5 +6,7 @@ public enum ReturnType {
     VOID,
     STRING,
     ERROR,
-    LIST
+    LIST,
+    OBJECT,
+    CLASS
 }

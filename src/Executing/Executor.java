@@ -73,9 +73,28 @@ public class Executor {
             return new FunctionDefinitionToken(pt.getToken(), name, variableNames, executionToDos);
         }
 
+        if (pt.getParsedType() == ParsedTokenType.CLASS_DEFINITION){
+            ParsedClassDefinition PCD = (ParsedClassDefinition) pt;
+            String name = PCD.getClassName();
+            ParsedBlock toDos = PCD.getToDo();
+            LinkedList<ExecutionToken> executionToDos = new LinkedList<ExecutionToken>();
+            for (int i = 0; i < toDos.size(); ++i){
+                executionToDos.add(getExecutionTree(toDos.get(i)));
+            }
+            return new ClassDefinitionToken(pt.getToken(), name, executionToDos);
+        }
+
         if (pt.getParsedType() == ParsedTokenType.ASSIGNMENT){
             ParsedAssigmentStatement pat = (ParsedAssigmentStatement) pt;
-            return new AssignmentToken(pt.getToken(), new VariableExecutionToken(pat.getVariable().getToken()), getExecutionTreeExpression(pat.getExpression()));
+            if (pat.getVariable().getClass() == ParsedMembership.class) {
+                ParsedMembership pm = (ParsedMembership) pat.getVariable();
+                MemberExecutionToken met = new MemberExecutionToken(pm.getToken(),
+                        getExecutionTreeExpression(pm.getObject()),
+                        getExecutionTreeExpression(pm.getMember()));
+                return new AssignmentToken(pt.getToken(), met, getExecutionTreeExpression(pat.getExpression()));
+            }
+            else
+                return new AssignmentToken(pt.getToken(), new VariableExecutionToken(pat.getVariable().getToken()), getExecutionTreeExpression(pat.getExpression()));
         }
         return null;
     }
@@ -113,6 +132,13 @@ public class Executor {
         }
 
         if (pt.getParsedType() == ParsedTokenType.MEMBERSHIP_FUNCTION_CALL) {
+            ParsedMembership pm = (ParsedMembership) pt;
+            return new MemberExecutionToken(pm.getToken(),
+                    getExecutionTreeExpression(pm.getObject()),
+                    getExecutionTreeExpression(pm.getMember()));
+        }
+
+        if (pt.getParsedType() == ParsedTokenType.MEMBERSHIP_VARIABLE) {
             ParsedMembership pm = (ParsedMembership) pt;
             return new MemberExecutionToken(pm.getToken(),
                     getExecutionTreeExpression(pm.getObject()),
