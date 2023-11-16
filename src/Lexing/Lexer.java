@@ -23,7 +23,7 @@ public class Lexer {
     final static Pattern separatorPattern = Pattern.compile(",");
     final static Pattern memberPattern = Pattern.compile("\\.");
     final static Pattern colonPattern = Pattern.compile("\\:");
-    final static LinkedList<String> blockWords = new LinkedList<String>(Arrays.asList("if", "elif", "else", "while", "def"));
+    final static LinkedList<String> blockWords = new LinkedList<String>(Arrays.asList("if", "elif", "else", "while", "def", "class"));
     //final static Pattern keywordPattern = Pattern.compile("if ");
     final private String filename;
 

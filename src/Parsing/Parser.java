@@ -36,6 +36,9 @@ public class Parser {
         catch (ParsingException e){
             System.out.println(e);
         }
+        logger.finest("Parsing is finished, parsed program as follows. ");
+        for(int i = 0; i < parsedLines.size(); ++i)
+            logger.finest(parsedLines.get(i).toString());
         return parsedLines;
     }
 
@@ -64,13 +67,13 @@ public class Parser {
         }
         else{
             //if not BLOCKWORD then expression or assignment
-            if (line.size() > 1 && line.get(1).getType() == TokenType.ASSIGNMENT){
-                return new ParsedAssigmentStatement(line.get(1),
-                        indent,
-                        new ParsedVariable(line.get(0)),
-                        parseExpressionTokens(new LinkedList<Token>(line.subList(2, line.size()))));
-            }
-            else //then expression
+            for(int i = 0; i < line.size(); ++i)
+                if (line.get(i).getType() == TokenType.ASSIGNMENT){
+                    return new ParsedAssigmentStatement(line.get(i),
+                            indent,
+                            parseExpressionTokens(new LinkedList<Token>(line.subList(0, i))),
+                            parseExpressionTokens(new LinkedList<Token>(line.subList(i+1, line.size()))));
+                }
                 return new ParsedStatement(indent, parseExpressionTokens(line));
         }
     }
@@ -100,6 +103,12 @@ public class Parser {
                     indent, line.get(1),
                     parseArgsTokens(new LinkedList<Token>(line.subList(2, line.size()))));
         }
+
+        if (line.get(0).getValue().equals("class")){
+            return new ParsedClassDefinition(line.get(0),
+                    indent, line.get(1));
+        }
+
         line.removeFirst();
         // rest is processed as expression if needed
         return null;
@@ -326,7 +335,7 @@ public class Parser {
             if (i + 1 < line.size() && line.get(i).getType() == TokenType.MEMBER) {
                 operands.removeLast();
                 operands.add(new ParsedMembership(line.get(i).getToken(), line.get(i-1), line.get(i+1)));
-                i = i +2;
+                i = i +1;
             }
             else{
                 operands.add(line.get(i));

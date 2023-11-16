@@ -2,7 +2,7 @@ package Parsing.ParsedTokens;
 
 import Lexing.Token;
 
-public class ParsedMembership extends ParsedToken{
+public class ParsedMembership extends ParsedVariable{
     ParsedToken object;
     ParsedToken member;
 
