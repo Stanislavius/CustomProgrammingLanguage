@@ -161,17 +161,11 @@ public class Lexer {
         Matcher separatorMatcher = separatorPattern.matcher(st);
         Matcher comparisonMatcher = comparisonPattern.matcher(st);
         Matcher listMatcher = listPattern.matcher(st);
-        Matcher memberMatcher = memberPattern.matcher(st);
         Matcher colonMatcher = colonPattern.matcher(st);
 
         while (listMatcher.find()){
             int start = indentation * 4 + listMatcher.start();
             tokens.add(new Token(TokenType.LIST, listMatcher.group(), lineNum, start));
-        }
-
-        while (memberMatcher.find()){
-            int start = indentation * 4 + memberMatcher.start();
-            tokens.add(new Token(TokenType.MEMBER, memberMatcher.group(), lineNum, start));
         }
 
         while (colonMatcher.find()){
@@ -186,7 +180,15 @@ public class Lexer {
 
         while (floatMatcher.find()){
             int start = indentation * 4 + floatMatcher.start();
-            tokens.add(new Token(TokenType.FLOAT, floatMatcher.group(), lineNum, start));
+            String value = floatMatcher.group();
+            tokens.add(new Token(TokenType.FLOAT, value, lineNum, start));
+            st = st.substring(0, start) + " ".repeat(value.length()) + st.substring(start+value.length());
+        }
+
+        Matcher memberMatcher = memberPattern.matcher(st);
+        while (memberMatcher.find()){
+            int start = indentation * 4 + memberMatcher.start();
+            tokens.add(new Token(TokenType.MEMBER, memberMatcher.group(), lineNum, start));
         }
 
         while (arithmeticMatcher.find()){
