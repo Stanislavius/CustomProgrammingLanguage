@@ -17,9 +17,9 @@ public class Lexer {
     final static Pattern assignmentPattern = Pattern.compile("(?<!\\=)[=](?!\\=)");
     final static Pattern comparisonPattern = Pattern.compile("[=]{2}|[<]|[>]");
     //final static Pattern function_pattern = Pattern.compile("[a-zA-Z]+\\(.*\\)");
-    final static Pattern functionPattern = Pattern.compile("[a-zA-Z]{1}[a-zA-Z0-9]+\\(");
+    final static Pattern functionPattern = Pattern.compile("[_a-zA-Z]{1}[_a-zA-Z0-9]+\\(");
     final static Pattern listPattern = Pattern.compile("[\\[\\]}]");
-    final static Pattern variablePattern = Pattern.compile("[a-zA-Z]+(?!\\()\\b");
+    final static Pattern variablePattern = Pattern.compile("[_a-zA-Z]+(?!\\()\\b");
     final static Pattern separatorPattern = Pattern.compile(",");
     final static Pattern memberPattern = Pattern.compile("\\.");
     final static Pattern colonPattern = Pattern.compile("\\:");
