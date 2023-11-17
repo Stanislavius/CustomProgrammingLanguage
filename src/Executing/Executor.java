@@ -128,7 +128,7 @@ public class Executor {
         }
 
         if (pt.getParsedType() == ParsedTokenType.INT) {
-            return new NumericType(pt.getToken());
+            return new IntType(pt.getToken());
         }
 
         if (pt.getParsedType() == ParsedTokenType.MEMBERSHIP_FUNCTION_CALL) {
@@ -150,7 +150,7 @@ public class Executor {
         }
 
         if (pt.getParsedType() == ParsedTokenType.FLOAT) {
-            return new NumericType(pt.getToken());
+            return new FloatType(pt.getToken());
         }
 
         if (pt.getParsedType() == ParsedTokenType.FUNCTION_CALL) {

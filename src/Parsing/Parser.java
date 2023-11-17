@@ -146,7 +146,7 @@ public class Parser {
                 parsedLine.set(i, new ParsedIntToken(parsedLine.get(i).getToken()));
             }
             if (parsedLine.get(i).getType() == TokenType.FLOAT){
-                parsedLine.set(i, new ParsedIntToken(parsedLine.get(i).getToken()));
+                parsedLine.set(i, new ParsedFloatToken(parsedLine.get(i).getToken()));
             }
         } // we can do that much for now
 
