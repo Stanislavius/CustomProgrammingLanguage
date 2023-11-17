@@ -23,7 +23,8 @@ public class Lexer {
     final static Pattern separatorPattern = Pattern.compile(",");
     final static Pattern memberPattern = Pattern.compile("\\.");
     final static Pattern colonPattern = Pattern.compile("\\:");
-    final static LinkedList<String> blockWords = new LinkedList<String>(Arrays.asList("if", "elif", "else", "while", "def", "class"));
+    final static LinkedList<String> blockWordsWithoutArgs = new LinkedList<String>(Arrays.asList("else", "try", "finally"));
+    final static LinkedList<String> blockWordsWithArgs = new LinkedList<String>(Arrays.asList("if", "elif", "while", "def", "class", "catch"));
     //final static Pattern keywordPattern = Pattern.compile("if ");
     final private String filename;
 
@@ -129,26 +130,29 @@ public class Lexer {
         if (count != 0){
             //throw error
         }
+
         st = st.substring(indentation * 4);
-        for(i = 0; i < blockWords.size(); ++i){
-            String word = blockWords.get(i);
-            if (st.length() == "else".length()){
-                if (word.equals("else") && st.equals("else")){
+
+        for(i = 0; i < blockWordsWithArgs.size(); ++i){
+            String word = blockWordsWithArgs.get(i);
+            if (((word.length() + 1) <= st.length())) {
+                if (st.substring(0, word.length() + 1).equals(word + " ")) {
                     int start = indentation * 4;
                     tokens.add(new Token(TokenType.BLOCKWORD, word, lineNum, start));
                     st = " " + st.substring(word.length(), st.length());
                 }
             }
-            else {
-                if (((word.length() + 1) <= st.length())) {
-                        if (st.substring(0, word.length() + 1).equals(word + " ")) {
-                            int start = indentation * 4;
-                            tokens.add(new Token(TokenType.BLOCKWORD, word, lineNum, start));
-                            st = " " + st.substring(word.length(), st.length());
-                        }
+        }
+
+        for(i = 0; i < blockWordsWithoutArgs.size(); ++i){
+            String word = blockWordsWithoutArgs.get(i);
+            if (st.length() == word.length()){
+                if (st.equals(word)){
+                    int start = indentation * 4;
+                    tokens.add(new Token(TokenType.BLOCKWORD, word, lineNum, start));
+                    st = " " + st.substring(word.length(), st.length());
                 }
             }
-
         }
 
         Matcher arithmeticMatcher = arithmeticPattern.matcher(st);
