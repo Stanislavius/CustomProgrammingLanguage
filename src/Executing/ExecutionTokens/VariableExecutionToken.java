@@ -1,8 +1,7 @@
 package Executing.ExecutionTokens;
 
-import Executing.ExecutionExceptions.ExecutionException;
+import Executing.ExecutionTokens.Builtin.Types.ObjectType;
 import Executing.Executor;
-import Executing.ReturnValue;
 import Lexing.Token;
 
 public class VariableExecutionToken extends ExecutionToken {
@@ -10,8 +9,7 @@ public class VariableExecutionToken extends ExecutionToken {
         super(t);
     }
 
-    public ReturnValue execute() throws ExecutionException {
+    public ObjectType execute() {
         return Executor.getVariable(token.getValue());
     }
-
 }

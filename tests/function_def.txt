@@ -1,44 +1,44 @@
 #TESTCASE
-<
+#<
 def foo()
     1
 foo()
->
+#>
 #output = 1
 #commentary = function without args
 #_______________________________________________________________
 #TESTCASE
-<
+#<
 def foo(a)
     1 + a
 foo(4)
->
+#>
 #output = 5
 #commentary = function with one arg
 #_______________________________________________________________
 #TESTCASE
-<
+#<
 def foo(a, b, c)
     a + b + c
 foo(1, 2, 3)
->
+#>
 #output = 6
 #commentary = function with multiple args
 _______________________________________________________________
 #TESTCASE
-<
+#<
 def foo(a, b, c)
     if a == 4
         b
     else
         c
 foo(4, 2, 3)
->
+#>
 #output = 2
 #commentary = function with if and else
 #_______________________________________________________________
 #TESTCASE
-<
+#<
 def foo(a)
     if a == 4
         def bar()
@@ -48,25 +48,25 @@ def foo(a)
             5
 foo(4)
 bar()
->
+#>
 #output = 4
-#commentary = conditional functional definition
+#commentary = conditional functional definition (NOW SHOULD CAUSE ERROR, BECAUSE BAR IS NOT DEFINED OUTSIDE OF foo)
 #_______________________________________________________________
 #TESTCASE
-<
+#<
 def fun2(a, b, c)
     a + b + c
 fun2(4, 5, 6)
->
+#>
 #output = 15
 #commentary = test that function names with digits are supported
 #_______________________________________________________________
 #TESTCASE
-<
+#<
 def f2u2n2(a, b, c)
     a + b + c
 f2u2n2(4, 5, 6)
->
+#>
 #output = 15
 #commentary = test that function names with digits are supported
 #_______________________________________________________________

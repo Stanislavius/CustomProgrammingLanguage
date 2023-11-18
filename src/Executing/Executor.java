@@ -1,7 +1,8 @@
 package Executing;
 
-import Executing.ExecutionExceptions.ExecutionException;
 import Executing.ExecutionTokens.*;
+import Executing.ExecutionTokens.Builtin.Types.*;
+import Executing.ExecutionTokens.Builtin.Types.IntType;
 import Parsing.ParsedTokens.*;
 
 import java.util.LinkedList;
@@ -11,22 +12,29 @@ public class Executor {
     static LinkedList<FunctionDefinitionToken> stack = new LinkedList<FunctionDefinitionToken>();
     static LinkedList<Variables> namespaces = new LinkedList<Variables>();
     public static String execute(LinkedList<ParsedAbstractStatement> program) {
+        createTypes();
         LinkedList<String> output = new LinkedList<String>();
         for (ParsedAbstractStatement line : program) {
             ExecutionToken current_line = getExecutionTree(line);
             //System.out.println(line.toString());
-            try {
-                ReturnValue result = current_line.execute();
-                output.add(result.toString() + "");
-                if (result.type == ReturnType.STRING)
-                    output.add("\""+output.removeLast() + "\"");
-            } catch (ExecutionException e) {
-                System.out.println(e.toString());
-            }
+            ObjectType result = current_line.execute();
+            output.add(result.toString() + "");
+            if (result.getType().toString().equals("str"))
+                output.add("\"" + output.removeLast() + "\"");
         }
         return output.get(output.size()-1);
     }
 
+    public static void createTypes(){
+        ClassType.createType();
+        FunctionType.createType();
+        FloatType.createType();
+        IntType.createType();
+        ErrorType.createType();
+        StringType.createType();
+        ListType.createType();
+        VoidType.createType();
+    }
     public static void addToStack(FunctionDefinitionToken curFunc){
         stack.add(curFunc);
         namespaces.add(new Variables());
@@ -114,7 +122,10 @@ public class Executor {
             LinkedList<ExecutionToken> values = new LinkedList<ExecutionToken>();
             for (int i = 0; i < parsedValues.size(); ++i)
                 values.add(getExecutionTreeExpression(parsedValues.get(i)));
-            return new ListType(pt.getToken(), values);
+            LinkedList<ObjectType> objectValues = new LinkedList<ObjectType>();
+            for(int i = 0; i < values.size(); ++i)
+                objectValues.add(values.get(i).execute());
+            return new ValueExecutionToken(pt.getToken(), new ListType(objectValues));
         }
         if (pt.getParsedType() == ParsedTokenType.BINARY_OPERATION) {
             ExecutionToken left = getExecutionTreeExpression(((ParsedBinaryExpression)pt).getLeft());
@@ -128,7 +139,8 @@ public class Executor {
         }
 
         if (pt.getParsedType() == ParsedTokenType.INT) {
-            return new IntType(pt.getToken());
+            return new ValueExecutionToken(pt.getToken(),
+                    new IntType(Integer.parseInt(pt.getToken().getValue())));
         }
 
         if (pt.getParsedType() == ParsedTokenType.MEMBERSHIP_FUNCTION_CALL) {
@@ -146,11 +158,12 @@ public class Executor {
         }
 
         if (pt.getParsedType() == ParsedTokenType.STRING) {
-            return new StringType(pt.getToken());
+            return new ValueExecutionToken(pt.getToken(), new StringType(pt.getToken().getValue()));
         }
 
         if (pt.getParsedType() == ParsedTokenType.FLOAT) {
-            return new FloatType(pt.getToken());
+            return new ValueExecutionToken(pt.getToken(),
+                    new FloatType(Float.parseFloat(pt.getToken().getValue())));
         }
 
         if (pt.getParsedType() == ParsedTokenType.FUNCTION_CALL) {
@@ -159,7 +172,7 @@ public class Executor {
             LinkedList<ParsedToken> args = PFC.getArgs();
             for (int i = 0; i < args.size(); ++i)
                 children.add(getExecutionTreeExpression(args.get(i)));
-            return new FunctionToken(pt.getToken(), children);
+            return new FunctionCallToken(pt.getToken(), children);
         }
 
         if (pt.getParsedType() == ParsedTokenType.VARIABLE) {
@@ -173,7 +186,7 @@ public class Executor {
         globalVariables.clear();
     }
 
-    public static void setVariable(String name, ReturnValue value) {
+    public static void setVariable(String name, ObjectType value) {
         if (namespaces.size() > 0){
             namespaces.get(namespaces.size() - 1).setVariable(name, value);
         }
@@ -182,7 +195,7 @@ public class Executor {
         }
     }
 
-    public static ReturnValue getVariable(String name) {
+    public static ObjectType getVariable(String name) {
         int i = namespaces.size()-1;
         while (i!= -1 && !namespaces.get(i).in(name)) {
             i--;

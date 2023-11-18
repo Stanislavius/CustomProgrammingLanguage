@@ -1,0 +1,82 @@
+package Executing.ExecutionTokens.Builtin.Types;
+
+import Executing.ExecutionExceptions.ExecutionException;
+import Executing.ExecutionTokens.ExecutionToken;
+import Executing.ExecutionTokens.FunctionCallToken;
+import Executing.Executor;
+import Lexing.Token;
+
+import java.util.LinkedList;
+
+public class ListType extends ObjectType {
+    static ClassType type;
+    public static void createType()
+    {
+        type = new ClassType();
+        type.setMember("__name__", new StringType("list"));
+        type.setMember("__append__", new FunctionType("__append__", new SourceFunction(){
+            public ObjectType execute(LinkedList<ObjectType> args){
+                ListType list = ((ListType)(args.get(0)));
+                ObjectType val2 = args.get(1);
+                list.values.add(args.get(1));
+                return VoidType.voidObject;
+            }
+        }
+        ));
+
+        type.setMember("__str__", new FunctionType("__str__", new SourceFunction(){
+            public ObjectType execute(LinkedList<ObjectType> args){
+                float v1 = ((FloatType)(args.get(0))).getFloat();
+                return new StringType(v1+"");
+            }
+        }
+        ));
+
+        type.setMember("__call__", new FunctionType("__str__", new SourceFunction(){
+            public ObjectType execute(LinkedList<ObjectType> args){
+                return new ListType(args);
+            }
+        }
+        ));
+
+        type.setMember("__add__", new FunctionType("__add__", new SourceFunction(){
+            public ObjectType execute(LinkedList<ObjectType> args){
+                LinkedList<ObjectType> v1 = ((ListType)(args.get(0))).getValues();
+                LinkedList<ObjectType> v2 = ((ListType)(args.get(0))).getValues();
+                LinkedList<ObjectType> result = new LinkedList<ObjectType>();
+                result.addAll(v1);
+                result.addAll(v2);
+                return new ListType(result);
+            }
+        }
+        ));
+        Executor.setVariable("list", type);
+    }
+    LinkedList<ObjectType> values;
+
+    public ListType(LinkedList<ObjectType> values){
+        this.values = values;
+        this.setMember("__class__", type);
+    }
+
+    public String toString(){
+        StringBuilder sb = new StringBuilder();
+        sb.append("[");
+        for(int i = 0; i < values.size(); ++i){
+                ObjectType rt = values.get(i);
+                if (rt.getType().toString().equals("str"))
+                    sb.append("\"" + rt.toString() + "\"");
+                else
+                    sb.append(rt.toString());
+            if (i != values.size() - 1)
+                sb.append(", ");
+        }
+        sb.append("]");
+        return sb.toString();
+    }
+
+    public LinkedList<ObjectType> getValues(){
+        return values;
+    }
+
+}

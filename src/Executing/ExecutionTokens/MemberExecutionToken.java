@@ -1,8 +1,7 @@
 package Executing.ExecutionTokens;
 
-import Executing.ExecutionExceptions.ExecutionException;
-import Executing.ReturnType;
-import Executing.ReturnValue;
+import Executing.ExecutionTokens.Builtin.Types.ObjectType;
+import Executing.ExecutionTokens.Builtin.Types.VoidType;
 import Lexing.Token;
 
 public class MemberExecutionToken extends ExecutionToken {
@@ -14,16 +13,9 @@ public class MemberExecutionToken extends ExecutionToken {
         this.member = member;
     }
 
-    public ReturnValue execute() throws ExecutionException {
-        ReturnValue objectValue = object.execute();
-
-        if (objectValue.getType() == ReturnType.LIST)
-            return ListType.accessMember(objectValue, member);
-        if (objectValue.getType() == ReturnType.OBJECT)
-            return ObjectType.accessMember(objectValue, member);
-        if (objectValue.getType() == ReturnType.CLASS)
-            return ObjectType.accessMember(objectValue, member);
-        return null;
+    public ObjectType execute(){
+        ObjectType objectValue = object.execute();
+        return ObjectType.getMember(objectValue, ((VariableExecutionToken)member).getToken().getValue());
     }
 
     public ExecutionToken getObject(){

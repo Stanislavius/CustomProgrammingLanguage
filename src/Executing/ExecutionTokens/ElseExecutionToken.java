@@ -1,14 +1,14 @@
 package Executing.ExecutionTokens;
 
-import Executing.ReturnType;
-import Executing.ReturnValue;
+import Executing.ExecutionTokens.Builtin.Types.IntType;
+import Executing.ExecutionTokens.Builtin.Types.ObjectType;
 import Lexing.Token;
 
 public class ElseExecutionToken extends ExecutionToken{
     public ElseExecutionToken(Token token) {
         super(token);
     }
-    public ReturnValue execute(){
-        return new ReturnValue<Integer>(1, ReturnType.INT);
+    public ObjectType execute(){
+        return new IntType(1);
     }
 }

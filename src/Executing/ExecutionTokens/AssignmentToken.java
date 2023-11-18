@@ -1,10 +1,9 @@
 package Executing.ExecutionTokens;
 
 import Executing.ExecutionExceptions.ExecutionException;
+import Executing.ExecutionTokens.Builtin.Types.ObjectType;
+import Executing.ExecutionTokens.Builtin.Types.VoidType;
 import Executing.Executor;
-import Executing.ReturnType;
-import Executing.ReturnValue;
-import Executing.Variables;
 import Lexing.Token;
 
 public class AssignmentToken extends ExecutionToken {
@@ -17,22 +16,21 @@ public class AssignmentToken extends ExecutionToken {
         this.value = value;
     }
 
-    public ReturnValue execute() throws ExecutionException {
+    public ObjectType execute() {
         if (assignTo.getClass() == VariableExecutionToken.class) {
             String name = assignTo.getToken().getValue();
-            ReturnValue val = value.execute();
+            ObjectType val = value.execute();
             Executor.setVariable(name, val);
         }
         else{
             if (assignTo.getClass() == MemberExecutionToken.class) {
                 MemberExecutionToken met = (MemberExecutionToken)  assignTo;
                 String name = met.getObject().getToken().getValue();
-                ReturnValue rObject = Executor.getVariable(name);
-                ObjectType object = (ObjectType) rObject.getValue();
-                object.setVariable(((VariableExecutionToken)met.getMember()).getToken().getValue(), value.execute());
+                ObjectType rObject = Executor.getVariable(name);
+                rObject.setMember(((VariableExecutionToken)met.getMember()).getToken().getValue(), value.execute());
             }
         }
-        return new ReturnValue(null, ReturnType.VOID);
+        return new VoidType();
     }
 
 }

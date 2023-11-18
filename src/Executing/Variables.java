@@ -1,18 +1,20 @@
 package Executing;
 
 
+import Executing.ExecutionTokens.Builtin.Types.ObjectType;
+
 import java.util.HashMap;
 
 public class Variables {
-    HashMap<String, ReturnValue> variables = new HashMap<String, ReturnValue>();
+    HashMap<String, ObjectType> variables = new HashMap<String, ObjectType>();
 
 
-    public void setVariable(String name, ReturnValue value) {
+    public void setVariable(String name, ObjectType value) {
         variables.put(name, value);
     }
 
-    public ReturnValue getVariable(String name) {
-        ReturnValue value = null;
+    public ObjectType getVariable(String name) {
+        ObjectType value = null;
         if (variables.containsKey(name)) {
             value = variables.get(name);
         } else {

@@ -1,90 +1,90 @@
 #TESTCASE
-<
+#<
 a = ""
 a
->
+#>
 #output = ""
 #commentary = should  accept empty string
 #_______________________________________________________________
 #TESTCASE
-<
+#<
 a = "1"
 a
->
+#>
 #output = "1"
 #commentary = should return what's inside of ""
 #_______________________________________________________________
 #TESTCASE
-<
+#<
 a = "1"
 len(a)
->
+#>
 #output = 1
 #commentary = should return size 1
 #_______________________________________________________________
 #TESTCASE
-<
+#<
 a = "1" + 1
 len(a)
->
+#>
 #output = 2
 #commentary = should add 1 to string
 #_______________________________________________________________
 #TESTCASE
-<
+#<
 a = "1" + 1
 a
->
+#>
 #output = "11"
 #commentary = should add 1 to string
 #_______________________________________________________________
 #TESTCASE
-<
+#<
 a = "1"
 b = "1"
 a + b
->
+#>
 #output = "11"
 #commentary = should add string to string
 #_______________________________________________________________
 #TESTCASE
-<
+#<
 a = "1"#24343 = 243432
 b = "1"
 a + b
->
+#>
 #output = "11"
 #commentary = should not include commentaries
 #_______________________________________________________________
 #TESTCASE
-<
+#<
 a = "1"#24343 = 243432
 b = 3
 a * b
->
+#>
 #output = "111"
 #commentary = should repeat string 3 times
 #_______________________________________________________________
 #TESTCASE
-<
+#<
 a = "1"#24343 = 243432
 b = "12312"
 len(a+b)
->
+#>
 #output = 6
 #commentary = should repeat string 3 times
 #_______________________________________________________________
 #TESTCASE
-<
+#<
 print("asd")
->
+#>
 #output = "asd"
 #commentary = print should print value and return it
 #_______________________________________________________________
 #TESTCASE
-<
+#<
 "asd"
->
+#>
 #output = "asd"
 #commentary = should return string values with ""
 #_______________________________________________________________

@@ -1,84 +1,84 @@
 #TESTCASE
-<
+#<
 1.0 + 1.0
->
+#>
 #output = 2.0
 #commentary = Testing arithmetic operator + for two floats.
 #_______________________________________________________________
 #TESTCASE
-<
+#<
 1.0 - 1.0
->
+#>
 #output = 0.0
 #commentary = Testing arithmetic operator - for two floats.
 #_______________________________________________________________
 ##TESTCASE
-<
+#<
 1.0 / 1.0
->
+#>
 #output = 1.0
 #commentary = Testing arithmetic operator / for two floats.
 #_______________________________________________________________
 #TESTCASE
-<
+#<
 1.0 * 2.0
->
+#>
 #output = 2.0
 #commentary = Testing arithmetic operator * for two floats.
 _______________________________________________________________
 #TESTCASE
-<
+#<
 1.0 + 1.0 * 2.0
->
+#>
 #output = 3.0
 #commentary = Testing variants of combining different operators for two floats.
 #_______________________________________________________________
 #TESTCASE
-<
+#<
 1.0*2.0 + 1.0
->
+#>
 #output = 3.0
 #commentary = Testing variants of combining different operators for two floats.
 #_______________________________________________________________
 #TESTCASE
-<
+#<
 1.0 + 1.0 - 1.0
->
+#>
 #output = 1.0
 #commentary = Testing variants of combining different operators for two floats.
 #_______________________________________________________________
 #TESTCASE
-<
+#<
 1.0 - 1.0 + 1.0
->
+#>
 #output = 1.0
 #commentary = Testing variants of combining different operators for two floats.
 #_______________________________________________________________
 #TESTCASE
-<
+#<
 1.0 + 8.0 / 4.0
->
+#>
 #output = 3.0
 #commentary = Testing variants of combining different operators for two floats.
 #_______________________________________________________________
 #TESTCASE
-<
+#<
 4.0/2.0 + 2.0*4.0
->
+#>
 #output = 10.0
 #commentary = Testing variants of combining different operators for two floats.
 #_______________________________________________________________
 #TESTCASE
-<
+#<
 1.0 - 2.0
->
+#>
 #output = -1.0
 #commentary = Testing that negative number can be returned.
 #_______________________________________________________________
 #TESTCASE
-<
+#<
 1.0 + -4.0*4.0
->
+#>
 #output = -15.0
 #commentary = Testing that multiplication of negative number will return negaive number
 #_______________________________________________________________

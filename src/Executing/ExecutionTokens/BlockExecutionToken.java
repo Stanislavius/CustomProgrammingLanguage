@@ -1,8 +1,8 @@
 package Executing.ExecutionTokens;
 
-import Executing.ExecutionExceptions.ExecutionException;
-import Executing.ReturnType;
-import Executing.ReturnValue;
+import Executing.ExecutionTokens.Builtin.Types.IntType;
+import Executing.ExecutionTokens.Builtin.Types.ObjectType;
+import Executing.ExecutionTokens.Builtin.Types.VoidType;
 import Lexing.Token;
 import java.util.LinkedList;
 
@@ -20,12 +20,12 @@ public class BlockExecutionToken extends ExecutionToken{
         this.elseToDos = elseToDos;
         this.elseConditions = elseConditions;
     }
-    public ReturnValue execute() throws ExecutionException {
-        ReturnValue result = new ReturnValue(null, ReturnType.VOID);
+    public ObjectType execute() {
+        ObjectType result = new VoidType();
         boolean flag = true;
         if (token.getValue().equals("if")){
-            ReturnValue conditionEvaluation = condition.execute();
-            if (((int) conditionEvaluation.getValue()) != 0){
+            ObjectType conditionEvaluation = condition.execute();
+            if ((((IntType) conditionEvaluation).getInt()) != 0){
                 for(int i = 0; i < toDo.size(); ++i){
                     result = toDo.get(i).execute();
                 }
@@ -34,7 +34,7 @@ public class BlockExecutionToken extends ExecutionToken{
                 flag = false;
         }
         if (token.getValue().equals("while")){
-            while (((int) condition.execute().getValue()) != 0){
+            while ((((IntType) condition.execute()).getInt()) != 0){
                 for(int i = 0; i < toDo.size(); ++i){
                     result = toDo.get(i).execute();
                 }
@@ -43,7 +43,7 @@ public class BlockExecutionToken extends ExecutionToken{
         }
         if (flag == false) {
             for (int i = 0; i < elseConditions.size(); ++i) {
-                if ((((int) elseConditions.get(i).execute().getValue()) != 0)) {
+                if ((((IntType) elseConditions.get(i).execute()).getInt() != 0)) {
                     for (int j = 0; j < elseToDos.get(i).size(); ++j) {
                         result = elseToDos.get(i).get(j).execute();
                     }

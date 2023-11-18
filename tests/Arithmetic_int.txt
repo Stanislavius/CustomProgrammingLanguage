@@ -1,91 +1,91 @@
 #TESTCASE
-<
+#<
 1 + 1
->
+#>
 #output = 2
 #commentary = Testing arithmetic operator + for two integers.
 #_______________________________________________________________
 #TESTCASE
-<
+#<
 1 - 1
->
+#>
 #output = 0
 #commentary = Testing arithmetic operator - for two integers.
 #_______________________________________________________________
 #TESTCASE
-<
+#<
 1 / 1
->
+#>
 #output = 1
 #commentary = Testing arithmetic operator / for two integers.
 #_______________________________________________________________
 #TESTCASE
-<
+#<
 1 * 2
->
+#>
 #output = 2
 #commentary = Testing arithmetic operator * for two integers.
 #_______________________________________________________________
 #TESTCASE
-<
+#<
 1 + 1 * 2
->
+#>
 #output = 3
 #commentary = Testing variants of combining different operators for two integers.
 #_______________________________________________________________
 #TESTCASE
-<
+#<
 1*2 + 1
->
+#>
 #output = 3
 #commentary = Testing variants of combining different operators for two integers.
 #_______________________________________________________________
 #TESTCASE
-<
+#<
 1 + 1 - 1
->
+#>
 #output = 1
 #commentary = Testing variants of combining different operators for two integers.
 #_______________________________________________________________
 #TESTCASE
-<
+#<
 1 - 1 + 1
->
+#>
 #output = 1
 #commentary = Testing variants of combining different operators for two integers.
 #_______________________________________________________________
 #TESTCASE
-<
+#<
 -1 + 1 + 1
->
+#>
 #output = 1
 #commentary = Testing variants of combining different operators for two integers.
 #_______________________________________________________________
 #TESTCASE
-<
+#<
 1 + 8 / 4
->
+#>
 #output = 3
 #commentary = Testing variants of combining different operators for two integers.
 #_______________________________________________________________
 #TESTCASE
-<
+#<
 4/2 + 2*4
->
+#>
 #output = 10
 #commentary = Testing variants of combining different operators for two integers.
 #_______________________________________________________________
 #TESTCASE
-<
+#<
 1 - 2
->
+#>
 #output = -1
 #commentary = Testing that negative number can be returned.
 #_______________________________________________________________
 #TESTCASE
-<
+#<
 1 + -4*4
->
+#>
 #output = -15
 #commentary = Testing that multiplication of negative number will return negaive number
 #_______________________________________________________________

@@ -1,35 +1,35 @@
 #TESTCASE
-<
+#<
 5 == 5
->
+#>
 #output = 1
 #commentary = comparison testing
 #_______________________________________________________________
 #TESTCASE
-<
+#<
 5 == 3
->
+#>
 #output = 0
 #commentary = comparison testing
 #_______________________________________________________________
 #TESTCASE
-<
+#<
 if 4 == 4
     32
->
+#>
 #output = 32
 #commentary = true condition
 #_______________________________________________________________
 #TESTCASE
-<
+#<
 if 4 == 5
     32
->
+#>
 #output = void
 #commentary = false condition
 #_______________________________________________________________
 #TESTCASE
-<
+#<
 a = 5
 if a == 5
     1
@@ -39,12 +39,12 @@ elif a == 23
     3
 else
     4
->
+#>
 #output = 1
 #commentary = if elif else testing
 #_______________________________________________________________
 #TESTCASE
-<
+#<
 a = 4
 if a == 5
     1
@@ -54,12 +54,12 @@ elif a == 23
     3
 else
     4
->
+#>
 #output = 2
 #commentary = if elif else testing
 #_______________________________________________________________
 #TESTCASE
-<
+#<
 a = 23
 if a == 5
     1
@@ -69,12 +69,12 @@ elif a == 23
     3
 else
     4
->
+#>
 #output = 3
 #commentary = if elif else testing
 #_______________________________________________________________
 #TESTCASE
-<
+#<
 a = 231
 if a == 5
     1
@@ -84,12 +84,12 @@ elif a == 23
     3
 else
     4
->
+#>
 #output = 4
 #commentary = if elif else testing
 #_______________________________________________________________
 #TESTCASE
-<
+#<
 a = 10
 if a > 5
     if a > 6
@@ -100,12 +100,12 @@ if a > 5
         2
 elif a == 1
     3
->
+#>
 #output = 0
 #commentary = if inside if
 #_______________________________________________________________
 #TESTCASE
-<
+#<
 a = 6
 if a > 5
     if a > 6
@@ -116,12 +116,12 @@ if a > 5
         2
 elif a == 1
     3
->
+#>
 #output = 1
 #commentary = if inside if
 #_______________________________________________________________
 #TESTCASE
-<
+#<
 a = 5
 if a > 5
     if a > 6
@@ -132,12 +132,12 @@ if a > 5
         2
 elif a == 1
     3
->
+#>
 #output = void
 #commentary = if inside if
 #_______________________________________________________________
 #TESTCASE
-<
+#<
 a = 1
 if a > 5
     if a > 6
@@ -148,12 +148,12 @@ if a > 5
         2
 elif a == 1
     3
->
+#>
 #output = 3
 #commentary = if inside if
 #_______________________________________________________________
 #TESTCASE
-<
+#<
 a = 2
 if a > 5
     if a > 6
@@ -166,34 +166,34 @@ elif a == 1
     3
 else
     10
->
+#>
 #output = 10
 #commentary = if inside if
 #_______________________________________________________________
 #TESTCASE
-<
+#<
 a = 2
 while a < 10
     a = a + 1
 a
->
+#>
 #output = 10
 #commentary = while
 #_______________________________________________________________
 #TESTCASE
-<
+#<
 a = 2
 while a < 10
     a = a + 1
 else
     a = a + 5
 a
->
+#>
 #output = 15
 #commentary = while with else
 #_______________________________________________________________
 #TESTCASE
-<
+#<
 a = 2
 if a > 0
     if a < 10
@@ -208,7 +208,7 @@ if a > 0
                 2
     elif a == 10
         a
->
+#>
 #output = 2
 #commentary = many nested if
 #_______________________________________________________________

@@ -11,9 +11,11 @@ class TestCase {
     static final String DEFAULT_OUTPUT  = "void";
     static final String DEFAULT_TYPE  = "output";
     static final String DEFAULT_COMMENTARY  = "No commentary provided.";
+    static final String DEFAULT_TITLE  = "Test";
     String[] input;
     String output;
     String commentary;
+    String title;
     String type = "output"; // 0 - output, 1 - LexerError, 2 - ParsingError, 3 - ExecutionError
 
     public TestCase(String[] input, HashMap<String, String> params) {
@@ -21,6 +23,7 @@ class TestCase {
         output = params.getOrDefault("output", DEFAULT_OUTPUT);
         commentary = params.getOrDefault("commentary", DEFAULT_COMMENTARY);
         type = params.getOrDefault("type", DEFAULT_TYPE);
+        title = params.getOrDefault("title", DEFAULT_TITLE);
     }
 
     public String[] getInput() {
@@ -47,11 +50,11 @@ class TestCase {
             boolean codeReading = false;
             br.readLine();
             while (((line = br.readLine()) != null)) {
-                if (line.equals("<")) {
+                if (line.equals("#<")) {
                     codeReading = true;
                     continue;
                 }
-                if (line.equals(">")){
+                if (line.equals("#>")){
                     codeReading = false;
                     continue;
                 }

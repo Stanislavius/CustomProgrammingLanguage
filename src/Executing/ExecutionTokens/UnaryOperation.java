@@ -1,9 +1,11 @@
 package Executing.ExecutionTokens;
 
 import Executing.ExecutionExceptions.ExecutionException;
-import Executing.ReturnType;
-import Executing.ReturnValue;
+import Executing.ExecutionTokens.Builtin.Types.ErrorType;
+import Executing.ExecutionTokens.Builtin.Types.ObjectType;
 import Lexing.Token;
+
+import static Executing.ExecutionTokens.Builtin.Types.ObjectType.getMember;
 
 public class UnaryOperation extends ExecutionToken {
     ExecutionToken right;
@@ -13,25 +15,15 @@ public class UnaryOperation extends ExecutionToken {
         this.right = right;
     }
 
-    public ReturnValue execute() throws ExecutionException {
+    public ObjectType execute() {
+        ObjectType arg = right.execute();
         switch (token.getValue()) {
             case "+":
-                return right.execute();
+                return arg;
             case "-":
-                return UnaryOperation.sub(right.execute());
+                return arg.getMember("__class__").getMember("__neg__").call(arg);
         }
-        return new ReturnValue<>(null, ReturnType.ERROR);
+        return new ErrorType();
     }
 
-    public static ReturnValue sub(ReturnValue arg) {
-        if (arg.getType() == ReturnType.INT) {
-            int argInt = (int) arg.getValue();
-            return new ReturnValue<Integer>(-argInt, ReturnType.INT);
-        }
-        if (arg.getType() == ReturnType.FLOAT) {
-            float argFloat = (float) arg.getValue();
-            return new ReturnValue<Float>(-argFloat, ReturnType.FLOAT);
-        }
-        return new ReturnValue(null, ReturnType.ERROR);
-    }
 }
