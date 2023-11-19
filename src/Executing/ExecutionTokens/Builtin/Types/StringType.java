@@ -39,6 +39,29 @@ public class StringType extends ObjectType {
         }
 
         ));
+
+        type.setMember("__mul__", new FunctionType("__mul__", new SourceFunction(){
+            public ObjectType execute(LinkedList<ObjectType> args){
+                String v1 = ((StringType)(args.get(0))).toString();
+                int v2 = ((IntType) args.get(1)).getInt();
+                StringBuilder sb = new StringBuilder();
+                for(int i = 0; i < v2; ++i)
+                    sb.append(v1);
+                return new StringType(sb.toString());
+            }
+        }
+
+        ));
+
+        type.setMember("__len__", new FunctionType("__len__", new SourceFunction(){
+            public ObjectType execute(LinkedList<ObjectType> args){
+                String v1 = ((StringType)(args.get(0))).value;
+                return new IntType(v1.length());
+            }
+        }
+
+        ));
+
         Executor.setVariable("str", type);
     }
     String value;

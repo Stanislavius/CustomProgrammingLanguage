@@ -9,8 +9,7 @@ public class BuiltinFunctions {
         FunctionType print = new FunctionType("print", new SourceFunction(){
             public ObjectType execute(LinkedList<ObjectType> args){
                 ObjectType arg = args.get(0);
-                args.removeFirst();
-                StringType resultObj = ((StringType)arg.getMember("__str__").call(args));
+                StringType resultObj = ((StringType)arg.getMember("__class__").getMember("__str__").call(args));
                 System.out.println(resultObj.getValue());
                 return resultObj;
             }
@@ -24,6 +23,15 @@ public class BuiltinFunctions {
         });
 
         Executor.setVariable("abs", abs);
+
+
+        FunctionType len = new FunctionType("len", new SourceFunction(){
+            public ObjectType execute(LinkedList<ObjectType> args){
+                return args.get(0).getMember("__class__").getMember("__len__").call(args.get(0));
+            }
+        });
+
+        Executor.setVariable("len", len);
 
     }
 }

@@ -31,7 +31,7 @@ public class Testing {
         int wrong_total = 0;
         int total_cases = 0;
         for(int i = 0; i < stats.size(); ++i){
-            logger.info("Passed " + stats.get(i)[1] + " from " + stats.get(i)[0] + " in file " + testFiles[i]);
+            logger.finest("Passed " + stats.get(i)[1] + " from " + stats.get(i)[0] + " in file " + testFiles[i]);
             total_cases += stats.get(i)[0];
             passed_total += stats.get(i)[1];
             wrong_total += stats.get(i)[2];
