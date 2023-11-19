@@ -26,8 +26,8 @@ public class ListType extends ObjectType {
 
         type.setMember("__str__", new FunctionType("__str__", new SourceFunction(){
             public ObjectType execute(LinkedList<ObjectType> args){
-                float v1 = ((FloatType)(args.get(0))).getFloat();
-                return new StringType(v1+"");
+                ListType v1 = ((ListType)(args.get(0)));
+                return new StringType(v1.toString());
             }
         }
         ));
@@ -42,7 +42,7 @@ public class ListType extends ObjectType {
         type.setMember("__add__", new FunctionType("__add__", new SourceFunction(){
             public ObjectType execute(LinkedList<ObjectType> args){
                 LinkedList<ObjectType> v1 = ((ListType)(args.get(0))).getValues();
-                LinkedList<ObjectType> v2 = ((ListType)(args.get(0))).getValues();
+                LinkedList<ObjectType> v2 = ((ListType)(args.get(1))).getValues();
                 LinkedList<ObjectType> result = new LinkedList<ObjectType>();
                 result.addAll(v1);
                 result.addAll(v2);

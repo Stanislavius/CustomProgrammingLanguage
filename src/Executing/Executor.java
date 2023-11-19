@@ -34,6 +34,7 @@ public class Executor {
         StringType.createType();
         ListType.createType();
         VoidType.createType();
+        BuiltinFunctions.createFunctions();
     }
     public static void addToStack(FunctionDefinitionToken curFunc){
         stack.add(curFunc);
