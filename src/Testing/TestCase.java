@@ -34,6 +34,10 @@ class TestCase {
         return output;
     }
 
+    public String getTitle() {
+        return title;
+    }
+
     public String getCommentary() {
         return commentary;
     }

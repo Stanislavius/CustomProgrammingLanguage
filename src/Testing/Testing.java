@@ -59,7 +59,7 @@ public class Testing {
                     stats[1] += 1;
                 } else {
                     StringBuilder sb = new StringBuilder();
-                    sb.append(String.format("Test %d from %s, file is failed \n", j, filename));
+                    sb.append(String.format("Test %s from %s, file is failed \n", testCases.get(j).getTitle(), filename));
                     sb.append(String.format("Input = < %s > \n %s \n",
                             testCases.get(j).getInputOneString(),
                             testCases.get(j).getCommentary()));
@@ -71,7 +71,7 @@ public class Testing {
                 }
             }
             catch (Exception e){
-                logger.severe("Test " + j + " throws exception");
+                logger.severe("Test " + testCases.get(j).getTitle() + " throws exception");
                 stats[3] += 1;
             }
 
