@@ -41,7 +41,7 @@ public class ClassDefinitionToken extends ExecutionToken{
         while (iter.hasNext()){
             String key = (String)iter.next();
             ExecutionToken member = members.get(key);
-            classMembers.put(name, execute());
+            classMembers.put(name, member.execute());
         }
         Executor.setVariable(name, new ClassType(classMembers));
         return new VoidType();

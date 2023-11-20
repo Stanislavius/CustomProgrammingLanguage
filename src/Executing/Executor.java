@@ -27,11 +27,12 @@ public class Executor {
 
     public static void createTypes(){
         ClassType.createType();
+        StringType.createType();
+        ClassType.createType2();
         FunctionType.createType();
         FloatType.createType();
         IntType.createType();
         ErrorType.createType();
-        StringType.createType();
         ListType.createType();
         VoidType.createType();
         BuiltinFunctions.createFunctions();

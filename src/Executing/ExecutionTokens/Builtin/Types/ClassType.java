@@ -11,6 +11,9 @@ public class ClassType extends ObjectType {
     public static void createType(){
         type = new ClassType();
         type.setMember("__class__", type);
+    }
+
+    public static void createType2(){
         type.setMember("__name__", new StringType("type"));
     }
 
