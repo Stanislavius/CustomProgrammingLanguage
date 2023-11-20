@@ -70,3 +70,28 @@ f2u2n2(4, 5, 6)
 #output = 15
 #commentary = test that function names with digits are supported
 #_______________________________________________________________
+#TESTCASE
+#<
+def fun(a)
+    def fun2()
+        a + 5
+    fun2
+f = fun(4)
+f()
+#>
+#output = 9
+#commentary = f is equals fun2 after execution of fun
+#title = function_creates_function.1
+#_______________________________________________________________
+#TESTCASE
+#<
+def fun(a)
+    def fun2()
+        a + 5
+    fun2
+fun(4)()
+#>
+#output = 9
+#commentary = should allow function call after function call
+#title = function_creates_function.2
+#_______________________________________________________________

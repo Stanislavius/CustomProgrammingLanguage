@@ -88,3 +88,37 @@ print("asd")
 #output = "asd"
 #commentary = should return string values with ""
 #_______________________________________________________________
+#TESTCASE
+#<
+"asd"
+#>
+#output = "asd"
+#commentary = should return string values with ""
+#_______________________________________________________________
+#TESTCASE
+#<
+s = "1234567890"
+s[0]
+#>
+#output = "1"
+#commentary = should allow indexing of string
+#title = string.operations.1
+#_______________________________________________________________
+#TESTCASE
+#<
+s = "1234567890"
+s[0:2]
+#>
+#output = "123"
+#commentary = should allow slices of string
+#title = string.operations.2
+#_______________________________________________________________
+#TESTCASE
+#<
+s = "1234567890"
+s[0:2]  = 1
+#>
+#output = "123" #todo SHOULD NOT ALLOW IT
+#commentary = should not allow assign to elements of string
+#title = string.operations.3
+#_______________________________________________________________

@@ -82,3 +82,54 @@ _______________________________________________________________
 #output = -15.0
 #commentary = Testing that multiplication of negative number will return negaive number
 #_______________________________________________________________
+#TESTCASE
+#<
+float(4.4)
+#>
+#output = 4.4
+#commentary = should create float
+#title = float_new.1
+#_______________________________________________________________
+#TESTCASE
+#<
+float(4)
+#>
+#output = 4.0
+#commentary = should create float
+#title = float_new.2
+#_______________________________________________________________
+#TESTCASE
+#<
+float("4.4")
+#>
+#output = 4.4
+#commentary = should create float from string
+#title = float_new.3
+#_______________________________________________________________
+#TESTCASE
+#<
+f = 4
+float(f)
+#>
+#output = 4.0
+#commentary = should create float from variable
+#title = float_new.4
+#_______________________________________________________________
+#TESTCASE
+#<
+f = "4.4"
+float(f)
+#>
+#output = 4.4
+#commentary = should create float from string variable
+#title = float_new.5
+#_______________________________________________________________
+#TESTCASE
+#<
+f = 5.2342
+float(f)
+#>
+#output = 5.2342
+#commentary = should create float from float variable
+#title = float_new.6
+#_______________________________________________________________

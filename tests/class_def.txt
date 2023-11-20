@@ -1,0 +1,259 @@
+#TESTCASE
+#<
+class c:
+    def __init__(self)
+        self.a = 5
+
+obj = c()
+obj.a
+#>
+#output = 5
+#commentary = simple class definition
+#title = cls_def.1
+#_______________________________________________________________
+#TESTCASE
+#<
+class c:
+    def __init__(self, val)
+        self.a = val
+
+obj = c(5)
+obj.a
+#>
+#output = 5
+#commentary = simple class definition, should return value
+#title = cls_def.2
+#_______________________________________________________________
+#TESTCASE
+#<
+class c:
+    def __init__(self, val)
+        self.a = val
+    def __add__(self, other)
+        c(self.a + other)
+
+obj = c(5)
+obj = c + 5
+obj.a
+#>
+#output = 10
+#commentary = should use magic method __add__ when '+' operator is used
+#title = cls_def.3
+#_______________________________________________________________
+#TESTCASE
+#<
+class c:
+    def __init__(self, val)
+        self.a = val
+    def __str__(self, other)
+        return str(self.a)
+
+obj = c(5)
+str(obj)
+#>
+#output = 5
+#commentary = should use magic method __str__ when str is called
+#title = cls_def.4
+#_______________________________________________________________
+#TESTCASE
+#<
+class c:
+    def __init__(self, val)
+        self.a = val
+    def __str__(self, other)
+        return str(self.a)
+
+str(c)
+#>
+#output = "c"
+#commentary = should return class of c
+#title = cls_def.5
+#_______________________________________________________________
+#TESTCASE
+#<
+class c:
+    def __init__(self, val)
+        self.a = val
+    def __str__(self, other)
+        return str(self.a)
+    def __eq__(self, other)
+        1
+
+obj = c(4)
+obj == 4
+#>
+#output = 1
+#commentary = should return result of comparison, which is always 1
+#title = cls_def.6
+#_______________________________________________________________
+#TESTCASE
+#<
+class c:
+    def __init__(self, val)
+        self.a = val
+    def __str__(self, other)
+        return str(self.a)
+    def __len__(self, other)
+        1
+
+s = c(3)
+len(s)
+#>
+#output = 1
+#commentary = should return result of len, which is always 1
+#title = cls_def.7
+#_______________________________________________________________
+#TESTCASE
+#<
+class c:
+    def __init__(self, val)
+        self.a = val
+    def __str__(self, other)
+        return str(self.a)
+    def __abs__(self, other)
+        abs(self.a)
+
+s = c(4)
+abs(s)
+#>
+#output = 4
+#commentary = should return absolute value of self.a
+#title = cls_def.8
+#_______________________________________________________________
+#TESTCASE
+#<
+class c:
+    def __init__(self, val)
+        self.a = val
+    def __add__(self, other)
+        c(self.a + other.a)
+
+op1 = c(4)
+op2 = c(5)
+op3 = op1 + op2
+op1.a
+#>
+#output = 9
+#commentary = method __add__
+#title = cls_def.9
+#_______________________________________________________________
+#TESTCASE
+#<
+class c:
+    def __init__(self, val)
+        self.a = val
+    def __add__(self, other)
+        if type(other) == int
+            self.a + other
+        elif type(other) == c
+            self.a + other.a
+        else
+            return error("Wrong argument")
+
+op1 = c(4)
+op2 = 5
+op3 = op1 + op2
+op1.a
+#>
+#output = 9
+#commentary = method __add__
+#title = cls_def.10
+#_______________________________________________________________
+#TESTCASE
+#<
+class c:
+    def __init__(self, val)
+        self.a = val
+    def __add__(self, other)
+        if type(other) == int
+            self.a + other
+        elif type(other) == c
+            self.a + other.a
+        else
+            return error("Wrong argument")
+
+op1 = c(4)
+op2 = c(5)
+op3 = op1 + op2
+op1.a
+#>
+#output = 9
+#commentary = method __add__
+#title = cls_def.11
+#_______________________________________________________________
+#TESTCASE
+#<
+class c:
+    def __init__(self, val, func)
+        self.val = val
+        self.func = func
+    def func(self)
+        self.func(self.val)
+
+def func(v)
+    v + 2
+
+obj = c(2, func)
+obj.func()
+#>
+#output = 4
+#commentary = should accept function as arg
+#title = func_assign.1
+#_______________________________________________________________
+#TESTCASE
+#<
+class c:
+    def __init__(self, val, func)
+        self.val = val
+        self.func = func
+    def func(self)
+        self.func(self.val)
+
+def func(v)
+    v + 2
+
+obj = c(2, func)
+obj.func()
+#>
+#output = 4
+#commentary = should accept function as arg
+#title = func_assign.1
+#_______________________________________________________________
+#TESTCASE
+#<
+class c:
+    def __init__(self, val)
+        self.val = val
+        def func(v)
+            v + 2
+        self.func = func
+    def func(self)
+        self.func(self.val)
+
+
+obj = c(2)
+obj.func()
+#>
+#output = 4
+#commentary = function can be created inside class
+#title = func_assign.2
+#_______________________________________________________________
+#TESTCASE
+#<
+class c:
+    def __init__(self, val, k)
+        self.val = val
+        def func(v)
+            v + k
+        self.func = func
+    def func(self)
+        self.func(self.val)
+
+
+obj = c(2, 5)
+obj.func()
+#>
+#output = 7
+#commentary = function can be created inside class and accept args from outside
+#title = func_assign.3
+#_______________________________________________________________

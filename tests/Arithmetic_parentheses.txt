@@ -89,3 +89,66 @@ _______________________________________________________________
 #output = 24
 #commentary = should return calculated expression inside parentheses * calculated expression inside parentheses
 #_______________________________________________________________
+#TESTCASE
+#<
+(3+1)*(4+2) + (444/111)*4
+#>
+#output = 40
+#commentary = should woth with different combinations of parentheses
+#_______________________________________________________________
+#TESTCASE
+#<
+(3+1)*(4+2) + (444/111)*-4
+#>
+#output = 8
+#commentary = should work with different combinations of parentheses
+#_______________________________________________________________
+#TESTCASE
+#<
+(3+1)*-(4+2) + (444/111)*-4
+#>
+#output = -40
+#commentary = should work with different combinations of parentheses
+#_______________________________________________________________
+#TESTCASE
+#<
+-(3+1)*-(4+2) + (444/111)*-4
+#>
+#output = 8
+#commentary = should work with different combinations of parentheses
+#_______________________________________________________________
+#TESTCASE
+#<
+-(3+1)*-(4+2) + (444/111)*-4 + (12*5*1*(5+4)) + (12 * 3 - 4*(4-1-2-3-4-5)*5)
+#>
+#output = 804
+#commentary = should work with different combinations of parentheses
+#_______________________________________________________________
+#TESTCASE
+#<
+1 + 2 + 3 + 4 + 5 + 6 +7 +8 +9 + 10
+#>
+#output = 55
+#commentary = should work with multiple operations in a row
+#_______________________________________________________________
+#TESTCASE
+#<
+1 * 2 * 3 * 4 * 5 * 6 * 7 * 8 * 9 * 10
+#>
+#output = 3628800
+#commentary = should work with multiple operations in a row
+#_______________________________________________________________
+#TESTCASE
+#<
+-1 * -2 * -3 * -4 * -5 * -6 * -7 * -8 * -9 * -10
+#>
+#output = 3628800
+#commentary = should work with multiple operations in a row
+#_______________________________________________________________
+#TESTCASE
+#<
+10/2/5
+#>
+#output = 1.0
+#commentary = should work with multiple operations in a row
+#_______________________________________________________________

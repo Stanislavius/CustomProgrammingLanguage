@@ -1,0 +1,67 @@
+#TESTCASE
+#<
+a = 4 #a = 43435435345
+#>
+#output = void
+#commentary = should recognize commentary
+#title = commentary.1
+#_______________________________________________________________
+#TESTCASE
+#<
+a = "444" #a = 43435435345 + "safsafas"*5.5
+a
+#>
+#output = "444"
+#commentary = should recognize commentary and don't include string literals after commentary
+#title = commentary.2
+#_______________________________________________________________
+#TESTCASE
+#<
+def fun(a, b)
+    a + b
+
+func(4, 5)
+a
+#>
+#output = 9
+#commentary = should not cause error because of empty line after function definition
+#title = emptyLine.1
+#_______________________________________________________________
+#TESTCASE
+#<
+a2 = 2
+a2
+#>
+#output = 9
+#commentary = should accept variables with names
+#title = names.1
+#_______________________________________________________________
+#TESTCASE
+#<
+2a = 2
+2a
+#>
+#output = Error //TODO
+#commentary = should return error
+#title = names.2
+#_______________________________________________________________
+#TESTCASE
+#<
+a23232asf = 2
+a23232asf
+#>
+#output = 2
+#commentary = should create variable and return value
+#title = names.3
+#_______________________________________________________________
+#TESTCASE
+#<
+def fun2(a)
+    a
+
+fun2(4)
+#>
+#output = 4
+#commentary = should create function with digits and execute it
+#title = names.3
+#_______________________________________________________________

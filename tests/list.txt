@@ -66,3 +66,64 @@ len(a)
 #commentary = should return length of empty list
 #title = list.length.2
 #_______________________________________________________________
+#TESTCASE
+#<
+class some_class
+    def __init__(self, a)
+        self.a = a
+    def __str__(self)
+        str(self.a)
+
+a = [some_class(4), some_class(43), some_class(6), some_class(54)]
+len(a)
+#>
+#output = 4
+#commentary = should allow object in list
+#title = list.length.3
+#_______________________________________________________________
+#TESTCASE
+#<
+class some_class
+    def __init__(self, a)
+        self.a = a
+    def __str__(self)
+        str(self.a)
+
+a = [some_class(4), some_class(43), some_class(6), some_class(54)]
+a[0].a
+#>
+#output = 4
+#commentary = should allow indexing
+#title = list.operations.1
+#_______________________________________________________________
+#TESTCASE
+#<
+class some_class
+    def __init__(self, a)
+        self.a = a
+    def __str__(self)
+        str(self.a)
+
+a = [some_class(4), some_class(43), some_class(6), some_class(54)]
+(a[0:2])[1].a
+#>
+#output = 41
+#commentary = should allow slices
+#title = list.operations.2
+#_______________________________________________________________
+#TESTCASE
+#<
+class some_class
+    def __init__(self, a)
+        self.a = a
+    def __str__(self)
+        str(self.a)
+
+a = [some_class(4), some_class(43), some_class(6), some_class(54)]
+a[0] = 1
+a[0]
+#>
+#output = 1
+#commentary = should allow assign to elements
+#title = list.operations.3
+#_______________________________________________________________

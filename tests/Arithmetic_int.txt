@@ -89,3 +89,45 @@
 #output = -15
 #commentary = Testing that multiplication of negative number will return negaive number
 #_______________________________________________________________
+#TESTCASE
+#<
+int(4)
+#>
+#output = 4
+#commentary = should create int
+#title = int_new.1
+#_______________________________________________________________
+#TESTCASE
+#<
+int(4.1)
+#>
+#output = 4
+#commentary = should create int
+#title = int_new.2
+#_______________________________________________________________
+#TESTCASE
+#<
+int("4")
+#>
+#output = 4
+#commentary = should create int
+#title = int_new.3
+#_______________________________________________________________
+#TESTCASE
+#<
+s = "4"
+int(s)
+#>
+#output = 4
+#commentary = should create int
+#title = int_new.4
+#_______________________________________________________________
+#TESTCASE
+#<
+s = 4.4
+int(s)
+#>
+#output = 4
+#commentary = should create int
+#title = int_new.5
+#_______________________________________________________________

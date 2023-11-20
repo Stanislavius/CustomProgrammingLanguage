@@ -212,3 +212,63 @@ if a > 0
 #output = 2
 #commentary = many nested if
 #_______________________________________________________________
+#TESTCASE
+#<
+5 > 1
+#>
+#output = 1
+#commentary = should __greater__ in int
+#title = comparison_int_gt
+#_______________________________________________________________
+#TESTCASE
+#<
+5 > 1
+#>
+#output = 0
+#commentary = should __gt__ in int
+#title = comparison_int_lt
+#_______________________________________________________________
+#TESTCASE
+#<
+5.0 == 5.0
+#>
+#output = 1
+#commentary = should call __eq__ for int
+#title = comparison_float_eq
+#_______________________________________________________________
+#TESTCASE
+#<
+5.0 == "5.0"
+#>
+#output = 0
+#commentary = should allow to compare different types
+#title = comparison_float_str
+#_______________________________________________________________
+#TESTCASE
+#<
+class val
+    def __init__(self, v)
+        self.v = 4
+
+a1 = val(4)
+a2 = val(5)
+a1 == a2
+#>
+#output = 0
+#commentary = should allow to compare objects
+#title = comparison_objects.1
+#_______________________________________________________________
+#TESTCASE
+#<
+class val
+    def __init__(self, v)
+        self.v = 4
+
+a1 = val(4)
+a2 = val(4)
+a1 == a2
+#>
+#output = 1
+#commentary = should allow to compare objects
+#title = comparison_objects.2
+#_______________________________________________________________

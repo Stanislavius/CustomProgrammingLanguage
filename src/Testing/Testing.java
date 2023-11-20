@@ -19,7 +19,8 @@ public class Testing {
             "variables.txt",
             "string.txt",
             "list.txt",
-            "class_def.txt"};
+            "class_def.txt",
+            "general.txt"};
     public static void main(String[] args){
         logger = TestingLogger.createTestingLogger();
         LinkedList<Integer[]> stats = new LinkedList<Integer[]>();
