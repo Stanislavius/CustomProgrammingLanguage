@@ -29,9 +29,10 @@ statement:
 
     | VARIABLE_NAME '=' expression NEWLINE
     | expression NEWLINE
-    | if_statement NEWLINE
-    | while statement NEWLINE
-    | function_def NEWLINE
+    | if_statement
+    | while statement
+    | function_def
+    | class_def
 
 func_name: STR
 
@@ -40,7 +41,7 @@ function_def: 'def' func_name'('[VARIABLE_NAME], [VARIABLE_NAME ',']+')' block
 expression: 
 
     | comparison
-    | '(comparison)'
+    | '('comparison')'
 
 comparison:
 
@@ -63,19 +64,30 @@ term:
 
 factor: 
 
-    | INT 
     | '-'factor
+    | '+' factor
+    | primary
+
+primary: 
+
+    | atom '.' VARIABLE_NAME
+    | atom
+    | atom '.' function_call
+    
+atom: 
+
+    | INT 
     | FLOAT
     | VARIABLE_NAME
-    | '+' factor
-    | function_call
-
+    | STR
+    | LIST
+    
 function_call: 
 
     | func_name(expression [',' expression]*)
     | func_name()
 
-block: [NEWLINE INDENT statement]+
+block: [NEWLINE INDENT statement]+ NEWLINE DEDENT
 
 
 
@@ -95,14 +107,23 @@ else_block:
 
     | 'else' block
 
+class_def_raw:
+    | 'class' NAME block 
+
     
-VARIABLE_NAME: STR
+VARIABLE_NAME: [_a-zA-Z]{1}[_a-zA-Z0-9]+
 
 INT: [0-9]+ 
 
-STR: [a-zA-Z]+
+STR: "[.]+"
 
 FLOAT: [0-9]+.[0-9]+
+
+LIST: 
+    | []
+    | '[' atom [',' atom]+ ']'
+
+
 
 ## How to use?
 Write program code in txt file. Pass path to file as command line argument and run it.
