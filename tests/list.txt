@@ -48,3 +48,21 @@ a+b
 #output = [1, 2, 3, [4]]
 #commentary = should support adding list containing lists to list
 #_______________________________________________________________
+#TESTCASE
+#<
+a = [1, 2]
+len(a)
+#>
+#output = 2
+#commentary = should return list length
+#title = list.length.1
+#_______________________________________________________________
+#TESTCASE
+#<
+a = []
+len(a)
+#>
+#output = 0
+#commentary = should return length of empty list
+#title = list.length.2
+#_______________________________________________________________

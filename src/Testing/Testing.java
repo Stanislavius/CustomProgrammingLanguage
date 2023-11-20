@@ -18,7 +18,8 @@ public class Testing {
             "function_def.txt",
             "variables.txt",
             "string.txt",
-            "list.txt"};
+            "list.txt",
+            "class_def.txt"};
     public static void main(String[] args){
         logger = TestingLogger.createTestingLogger();
         LinkedList<Integer[]> stats = new LinkedList<Integer[]>();
