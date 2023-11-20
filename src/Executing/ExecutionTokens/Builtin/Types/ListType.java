@@ -50,6 +50,16 @@ public class ListType extends ObjectType {
             }
         }
         ));
+
+        type.setMember("__len__", new FunctionType("__len__", new SourceFunction(){
+            public ObjectType execute(LinkedList<ObjectType> args){
+                LinkedList<ObjectType> v1 = ((ListType)(args.get(0))).getValues();
+                return new IntType(v1.size());
+            }
+        }
+
+        ));
+
         Executor.setVariable("list", type);
     }
     LinkedList<ObjectType> values;
