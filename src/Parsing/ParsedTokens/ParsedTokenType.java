@@ -17,5 +17,6 @@ public enum ParsedTokenType {
     LIST,
     MEMBERSHIP_FUNCTION_CALL,
     MEMBERSHIP_VARIABLE,
-    CLASS_DEFINITION
+    CLASS_DEFINITION,
+    DICT
 }

@@ -329,6 +329,82 @@ public class Parser {
         return operands;
     }
 
+    public ParsedDictToken parseDict(LinkedList<ParsedToken> line) throws ParsingException {
+        Token listToken = line.get(0).getToken();
+        LinkedList<ParsedToken> keys = new LinkedList<ParsedToken>();
+        LinkedList<ParsedToken> values = new LinkedList<ParsedToken>();
+        LinkedList<ParsedToken> key = new LinkedList<ParsedToken>();
+        LinkedList<ParsedToken> value = new LinkedList<>();
+        boolean isKey = true;
+        int balance = 1;
+        for (int i = 1; i < line.size()-1; ++i) {
+            switch (line.get(i).getType()) {
+                case DICT:
+                        if (line.get(i).getValue().equals("{"))
+                            balance++;
+                        else
+                            balance--;
+                        break;
+                case COLON:
+                    isKey = false;
+                    break;
+                case SEPARATOR:
+                    if (line.get(i).getType() == TokenType.SEPARATOR && balance == 1) {
+                        values.add(parseExpression(value));
+                        keys.add(parseExpression(key));
+                        value = new LinkedList<ParsedToken>();
+                        key = new LinkedList<ParsedToken>();
+                        isKey = true;
+                    } else {
+                        if (isKey)
+                            key.add(line.get(i));
+                        else
+                            value.add(line.get(i));
+                    }
+                    break;
+                default:
+                    if (isKey)
+                        key.add(line.get(i));
+                    else
+                        value.add(line.get(i));
+            }
+        }
+        if (!key.isEmpty()) {
+            values.add(parseExpression(value));
+            keys.add(parseExpression(key));
+        }
+        return new ParsedDictToken(listToken, keys, values);
+    }
+
+    public LinkedList<ParsedToken>  processDict(LinkedList<ParsedToken> line) throws ParsingException {
+        int balance = 0;
+        LinkedList<ParsedToken> operands = new LinkedList<ParsedToken>();
+        LinkedList<ParsedToken> operand = new LinkedList<ParsedToken>();
+        for(int i = 0; i < line.size(); ++i){
+            if (line.get(i).getType() == TokenType.DICT){
+                if (line.get(i).getValue().equals("{")){
+                    balance++;
+                    operand.add(line.get(i));
+                }
+                else{
+                    balance--;
+                    operand.add(line.get(i));
+                    if (balance == 0){
+                        operands.add(parseDict(operand));
+                        operand.clear();
+                    }
+                }
+            }
+            else{
+                if (balance == 0)
+                    operands.add(line.get(i));
+                else
+                    operand.add(line.get(i));
+            }
+        }
+        return operands;
+    }
+
     public LinkedList<ParsedToken>  processMembership(LinkedList<ParsedToken> line) throws ParsingException {
         LinkedList<ParsedToken> operands = new LinkedList<ParsedToken>();
         for (int i = 0; i < line.size(); ++i) {
@@ -354,6 +430,7 @@ public class Parser {
         }
         //checks
         LinkedList<ParsedToken> operands = processParantheses(line);
+        operands = processDict(operands);
         operands = processList(operands);
         operands = processMembership(operands);
         ParsedToken result = null;

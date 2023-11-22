@@ -19,6 +19,7 @@ public class Lexer {
     //final static Pattern function_pattern = Pattern.compile("[a-zA-Z]+\\(.*\\)");
     final static Pattern functionPattern = Pattern.compile("[_a-zA-Z]{1}[_a-zA-Z0-9]+\\(");
     final static Pattern listPattern = Pattern.compile("[\\[\\]}]");
+    final static Pattern dictPattern = Pattern.compile("[\\{\\}}]");
     final static Pattern variablePattern = Pattern.compile("[_a-zA-Z]+(?!\\()\\b");
     final static Pattern separatorPattern = Pattern.compile(",");
     final static Pattern memberPattern = Pattern.compile("\\.");
@@ -165,11 +166,17 @@ public class Lexer {
         Matcher separatorMatcher = separatorPattern.matcher(st);
         Matcher comparisonMatcher = comparisonPattern.matcher(st);
         Matcher listMatcher = listPattern.matcher(st);
+        Matcher dictMatcher = dictPattern.matcher(st);
         Matcher colonMatcher = colonPattern.matcher(st);
 
         while (listMatcher.find()){
             int start = indentation * 4 + listMatcher.start();
             tokens.add(new Token(TokenType.LIST, listMatcher.group(), lineNum, start));
+        }
+
+        while (dictMatcher.find()){
+            int start = indentation * 4 + dictMatcher.start();
+            tokens.add(new Token(TokenType.DICT, dictMatcher.group(), lineNum, start));
         }
 
         while (colonMatcher.find()){

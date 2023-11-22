@@ -16,5 +16,6 @@ public enum TokenType {
     STRING,
     LIST,
     MEMBER,
-    COLON
+    COLON,
+    DICT
 }
