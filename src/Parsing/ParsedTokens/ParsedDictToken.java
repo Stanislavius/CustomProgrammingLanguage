@@ -13,7 +13,7 @@ public class ParsedDictToken extends ParsedToken{
         this.keys = keys;
     }
     public ParsedTokenType getParsedType(){
-        return ParsedTokenType.LIST;
+        return ParsedTokenType.DICT;
     }
     public String toString(){
         StringBuilder sb = new StringBuilder();
@@ -30,4 +30,6 @@ public class ParsedDictToken extends ParsedToken{
     }
 
     public LinkedList<ParsedToken> getValues(){return values;}
+
+    public LinkedList<ParsedToken> getKeys(){return keys;}
 }

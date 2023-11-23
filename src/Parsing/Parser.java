@@ -21,6 +21,8 @@ public class Parser {
     static final HashSet<String> SECOND_PRIORITY = new HashSet<String>(Arrays.asList("+", "-"));
     static final HashSet<String> FIRST_PRIORITY = new HashSet<String>(Arrays.asList("*", "/"));
     static final HashSet<String> COMPARISON_OPERATIONS = new HashSet<String>(Arrays.asList("==", "<", ">"));
+    static final HashSet<String> STRUCTURES_OPEN = new HashSet<String>(Arrays.asList("[", "{"));
+    static final HashSet<String> STRUCTURES_CLOSED = new HashSet<String>(Arrays.asList("]", "}"));
     public LinkedList<ParsedAbstractStatement> parse (LinkedList<Token> tokens){
         LinkedList<LinkedList<Token>> lines = divideByLines(tokens);
         LinkedList<ParsedAbstractStatement> parsedLines = new LinkedList<ParsedAbstractStatement>();
@@ -417,7 +419,7 @@ public class Parser {
                 operands.add(line.get(i));
             }
         }
-            return operands;
+        return operands;
     }
 
 

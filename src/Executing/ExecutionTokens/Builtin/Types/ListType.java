@@ -39,6 +39,22 @@ public class ListType extends ObjectType {
         }
         ));
 
+        type.setMember("__getitem__", new FunctionType("__getitem__", new SourceFunction(){
+            public ObjectType execute(LinkedList<ObjectType> args){
+                ListType v1 = ((ListType)(args.get(0)));
+                return v1.get(args.get(1));
+            }
+        }
+        ));
+
+        type.setMember("__setitem__", new FunctionType("__setitem__", new SourceFunction(){
+            public ObjectType execute(LinkedList<ObjectType> args){
+                ListType v1 = ((ListType)(args.get(0)));
+                return v1.set(args.get(1), args.get(2));
+            }
+        }
+        ));
+
         type.setMember("__add__", new FunctionType("__add__", new SourceFunction(){
             public ObjectType execute(LinkedList<ObjectType> args){
                 LinkedList<ObjectType> v1 = ((ListType)(args.get(0))).getValues();
@@ -87,6 +103,36 @@ public class ListType extends ObjectType {
 
     public LinkedList<ObjectType> getValues(){
         return values;
+    }
+
+    public ObjectType get(int inx){
+        return this.values.get(inx);
+    }
+
+    public ObjectType get(IntType inx){
+        return this.values.get(inx.getInt());
+    }
+
+    public ObjectType get(ObjectType inx){
+        IntType obj = (IntType)inx;
+        return this.values.get(obj.getInt());
+    }
+
+
+    public ObjectType set(int inx, ObjectType value){
+        this.values.set(inx, value);
+        return new VoidType();
+    }
+
+    public ObjectType set(IntType inx, ObjectType value){
+        this.values.set(inx.getInt(), value);
+        return new VoidType();
+    }
+
+    public ObjectType set(ObjectType inx, ObjectType value){
+        IntType obj = (IntType)inx;
+        this.values.set(obj.getInt(), value);
+        return new VoidType();
     }
 
 }

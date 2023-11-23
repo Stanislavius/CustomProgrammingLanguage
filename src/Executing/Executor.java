@@ -30,6 +30,7 @@ public class Executor {
         StringType.createType();
         ClassType.createType2();
         FunctionType.createType();
+        ClassDict.createType();
         FloatType.createType();
         IntType.createType();
         ErrorType.createType();
@@ -129,6 +130,27 @@ public class Executor {
                 objectValues.add(values.get(i).execute());
             return new ValueExecutionToken(pt.getToken(), new ListType(objectValues));
         }
+
+        if (pt.getParsedType() == ParsedTokenType.DICT){
+            ParsedDictToken PDT = (ParsedDictToken)pt;
+            LinkedList<ParsedToken> parsedValues = PDT.getValues();
+            LinkedList<ParsedToken> parsedKeys = PDT.getKeys();
+            LinkedList<ExecutionToken> values = new LinkedList<ExecutionToken>();
+            LinkedList<ExecutionToken> keys = new LinkedList<ExecutionToken>();
+            for (int i = 0; i < parsedValues.size(); ++i) {
+                values.add(getExecutionTreeExpression(parsedValues.get(i)));
+                keys.add(getExecutionTreeExpression(parsedKeys.get(i)));
+            }
+            LinkedList<ObjectType> objectValues = new LinkedList<ObjectType>();
+            LinkedList<ObjectType> objectKeys = new LinkedList<ObjectType>(); //TODO, VALUES CREATED WHEN FORMING EXECUTION TREE
+            for(int i = 0; i < values.size(); ++i) {
+                objectValues.add(values.get(i).execute());
+                objectKeys.add(keys.get(i).execute());
+            }
+
+            return new ValueExecutionToken(pt.getToken(), new ClassDict(objectKeys, objectValues));
+        }
+
         if (pt.getParsedType() == ParsedTokenType.BINARY_OPERATION) {
             ExecutionToken left = getExecutionTreeExpression(((ParsedBinaryExpression)pt).getLeft());
             ExecutionToken right = getExecutionTreeExpression(((ParsedBinaryExpression)pt).getRight());
