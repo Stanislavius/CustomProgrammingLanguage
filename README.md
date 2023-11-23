@@ -11,7 +11,7 @@
 
 # Description
 ## What it does?
-Executes code written in program language Autokrator (Autokrator or Autocrator is a Greek epithet applied to an individual who is unrestrained by superiors), grammar of which is described below. Which is simillar to Python grammar, but not quite.
+Executes code written in custom program language Autokrator (Autokrator or Autocrator is a Greek epithet applied to an individual who is unrestrained by superiors), grammar of which is described below. Which is similar to Python grammar, but not quite.
 
 ## Why?
 Mostly to demonstrate the possibilities of creating your own programming language.
