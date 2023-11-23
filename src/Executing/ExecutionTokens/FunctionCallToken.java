@@ -25,7 +25,7 @@ public class FunctionCallToken extends ExecutionToken {
         return args;
     }
 
-    public LinkedList<ObjectType> executeArgs() throws ExecutionException {
+    public LinkedList<ObjectType> executeArgs() {
         LinkedList<ObjectType> executedArgs = new LinkedList<ObjectType>();
         for(int i = 0; i < args.size(); ++i){
             executedArgs.add(args.get(i).execute());

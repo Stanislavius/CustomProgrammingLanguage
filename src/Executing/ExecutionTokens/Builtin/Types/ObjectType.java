@@ -24,11 +24,10 @@ public class ObjectType{
 
     public ObjectType getMember(String name){
         if (this.members.containsKey(name)){
-            this.members.get(name);
+            return this.members.get(name);
         }
         else
-            this.getMember("__class__").getMember(name);
-        return this.members.get(name);
+            return this.getMember("__class__").getMember(name);
     }
 
     public ObjectType call(LinkedList<ObjectType> args){

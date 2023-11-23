@@ -4,6 +4,8 @@ import Executing.ExecutionTokens.Builtin.Types.ObjectType;
 import Executing.ExecutionTokens.Builtin.Types.VoidType;
 import Lexing.Token;
 
+import java.util.LinkedList;
+
 public class MemberExecutionToken extends ExecutionToken {
     ExecutionToken object;
     ExecutionToken member;
@@ -15,7 +17,14 @@ public class MemberExecutionToken extends ExecutionToken {
 
     public ObjectType execute(){
         ObjectType objectValue = object.execute();
-        return ObjectType.getMember(objectValue, ((VariableExecutionToken)member).getToken().getValue());
+        if (member.getClass() == VariableExecutionToken.class)
+            return ObjectType.getMember(objectValue, ((VariableExecutionToken)member).getToken().getValue());
+        else{
+            LinkedList<ObjectType> args = ((FunctionCallToken) member).executeArgs();
+            args.add(0, objectValue);
+            return ObjectType.getMember(objectValue, ((FunctionCallToken)member).getToken().getValue()).call(args);
+
+        }
     }
 
     public ExecutionToken getObject(){
