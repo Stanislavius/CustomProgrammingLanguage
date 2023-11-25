@@ -10,19 +10,16 @@ import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 public class Lexer {
-    final static Pattern arithmeticPattern = Pattern.compile("[\\+\\-\\/\\*]");
+    final static Pattern operationPattern = Pattern.compile("[\\+\\-\\/\\*\\.]|[=]{2}|[<]|[>]");
     final static Pattern intPattern = Pattern.compile("\\b(?<!\\.)[0-9]+(?!\\.)\\b");
     final static Pattern floatPattern = Pattern.compile("[0-9]+\\.[0-9]+");
     final static Pattern parenthesisPattern = Pattern.compile("[\\(\\)]{1}");
     final static Pattern assignmentPattern = Pattern.compile("(?<!\\=)[=](?!\\=)");
-    final static Pattern comparisonPattern = Pattern.compile("[=]{2}|[<]|[>]");
     //final static Pattern function_pattern = Pattern.compile("[a-zA-Z]+\\(.*\\)");
-    final static Pattern functionPattern = Pattern.compile("[_a-zA-Z]{1}[_a-zA-Z0-9]+\\(");
-    final static Pattern listPattern = Pattern.compile("[\\[\\]}]");
-    final static Pattern dictPattern = Pattern.compile("[\\{\\}}]");
-    final static Pattern variablePattern = Pattern.compile("[_a-zA-Z]+(?!\\()\\b");
+    final static Pattern listPattern = Pattern.compile("[\\[\\]]");
+    final static Pattern dictPattern = Pattern.compile("[\\{\\}]");
+    final static Pattern variablePattern = Pattern.compile("[a-zA-Z_]{1}[a-zA-Z_0-9]*");
     final static Pattern separatorPattern = Pattern.compile(",");
-    final static Pattern memberPattern = Pattern.compile("\\.");
     final static Pattern colonPattern = Pattern.compile("\\:");
     final static LinkedList<String> blockWordsWithoutArgs = new LinkedList<String>(Arrays.asList("else", "try", "finally"));
     final static LinkedList<String> blockWordsWithArgs = new LinkedList<String>(Arrays.asList("if", "elif", "while", "def", "class", "catch"));
@@ -113,6 +110,7 @@ public class Lexer {
             if (st.charAt(i) == '\"'){
                 if (strIsExpected){
                     tokens.add(new Token(TokenType.STRING, st.substring(startStr+1, i), lineNum, startStr));
+                    st = st.substring(0, startStr) + " ".repeat(i-startStr+1) + st.substring(i+1);
                     strIsExpected = false;
                 }
                 else{
@@ -156,15 +154,12 @@ public class Lexer {
             }
         }
 
-        Matcher arithmeticMatcher = arithmeticPattern.matcher(st);
         Matcher intMatcher = intPattern.matcher(st);
         Matcher floatMatcher = floatPattern.matcher(st);
         Matcher paranthesisMatcher = parenthesisPattern.matcher(st);
-        Matcher functionMatcher = functionPattern.matcher(st);
         Matcher assignmentMatcher = assignmentPattern.matcher(st);
         Matcher variableMatcher = variablePattern.matcher(st);
         Matcher separatorMatcher = separatorPattern.matcher(st);
-        Matcher comparisonMatcher = comparisonPattern.matcher(st);
         Matcher listMatcher = listPattern.matcher(st);
         Matcher dictMatcher = dictPattern.matcher(st);
         Matcher colonMatcher = colonPattern.matcher(st);
@@ -196,30 +191,17 @@ public class Lexer {
             st = st.substring(0, start) + " ".repeat(value.length()) + st.substring(start+value.length());
         }
 
-        Matcher memberMatcher = memberPattern.matcher(st);
-        while (memberMatcher.find()){
-            int start = indentation * 4 + memberMatcher.start();
-            tokens.add(new Token(TokenType.MEMBER, memberMatcher.group(), lineNum, start));
-        }
-
-        while (arithmeticMatcher.find()){
-            int start = indentation * 4 + arithmeticMatcher.start();
-            tokens.add(new Token(TokenType.ARITHMETIC,
-                    arithmeticMatcher.group(), lineNum, start));
+        Matcher operationMatcher = operationPattern.matcher(st);
+        while (operationMatcher.find()){
+            int start = indentation * 4 + operationMatcher.start();
+            tokens.add(new Token(TokenType.OPERATION,
+                    operationMatcher.group(), lineNum, start));
         }
 
         while (paranthesisMatcher.find()){
             int start = indentation * 4 + paranthesisMatcher.start();
             tokens.add(new Token(TokenType.PARENTHESIS,
                     paranthesisMatcher.group(), lineNum, start));
-        }
-
-        while (functionMatcher.find()){
-            int start = indentation * 4 + functionMatcher.start();
-            String function_name = functionMatcher.group();
-            function_name = function_name.substring(0, function_name.indexOf("("));
-            tokens.add(new Token(TokenType.FUNCTION,
-                    function_name, lineNum, start));
         }
 
         while (assignmentMatcher.find()){
@@ -235,11 +217,6 @@ public class Lexer {
         while (separatorMatcher.find()){
             int start = indentation * 4 + separatorMatcher.start();
             tokens.add(new Token(TokenType.SEPARATOR, separatorMatcher.group(), lineNum, start));
-        }
-
-        while (comparisonMatcher.find()){
-            int start = indentation * 4 + comparisonMatcher.start();
-            tokens.add(new Token(TokenType.COMPARISON, comparisonMatcher.group(), lineNum, start));
         }
 
         tokens.add(new Token(TokenType.NEWLINE, "", lineNum, indentation * 4 + st.length() - 1));

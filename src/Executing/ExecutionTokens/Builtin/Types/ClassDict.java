@@ -56,6 +56,23 @@ public class ClassDict extends ObjectType {
         }
         ));
 
+        type.setMember("__getmember__", new FunctionType("__getmember__", new SourceFunction(){
+            public ObjectType execute(LinkedList<ObjectType> args){
+                ClassDict v1 = ((ClassDict)(args.get(0)));
+                //v1.getMember(args.get(1).
+                return v1.get(args.get(1));
+            }
+        }
+        ));
+
+        type.setMember("__setmember__", new FunctionType("__setitem__", new SourceFunction(){
+            public ObjectType execute(LinkedList<ObjectType> args){
+                ClassDict v1 = ((ClassDict)(args.get(0)));
+                return v1.set(args.get(1), args.get(2));
+            }
+        }
+        ));
+
         Executor.setVariable("dict", type);
     }
     HashMap<ObjectType, ObjectType> dict;

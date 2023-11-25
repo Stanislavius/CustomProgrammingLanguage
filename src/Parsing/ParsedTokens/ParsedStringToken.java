@@ -8,7 +8,7 @@ public class ParsedStringToken extends ParsedToken{
         super(t);
     }
     public ParsedTokenType getParsedType(){
-        return ParsedTokenType.STRING;
+        return ParsedTokenType.VALUE;
     }
     public String toString(){
         return "\"" + token.getValue() + "\"";

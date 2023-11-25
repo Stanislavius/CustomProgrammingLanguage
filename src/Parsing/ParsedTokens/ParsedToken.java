@@ -3,9 +3,6 @@ package Parsing.ParsedTokens;
 import Lexing.Token;
 import Lexing.TokenType;
 
-import java.util.Arrays;
-import java.util.HashSet;
-
 public class ParsedToken {
     final Token token;
     public ParsedToken(Token t){
@@ -29,5 +26,5 @@ public class ParsedToken {
     public String toString() {
         return this.token.toString();
     }
-    public  ParsedTokenType getParsedType(){return ParsedTokenType.UNPARSED;}
+    public  ParsedTokenType getParsedType(){return ParsedTokenType.UNKNOWN_OPERATION;}
 }

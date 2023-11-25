@@ -11,7 +11,7 @@ public class ParsedListToken extends ParsedToken{
         this.values = values;
     }
     public ParsedTokenType getParsedType(){
-        return ParsedTokenType.LIST;
+        return ParsedTokenType.VALUE;
     }
     public String toString(){
         StringBuilder sb = new StringBuilder();

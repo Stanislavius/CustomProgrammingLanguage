@@ -97,15 +97,7 @@ public class Executor {
 
         if (pt.getParsedType() == ParsedTokenType.ASSIGNMENT){
             ParsedAssigmentStatement pat = (ParsedAssigmentStatement) pt;
-            if (pat.getVariable().getClass() == ParsedMembership.class) {
-                ParsedMembership pm = (ParsedMembership) pat.getVariable();
-                MemberExecutionToken met = new MemberExecutionToken(pm.getToken(),
-                        getExecutionTreeExpression(pm.getObject()),
-                        getExecutionTreeExpression(pm.getMember()));
-                return new AssignmentToken(pt.getToken(), met, getExecutionTreeExpression(pat.getExpression()));
-            }
-            else
-                return new AssignmentToken(pt.getToken(), new VariableExecutionToken(pat.getVariable().getToken()), getExecutionTreeExpression(pat.getExpression()));
+            return new AssignmentToken(pt.getToken(), new VariableExecutionToken(pat.getVariable().getToken()), getExecutionTreeExpression(pat.getExpression()));
         }
         return null;
     }
@@ -119,7 +111,7 @@ public class Executor {
     }
 
     public static ExecutionToken getExecutionTreeExpression(ParsedToken pt){
-        if (pt.getParsedType() == ParsedTokenType.LIST){
+        if (pt.getClass() == ParsedListToken.class){
             ParsedListToken PLT = (ParsedListToken)pt;
             LinkedList<ParsedToken> parsedValues = PLT.getValues();
             LinkedList<ExecutionToken> values = new LinkedList<ExecutionToken>();
@@ -131,7 +123,7 @@ public class Executor {
             return new ValueExecutionToken(pt.getToken(), new ListType(objectValues));
         }
 
-        if (pt.getParsedType() == ParsedTokenType.DICT){
+        if (pt.getClass() == ParsedDictToken.class){
             ParsedDictToken PDT = (ParsedDictToken)pt;
             LinkedList<ParsedToken> parsedValues = PDT.getValues();
             LinkedList<ParsedToken> parsedKeys = PDT.getKeys();
@@ -162,35 +154,21 @@ public class Executor {
             return new UnaryOperation(pt.getToken(), right);
         }
 
-        if (pt.getParsedType() == ParsedTokenType.INT) {
+        if (pt.getClass() == ParsedIntToken.class) {
             return new ValueExecutionToken(pt.getToken(),
                     new IntType(Integer.parseInt(pt.getToken().getValue())));
         }
 
-        if (pt.getParsedType() == ParsedTokenType.MEMBERSHIP_FUNCTION_CALL) {
-            ParsedMembership pm = (ParsedMembership) pt;
-            return new MemberExecutionToken(pm.getToken(),
-                    getExecutionTreeExpression(pm.getObject()),
-                    getExecutionTreeExpression(pm.getMember()));
-        }
-
-        if (pt.getParsedType() == ParsedTokenType.MEMBERSHIP_VARIABLE) {
-            ParsedMembership pm = (ParsedMembership) pt;
-            return new MemberExecutionToken(pm.getToken(),
-                    getExecutionTreeExpression(pm.getObject()),
-                    getExecutionTreeExpression(pm.getMember()));
-        }
-
-        if (pt.getParsedType() == ParsedTokenType.STRING) {
+        if (pt.getClass() == ParsedStringToken.class) {
             return new ValueExecutionToken(pt.getToken(), new StringType(pt.getToken().getValue()));
         }
 
-        if (pt.getParsedType() == ParsedTokenType.FLOAT) {
+        if (pt.getClass() == ParsedFloatToken.class) {
             return new ValueExecutionToken(pt.getToken(),
                     new FloatType(Float.parseFloat(pt.getToken().getValue())));
         }
 
-        if (pt.getParsedType() == ParsedTokenType.FUNCTION_CALL) {
+        if (pt.getParsedType() == ParsedTokenType.FUNCTION_ARGS) {
             ParsedFunctionCall PFC = (ParsedFunctionCall)  pt;
             LinkedList<ExecutionToken> children = new LinkedList<ExecutionToken>();
             LinkedList<ParsedToken> args = PFC.getArgs();
@@ -199,7 +177,7 @@ public class Executor {
             return new FunctionCallToken(pt.getToken(), children);
         }
 
-        if (pt.getParsedType() == ParsedTokenType.VARIABLE) {
+        if (pt.getClass() == ParsedVariable.class) {
             return new VariableExecutionToken(pt.getToken());
         }
 

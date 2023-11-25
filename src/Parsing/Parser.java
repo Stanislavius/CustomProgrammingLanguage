@@ -4,13 +4,8 @@ import Lexing.Token;
 import Lexing.TokenType;
 import Parsing.ParsedTokens.*;
 
-import java.beans.Expression;
-import java.io.IOException;
 import java.util.*;
-import java.util.logging.FileHandler;
-import java.util.logging.Level;
 import java.util.logging.Logger;
-import java.util.logging.SimpleFormatter;
 
 import static Parsing.ParsingLogger.createParsingLogger;
 
@@ -21,8 +16,10 @@ public class Parser {
     static final HashSet<String> SECOND_PRIORITY = new HashSet<String>(Arrays.asList("+", "-"));
     static final HashSet<String> FIRST_PRIORITY = new HashSet<String>(Arrays.asList("*", "/"));
     static final HashSet<String> COMPARISON_OPERATIONS = new HashSet<String>(Arrays.asList("==", "<", ">"));
-    static final HashSet<String> STRUCTURES_OPEN = new HashSet<String>(Arrays.asList("[", "{"));
-    static final HashSet<String> STRUCTURES_CLOSED = new HashSet<String>(Arrays.asList("]", "}"));
+    static final HashSet<String> MEMBER_OPERATIONS = new HashSet<String>(Arrays.asList("."));
+    static final HashSet<String> STRUCTURE_OPENED = new HashSet<String>(Arrays.asList("[", "{", "("));
+    static final HashSet<String> STRUCTURE_CLOSED = new HashSet<String>(Arrays.asList("]", "}", ")"));
+    static final HashSet<TokenType> STRUCTURE_TYPES = new HashSet(Arrays.asList(TokenType.LIST, TokenType.DICT, TokenType.PARENTHESIS));
     public LinkedList<ParsedAbstractStatement> parse (LinkedList<Token> tokens){
         LinkedList<LinkedList<Token>> lines = divideByLines(tokens);
         LinkedList<ParsedAbstractStatement> parsedLines = new LinkedList<ParsedAbstractStatement>();
@@ -76,7 +73,7 @@ public class Parser {
                             parseExpressionTokens(new LinkedList<Token>(line.subList(0, i))),
                             parseExpressionTokens(new LinkedList<Token>(line.subList(i+1, line.size()))));
                 }
-                return new ParsedStatement(indent, parseExpressionTokens(line));
+            return new ParsedStatement(indent, parseExpressionTokens(line));
         }
     }
 
@@ -155,28 +152,10 @@ public class Parser {
         return parseExpression(parsedLine);
     }
 
-    public ParsedFunctionCall parseFunctionCall(LinkedList<ParsedToken> line) throws ParsingException {
-        //REWRITE THIS
-        Token functionToken = line.get(0).getToken();
-        LinkedList<ParsedToken> args = new LinkedList<ParsedToken>();
-        LinkedList<ParsedToken> arg = new LinkedList<ParsedToken>();
-        for (int i = 2; i < line.size()-1; ++i) {
-            if (line.get(i).getType() == TokenType.SEPARATOR) {
-                args.add(parseExpression(arg));
-                arg = new LinkedList<ParsedToken>();
-            } else {
-                arg.add(line.get(i));
-            }
-        }
-        if (!arg.isEmpty())
-            args.add(parseExpression(arg));
-        return new ParsedFunctionCall(functionToken, args);
-    }
-
-    public ParsedToken divideByOperands(LinkedList<ParsedToken> operands, HashSet<String> operations) throws ParsingException {
+    public ParsedToken divideByBinaryOperands(LinkedList<ParsedToken> operands, HashSet<String> operations) throws ParsingException {
         ParsedToken result = null;
         for (int i = operands.size()-1; i >= 0; --i) {
-            if (operations.contains(operands.get(i).getValue()) && operands.get(i).getParsedType() == ParsedTokenType.UNPARSED) {
+            if (operations.contains(operands.get(i).getValue()) && operands.get(i).getParsedType() == ParsedTokenType.UNKNOWN_OPERATION) {
                 LinkedList<ParsedToken> right = new LinkedList<ParsedToken>(operands.subList(i + 1, operands.size()));
                 if (i != 0) {
                     LinkedList<ParsedToken> left = new LinkedList<ParsedToken>(operands.subList(0, i));
@@ -197,7 +176,7 @@ public class Parser {
         LinkedList<ParsedToken> newOperands = new LinkedList<ParsedToken>();
         LinkedList<ParsedToken> q = new LinkedList<ParsedToken>();
         for (int i = 0; i < operands.size(); ++i) {
-            if (operands.get(i).getParsedType() == ParsedTokenType.UNPARSED && unaryOperations.contains(operands.get(i).getValue())){
+            if (operands.get(i).getParsedType() == ParsedTokenType.UNKNOWN_OPERATION && unaryOperations.contains(operands.get(i).getValue())){
                 q.add(operands.get(i));
             }
             else {
@@ -224,73 +203,52 @@ public class Parser {
         return newOperands;
     }
 
-    public LinkedList<ParsedToken> processParantheses(LinkedList<ParsedToken> line) throws ParsingException {
-        Iterator iter = line.iterator();
-        LinkedList<ParsedToken> operands = new LinkedList<ParsedToken>();
-        LinkedList<ParsedToken> operand = new LinkedList<ParsedToken>();
-        int balance = 0;
-        int start = -1;
-        boolean func_call = false;
-        boolean process_parentheses = false;
-        while (iter.hasNext()){
-            ParsedToken current = (ParsedToken)iter.next();
-            Token curToken = current.getToken();
-            switch (curToken.getType()){
-                case PARENTHESIS:
-                    process_parentheses = true;
-                    if (curToken.getValue().equals("(")){
-                        balance++;
-                    }
-                    else{
-                        balance--;
-                    }
-                    operand.add(current);
-                    if (balance == 0){
-                        if (func_call){
-                            operands.add(parseFunctionCall(operand));
-                            operand = new LinkedList<ParsedToken>();
-                        }
-                        else{
-                            operand.removeLast();
-                            operand.removeFirst();
-                            ParsedToken result = parseExpression(operand);
-                            if (result != null)
-                                operands.add(result);
-                            operand = new LinkedList<ParsedToken>();
-                        }
-                        process_parentheses = false;
-                    }
-                    break;
-                case FUNCTION:
-                    process_parentheses = true;
-                    if (balance == 0) {
-                        func_call = true;
-                    }
-                    operand.add(current);
-                    break;
-                default:
-                    if (process_parentheses)
-                        operand.add(current);
-                    else
-                        operands.add(current);
-            }
+    public ParsedFunctionCall parseFunctionCall(Token head, LinkedList<ParsedToken> line) throws ParsingException {
+        LinkedList<ParsedToken> values = new LinkedList<ParsedToken>();
+        LinkedList<LinkedList<ParsedToken>> args = separateArgs(line);
+        for(int i = 0; i < args.size(); ++i){
+            values.add(parseExpression(args.get(i)));
         }
-        return operands;
+        return new ParsedFunctionCall(head, values);
     }
 
-    public ParsedListToken parseList(LinkedList<ParsedToken> line) throws ParsingException {
-        Token listToken = line.get(0).getToken();
-        LinkedList<ParsedToken> args = new LinkedList<ParsedToken>();
+    public ParsedListToken parseList(Token head, LinkedList<ParsedToken> line) throws ParsingException {
+        LinkedList<ParsedToken> values = new LinkedList<ParsedToken>();
+        LinkedList<LinkedList<ParsedToken>> args = separateArgs(line);
+        for(int i = 0; i < args.size(); ++i){
+            values.add(parseExpression(args.get(i)));
+        }
+        return new ParsedListToken(head, values);
+    }
+
+    public LinkedList<LinkedList<ParsedToken>> separateArgs(LinkedList<ParsedToken> line){
+        LinkedList<LinkedList<ParsedToken>> args = new LinkedList<LinkedList<ParsedToken>>();
         LinkedList<ParsedToken> arg = new LinkedList<ParsedToken>();
         int balance = 1;
-        for (int i = 1; i < line.size()-1; ++i) {
-            if (line.get(i).getType() == TokenType.LIST) {
-                if (line.get(i).getValue().equals("["))
+        for (int i = 0; i < line.size(); ++i) {
+            if (STRUCTURE_TYPES.contains(line.get(i).getType())) {
+                if (STRUCTURE_OPENED.contains(line.get(i).getValue()))
                     balance++;
                 else
                     balance--;
             }
             if (line.get(i).getType() == TokenType.SEPARATOR && balance == 1) {
+                args.add(arg);
+                arg = new LinkedList<ParsedToken>();
+            } else {
+                arg.add(line.get(i));
+            }
+        }
+        if (!arg.isEmpty())
+            args.add(arg);
+        return args;
+    }
+
+    public LinkedList<ParsedToken> parseColon(LinkedList<ParsedToken> line) throws ParsingException {
+        LinkedList<ParsedToken> args = new LinkedList<ParsedToken> ();
+        LinkedList<ParsedToken> arg = new LinkedList<ParsedToken>();
+        for (int i = 0; i < line.size(); ++i) {
+            if (line.get(i).getType() == TokenType.COLON){
                 args.add(parseExpression(arg));
                 arg = new LinkedList<ParsedToken>();
             } else {
@@ -299,129 +257,99 @@ public class Parser {
         }
         if (!arg.isEmpty())
             args.add(parseExpression(arg));
-        return new ParsedListToken(listToken, args);
+        return args;
     }
 
-    public LinkedList<ParsedToken>  processList(LinkedList<ParsedToken> line) throws ParsingException {
-        int balance = 0;
-        LinkedList<ParsedToken> operands = new LinkedList<ParsedToken>();
-        LinkedList<ParsedToken> operand = new LinkedList<ParsedToken>();
-        for(int i = 0; i < line.size(); ++i){
-            if (line.get(i).getType() == TokenType.LIST){
-                if (line.get(i).getValue().equals("[")){
-                    balance++;
-                    operand.add(line.get(i));
-                }
-                else{
-                    balance--;
-                    operand.add(line.get(i));
-                    if (balance == 0){
-                        operands.add(parseList(operand));
-                        operand.clear();
-                    }
-                }
-            }
-            else{
-                if (balance == 0)
-                    operands.add(line.get(i));
-                else
-                    operand.add(line.get(i));
-            }
-        }
-        return operands;
-    }
-
-    public ParsedDictToken parseDict(LinkedList<ParsedToken> line) throws ParsingException {
-        Token listToken = line.get(0).getToken();
+    public ParsedDictToken parseDict(Token head, LinkedList<ParsedToken> line) throws ParsingException {
         LinkedList<ParsedToken> keys = new LinkedList<ParsedToken>();
         LinkedList<ParsedToken> values = new LinkedList<ParsedToken>();
-        LinkedList<ParsedToken> key = new LinkedList<ParsedToken>();
-        LinkedList<ParsedToken> value = new LinkedList<>();
-        boolean isKey = true;
-        int balance = 1;
-        for (int i = 1; i < line.size()-1; ++i) {
-            switch (line.get(i).getType()) {
-                case DICT:
-                        if (line.get(i).getValue().equals("{"))
-                            balance++;
-                        else
-                            balance--;
-                        break;
-                case COLON:
-                    isKey = false;
-                    break;
-                case SEPARATOR:
-                    if (line.get(i).getType() == TokenType.SEPARATOR && balance == 1) {
-                        values.add(parseExpression(value));
-                        keys.add(parseExpression(key));
-                        value = new LinkedList<ParsedToken>();
-                        key = new LinkedList<ParsedToken>();
-                        isKey = true;
-                    } else {
-                        if (isKey)
-                            key.add(line.get(i));
-                        else
-                            value.add(line.get(i));
-                    }
-                    break;
-                default:
-                    if (isKey)
-                        key.add(line.get(i));
-                    else
-                        value.add(line.get(i));
-            }
+        LinkedList<LinkedList<ParsedToken>> args = separateArgs(line);
+        for(int i = 0; i < args.size(); ++i){
+            LinkedList<ParsedToken> curPair = parseColon(args.get(i));
+            keys.add(curPair.get(0));
+            values.add(curPair.get(1));
         }
-        if (!key.isEmpty()) {
-            values.add(parseExpression(value));
-            keys.add(parseExpression(key));
-        }
-        return new ParsedDictToken(listToken, keys, values);
+
+        return new ParsedDictToken(head, keys, values);
     }
 
-    public LinkedList<ParsedToken>  processDict(LinkedList<ParsedToken> line) throws ParsingException {
-        int balance = 0;
+    public LinkedList<ParsedToken> processStructures(LinkedList<ParsedToken> line) throws ParsingException {
+        Iterator iter = line.iterator();
         LinkedList<ParsedToken> operands = new LinkedList<ParsedToken>();
         LinkedList<ParsedToken> operand = new LinkedList<ParsedToken>();
-        for(int i = 0; i < line.size(); ++i){
-            if (line.get(i).getType() == TokenType.DICT){
-                if (line.get(i).getValue().equals("{")){
+        int balance = 0;
+        boolean processStructure = false;
+        Token processedStructure = null;
+        while (iter.hasNext()){
+            ParsedToken current = (ParsedToken)iter.next();
+            Token curToken = current.getToken();
+            if (STRUCTURE_TYPES.contains(curToken.getType())){
+                if (STRUCTURE_OPENED.contains(curToken.getValue())){
+                    if (balance == 0)
+                        processedStructure = curToken;
                     balance++;
-                    operand.add(line.get(i));
+                    processStructure = true;
                 }
-                else{
+                else if (STRUCTURE_CLOSED.contains(curToken.getValue())){
                     balance--;
-                    operand.add(line.get(i));
-                    if (balance == 0){
-                        operands.add(parseDict(operand));
-                        operand.clear();
+                }
+                operand.add(current);
+                if (balance == 0){
+                    operand.removeLast();
+                    operand.removeFirst();
+                    ParsedToken result = null;
+                    if (operands.size() == 0 || operands.getLast().getParsedType() == ParsedTokenType.UNKNOWN_OPERATION){
+                        switch (processedStructure.getType()) {
+                            case PARENTHESIS:
+                                result = parseExpression(operand);
+                                break;
+                            case DICT:
+                                result = parseDict(processedStructure, operand);
+                                break;
+                            case LIST:
+                                result = parseList(processedStructure, operand);
+                        }
+
                     }
+                    else {
+                        ParsedToken left = operands.removeLast();
+                        ParsedToken right = null;
+                        switch (processedStructure.getType()) {
+                            case PARENTHESIS:
+                                right = parseFunctionCall(processedStructure, operand);
+                                break;
+                            case DICT:
+                                right = parseDictCall(operand);
+                                break;
+                            case LIST:
+                                right = parseListCall(operand);
+                        }
+                        result = new ParsedBinaryExpression(processedStructure, left, right);
+                    }
+                    if (result != null)
+                        operands.add(result);
+                    operand = new LinkedList<ParsedToken>();
+                    processStructure = false;
+                    processedStructure = null;
                 }
             }
             else{
-                if (balance == 0)
-                    operands.add(line.get(i));
+                if (processStructure)
+                    operand.add(current);
                 else
-                    operand.add(line.get(i));
+                    operands.add(current);
             }
         }
         return operands;
     }
 
-    public LinkedList<ParsedToken>  processMembership(LinkedList<ParsedToken> line) throws ParsingException {
-        LinkedList<ParsedToken> operands = new LinkedList<ParsedToken>();
-        for (int i = 0; i < line.size(); ++i) {
-            if (i + 1 < line.size() && line.get(i).getType() == TokenType.MEMBER) {
-                operands.removeLast();
-                operands.add(new ParsedMembership(line.get(i).getToken(), line.get(i-1), line.get(i+1)));
-                i = i +1;
-            }
-            else{
-                operands.add(line.get(i));
-            }
-        }
-        return operands;
+    private ParsedToken parseListCall(LinkedList<ParsedToken> operand) {
+        return null; //TODO
     }
 
+    private ParsedToken parseDictCall(LinkedList<ParsedToken> operand) {
+        return null; //TODO
+    }
 
     public ParsedToken parseExpression(LinkedList<ParsedToken> line) throws ParsingException {
         if (line.isEmpty()) {
@@ -431,21 +359,40 @@ public class Parser {
             return line.getFirst();
         }
         //checks
-        LinkedList<ParsedToken> operands = processParantheses(line);
-        operands = processDict(operands);
-        operands = processList(operands);
-        operands = processMembership(operands);
+
+        LinkedList<ParsedToken> operands = groupByMembership(line);
+        operands = processStructures(operands);
         ParsedToken result = null;
         operands = divideByUnaryOperands(operands);
         if (operands.size() == 1)
             return operands.get(0);
-        result = divideByOperands(operands, SECOND_PRIORITY);
+        result = divideByBinaryOperands(operands, SECOND_PRIORITY);
         if (result != null) return result;
-        result = divideByOperands(operands, FIRST_PRIORITY);
+        result = divideByBinaryOperands(operands, FIRST_PRIORITY);
         if (result != null) return result;
-        result = divideByOperands(operands, COMPARISON_OPERATIONS);
+        result = divideByBinaryOperands(operands, COMPARISON_OPERATIONS);
         if (result != null) return result;
         return operands.get(0);
+    }
+
+    public LinkedList<ParsedToken> groupByMembership(LinkedList<ParsedToken> operands) throws ParsingException {
+        LinkedList<ParsedToken> result = new LinkedList<ParsedToken>();
+        boolean found = true;
+        while (found) {
+            found = false;
+            for (int i = 0; i < operands.size(); ++i) {
+                if (!found && i != operands.size() - 1 && operands.get(i + 1).getType() != TokenType.STRING && operands.get(i + 1).getValue().equals(".")) {
+                    result.add(new ParsedBinaryExpression(operands.get(i + 1).getToken(), operands.get(i), operands.get(i + 2)));
+                    i = i + 2;
+                    found = true;
+                } else {
+                    result.add(operands.get(i));
+                }
+            }
+            operands = result;
+            result = new LinkedList<ParsedToken>();
+        }
+        return operands;
     }
 
     public LinkedList<ParsedAbstractStatement> processBlocks(LinkedList<ParsedAbstractStatement> tokens){

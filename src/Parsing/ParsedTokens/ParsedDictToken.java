@@ -13,7 +13,7 @@ public class ParsedDictToken extends ParsedToken{
         this.keys = keys;
     }
     public ParsedTokenType getParsedType(){
-        return ParsedTokenType.DICT;
+        return ParsedTokenType.VALUE;
     }
     public String toString(){
         StringBuilder sb = new StringBuilder();

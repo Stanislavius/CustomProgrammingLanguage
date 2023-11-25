@@ -7,7 +7,7 @@ public class ParsedIntToken extends ParsedToken{
         super(t);
     }
     public ParsedTokenType getParsedType(){
-        return ParsedTokenType.INT;
+        return ParsedTokenType.VALUE;
     }
     public String toString(){
         return token.getValue();

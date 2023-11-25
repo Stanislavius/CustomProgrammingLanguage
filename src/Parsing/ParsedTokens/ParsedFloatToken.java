@@ -7,7 +7,7 @@ public class ParsedFloatToken extends ParsedToken{
         super(t);
     }
     public ParsedTokenType getParsedType(){
-        return ParsedTokenType.FLOAT;
+        return ParsedTokenType.VALUE;
     }
     public String toString(){
         return token.getValue();

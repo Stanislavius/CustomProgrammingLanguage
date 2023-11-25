@@ -6,20 +6,16 @@ import java.util.LinkedList;
 
 public class ParsedFunctionCall extends ParsedToken{
     LinkedList<ParsedToken> args = new LinkedList<ParsedToken>();
-    String functionName;
     public ParsedFunctionCall(Token t){
         super(t);
-        this.functionName = t.getValue();
     }
     public ParsedFunctionCall(Token t, LinkedList<ParsedToken> args){
         this(t);
         this.args = args;
     }
     public ParsedTokenType getParsedType(){
-        return ParsedTokenType.FUNCTION_CALL;
+        return ParsedTokenType.FUNCTION_ARGS;
     }
-
-    public String getFunctionName() {return this.functionName;}
 
     public LinkedList<ParsedToken> getArgs(){
         return this.args;
@@ -27,7 +23,6 @@ public class ParsedFunctionCall extends ParsedToken{
 
     public String toString(){
         StringBuilder sb = new StringBuilder();
-        sb.append(functionName);
         sb.append("(");
         for(int i = 0; i < args.size(); ++i){
             sb.append(args.get(i).toString());

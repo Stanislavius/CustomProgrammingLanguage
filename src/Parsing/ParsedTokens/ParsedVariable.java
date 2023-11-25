@@ -8,7 +8,7 @@ public class ParsedVariable extends ParsedToken{
     }
 
     public ParsedTokenType getParsedType(){
-        return ParsedTokenType.VARIABLE;
+        return ParsedTokenType.VALUE;
     }
 
     public String toString(){

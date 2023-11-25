@@ -20,7 +20,7 @@ public class ParsedStatementWithBlock extends ParsedAbstractStatement{
     }
 
     public ParsedTokenType getParsedType(){
-        return ParsedTokenType.UNPARSED;
+        return ParsedTokenType.UNKNOWN_OPERATION;
     }
 
     public void setToDo(ParsedBlock toDo){this.toDo = toDo;}
