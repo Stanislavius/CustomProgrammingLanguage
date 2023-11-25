@@ -24,10 +24,20 @@ public class ObjectType{
 
     public ObjectType getMember(String name){
         if (this.members.containsKey(name)){
-            return this.members.get(name);
+            ObjectType member = this.members.get(name);
+            if(member.getClass() == FunctionType.class){
+                return new BoundMethod(this, (FunctionType) member, name);
+            }
+            else
+                return member;
         }
-        else
-            return this.getMember("__class__").getMember(name);
+        else {
+            ObjectType member = this.getMember("__class__").getMember(name);
+            if (member.getClass() == FunctionType.class) {
+                return new BoundMethod(this, (FunctionType) member, name);
+            } else
+                return member;
+        }
     }
 
     public ObjectType call(LinkedList<ObjectType> args){

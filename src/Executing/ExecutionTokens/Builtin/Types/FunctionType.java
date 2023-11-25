@@ -32,4 +32,8 @@ public class FunctionType extends ObjectType{
         return call.execute(args);
     }
 
+    public WrapperInterface getCallable(){
+        return this.call;
+    }
+
 }

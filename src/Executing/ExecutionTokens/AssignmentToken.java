@@ -25,9 +25,8 @@ public class AssignmentToken extends ExecutionToken {
         else{
             if (assignTo.getClass() == MemberExecutionToken.class) {
                 MemberExecutionToken met = (MemberExecutionToken)  assignTo;
-                String name = met.getObject().getToken().getValue();
-                ObjectType rObject = Executor.getVariable(name);
-                rObject.setMember(((VariableExecutionToken)met.getMember()).getToken().getValue(), value.execute());
+                ObjectType object = met.executeObject();
+                object.setMember(met.getNameMember(), value.execute());
             }
         }
         return new VoidType();

@@ -146,7 +146,10 @@ public class Executor {
         if (pt.getParsedType() == ParsedTokenType.BINARY_OPERATION) {
             ExecutionToken left = getExecutionTreeExpression(((ParsedBinaryExpression)pt).getLeft());
             ExecutionToken right = getExecutionTreeExpression(((ParsedBinaryExpression)pt).getRight());
-            return new BinaryOperation(pt.getToken(), left, right);
+            if (pt.getToken().getValue().equals("."))
+                return new MemberExecutionToken(pt.getToken(), left, right);
+            else
+                return new BinaryOperation(pt.getToken(), left, right);
         }
 
         if (pt.getParsedType() == ParsedTokenType.UNARY_OPERATION) {

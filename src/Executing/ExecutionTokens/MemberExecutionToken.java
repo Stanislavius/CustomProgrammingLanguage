@@ -16,15 +16,15 @@ public class MemberExecutionToken extends ExecutionToken {
     }
 
     public ObjectType execute(){
-        ObjectType objectValue = object.execute();
-        if (member.getClass() == VariableExecutionToken.class)
-            return ObjectType.getMember(objectValue, ((VariableExecutionToken)member).getToken().getValue());
-        else{
-            LinkedList<ObjectType> args = ((FunctionCallToken) member).executeArgs();
-            args.add(0, objectValue);
-            return ObjectType.getMember(objectValue, ((FunctionCallToken)member).getToken().getValue()).call(args);
+        ObjectType result = object.execute();
+        return result.getMember(member.getToken().getValue());
+    }
 
-        }
+    public String getNameMember(){
+        return member.getToken().getValue();
+    }
+    public ObjectType executeObject(){
+        return object.execute();
     }
 
     public ExecutionToken getObject(){
