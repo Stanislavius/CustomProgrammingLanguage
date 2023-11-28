@@ -1,5 +1,6 @@
 package Lexing;
 
+import Lexing.Exceptions.IndentationException;
 import Lexing.Exceptions.LexingException;
 import Lexing.Exceptions.MissingEndOfStringException;
 
@@ -125,7 +126,7 @@ public class Lexer {
         return this.read(splitCode);
     }
 
-    public LinkedList<Token> readLine(String st, int lineNum) throws MissingEndOfStringException {
+    public LinkedList<Token> readLine(String st, int lineNum) throws LexingException {
         LinkedList<Token> tokens = new LinkedList<Token>();
         int indentation = 0;
         int i = 0;
@@ -166,7 +167,7 @@ public class Lexer {
             throw new MissingEndOfStringException(st, lineNum, startStr);
 
         if (count != 0){
-            //throw error
+            throw new IndentationException(st, lineNum, indentation+count);
         }
 
         st = st.substring(indentation * 4);

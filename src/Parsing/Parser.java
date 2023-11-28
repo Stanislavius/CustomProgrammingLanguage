@@ -1,5 +1,6 @@
 package Parsing;
 
+import Lexing.Exceptions.LexingException;
 import Lexing.Token;
 import Lexing.TokenType;
 import Parsing.ParsedTokens.*;
@@ -12,8 +13,6 @@ import static Parsing.ParsingLogger.createParsingLogger;
 
 public class Parser {
     static Logger logger = createParsingLogger();
-
-
     static final HashSet<String> SECOND_PRIORITY = new HashSet<String>(Arrays.asList("+", "-"));
     static final HashSet<String> FIRST_PRIORITY = new HashSet<String>(Arrays.asList("*", "/"));
     static final HashSet<String> COMPARISON_OPERATIONS = new HashSet<String>(Arrays.asList("==", "<", ">"));
@@ -21,9 +20,27 @@ public class Parser {
     static final HashSet<String> STRUCTURE_OPENED = new HashSet<String>(Arrays.asList("[", "{", "("));
     static final HashSet<String> STRUCTURE_CLOSED = new HashSet<String>(Arrays.asList("]", "}", ")"));
     static final HashSet<TokenType> STRUCTURE_TYPES = new HashSet(Arrays.asList(TokenType.LIST, TokenType.DICT, TokenType.PARENTHESIS));
+
+    LinkedList<ParsingException> exceptions = new LinkedList<ParsingException>();
+    LinkedList<ParsedAbstractStatement> parsedLines = new LinkedList<ParsedAbstractStatement>();
+
+    public boolean isWithoutError(){
+        return this.exceptions.isEmpty();
+    }
+
+    public LinkedList<ParsingException> getExceptions(){return this.exceptions;}
+
+    public void clear(){
+        parsedLines.clear();
+        exceptions.clear();
+    }
+
+    public LinkedList<ParsedAbstractStatement> getParsedLines(){
+        return parsedLines;
+    }
+
     public LinkedList<ParsedAbstractStatement> parse (LinkedList<Token> tokens){
         LinkedList<LinkedList<Token>> lines = divideByLines(tokens);
-        LinkedList<ParsedAbstractStatement> parsedLines = new LinkedList<ParsedAbstractStatement>();
         try {
                 logger.fine("Start parsing");
             for(int i = 0; i < lines.size(); ++i){
@@ -34,7 +51,7 @@ public class Parser {
             parsedLines = processBlocks(parsedLines);
         }
         catch (ParsingException e){
-            System.out.println(e);
+            exceptions.add(e);
         }
         logger.finest("Parsing is finished, parsed program as follows. ");
         for(int i = 0; i < parsedLines.size(); ++i)

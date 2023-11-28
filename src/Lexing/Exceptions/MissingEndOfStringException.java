@@ -9,7 +9,7 @@ public class MissingEndOfStringException extends LexingException{
         StringBuilder sb = new StringBuilder();
         sb.append("Quotes at ");
         sb.append(num);
-        sb.append(" line, position is ");
+        sb.append(" line, position ");
         sb.append(pos);
         sb.append(" is not closed");
         return sb.toString();
