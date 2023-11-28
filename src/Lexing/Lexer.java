@@ -1,7 +1,12 @@
 package Lexing;
 
+import Lexing.Exceptions.LexingException;
+import Lexing.Exceptions.MissingEndOfStringException;
+
 import java.io.BufferedReader;
+import java.io.FileNotFoundException;
 import java.io.FileReader;
+import java.io.IOException;
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.Comparator;
@@ -26,22 +31,47 @@ public class Lexer {
     //final static Pattern keywordPattern = Pattern.compile("if ");
     final private String filename;
 
+    private LinkedList<LexingException> exceptions = new LinkedList<LexingException>();
+    private LinkedList<Token> tokens = new LinkedList<Token>();
     public Lexer(String filename) {
         this.filename = filename;
     }
 
     public Lexer(){this.filename = null;}
 
-    public LinkedList<Token> read() throws Exception {
-        LinkedList<Token> tokens = new LinkedList<Token>();
-        BufferedReader br = new BufferedReader(new FileReader(filename));
+    public LinkedList<Token> read(){
         String st = null;
         int line_num = 0;
-        while ((st = br.readLine()) != null) {
-            tokens.addAll(this.readLine(st, line_num));
-            line_num++;
+        try {
+            BufferedReader br = new BufferedReader(new FileReader(filename));
+            while ((st = br.readLine()) != null) {
+                try {
+                    tokens.addAll(this.readLine(st, line_num));
+                    line_num++;
+                } catch (LexingException e) {
+                    exceptions.add(e);
+                }
+            }
+        }
+        catch (IOException e){
+            e.printStackTrace();
         }
         return sort(tokens);
+    }
+
+    public boolean isWithoutError(){
+        return this.exceptions.isEmpty();
+    }
+
+    public LinkedList<LexingException> getExceptions(){return this.exceptions;}
+
+    public void clear(){
+        tokens.clear();
+        exceptions.clear();
+    }
+
+    public LinkedList<Token> getTokens(){
+        return tokens;
     }
 
     public static LinkedList<Token> sort(LinkedList<Token> tokens){
@@ -75,22 +105,27 @@ public class Lexer {
         return tokens;
     }
     
-    public LinkedList<Token> read(String[] code){
+    public LinkedList<Token> read(String[] code) {
         LinkedList<Token> tokens = new LinkedList<Token>();
         for(int lineNum = 0; lineNum < code.length; ++lineNum){
-            LinkedList<Token> cur = this.readLine(code[lineNum], lineNum);
-            if (cur.size() > 1)
-                tokens.addAll(this.readLine(code[lineNum], lineNum));
+            try {
+                LinkedList<Token> cur = this.readLine(code[lineNum], lineNum);
+                if (cur.size() > 1)
+                    tokens.addAll(this.readLine(code[lineNum], lineNum));
+            }
+            catch (LexingException e) {
+                exceptions.add(e);
+            }
         }
         return sort(tokens);
     }
 
-    public LinkedList<Token> read(String code){
+    public LinkedList<Token> read(String code) throws MissingEndOfStringException {
         String[] splitCode = code.split(System.lineSeparator());
         return this.read(splitCode);
     }
 
-    public LinkedList<Token> readLine(String st, int lineNum){
+    public LinkedList<Token> readLine(String st, int lineNum) throws MissingEndOfStringException {
         LinkedList<Token> tokens = new LinkedList<Token>();
         int indentation = 0;
         int i = 0;
@@ -126,6 +161,10 @@ public class Lexer {
                 }
             }
         }
+
+        if (strIsExpected)
+            throw new MissingEndOfStringException(st, lineNum, startStr);
+
         if (count != 0){
             //throw error
         }

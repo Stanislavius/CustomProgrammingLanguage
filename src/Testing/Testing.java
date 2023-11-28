@@ -118,36 +118,54 @@ public class Testing {
         }
     }
 
-    public static int runNegativeParsing(TestCase test){
-        Lexer l = new Lexer();
-        LinkedList<Token> tokens = l.read(test.getInput());
-        Parser parser = new Parser();
-        LinkedList<ParsedAbstractStatement> ps = parser.parse(tokens);
-        String result = Executor.execute(ps);
-        if (result.equals(test.getOutput()))
-            return 0;
+    public static int runNegativeParsing(TestCase test) {
+        try {
+            Lexer l = new Lexer();
+            LinkedList<Token> tokens = l.read(test.getInput());
+            Parser parser = new Parser();
+            LinkedList<ParsedAbstractStatement> ps = parser.parse(tokens);
+            String result = Executor.execute(ps);
+            if (result.equals(test.getOutput()))
+                return 0;
+        }
+        catch (Exception e)
+        {
+
+        }
         return -1;
     }
 
     public static int runNegativeExecution(TestCase test){
-        Lexer l = new Lexer();
-        LinkedList<Token> tokens = l.read(test.getInput());
-        Parser parser = new Parser();
-        LinkedList<ParsedAbstractStatement> ps = parser.parse(tokens);
-        String result = Executor.execute(ps);
-        if (result.equals(test.getOutput()))
-            return 0;
+        try {
+            Lexer l = new Lexer();
+            LinkedList<Token> tokens = l.read(test.getInput());
+            Parser parser = new Parser();
+            LinkedList<ParsedAbstractStatement> ps = parser.parse(tokens);
+            String result = Executor.execute(ps);
+            if (result.equals(test.getOutput()))
+                return 0;
+        }
+        catch (Exception e)
+        {
+
+        }
         return -1;
     }
 
     public static int runNegativeLexing(TestCase test){
-        Lexer l = new Lexer();
-        LinkedList<Token> tokens = l.read(test.getInput());
-        Parser parser = new Parser();
-        LinkedList<ParsedAbstractStatement> ps = parser.parse(tokens);
-        String result = Executor.execute(ps);
-        if (result.equals(test.getOutput()))
-            return 0;
+        try {
+            Lexer l = new Lexer();
+            LinkedList<Token> tokens = l.read(test.getInput());
+            Parser parser = new Parser();
+            LinkedList<ParsedAbstractStatement> ps = parser.parse(tokens);
+            String result = Executor.execute(ps);
+            if (result.equals(test.getOutput()))
+                return 0;
+        }
+        catch (Exception e)
+        {
+
+        }
         return -1;
     }
 
