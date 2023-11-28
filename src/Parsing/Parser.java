@@ -4,6 +4,7 @@ import Lexing.Exceptions.LexingException;
 import Lexing.Token;
 import Lexing.TokenType;
 import Parsing.ParsedTokens.*;
+import Parsing.ParsingExceptions.ParenthesesException;
 import Parsing.ParsingExceptions.ParsingException;
 
 import java.util.*;
@@ -358,6 +359,8 @@ public class Parser {
                     operands.add(current);
             }
         }
+        if (balance != 0)
+            throw new ParenthesesException(processedStructure);
         return operands;
     }
 

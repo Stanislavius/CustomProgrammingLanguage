@@ -18,4 +18,8 @@ public class ParsingException extends Exception {
         return sb.toString();
     }
 
+    public String getTestingRepresentation(){
+        return this.getClass().getSimpleName() + ": " + errorToken.getLine() + " " + errorToken.getPos();
+    }
+
 }

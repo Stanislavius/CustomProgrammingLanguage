@@ -6,6 +6,7 @@ import Lexing.Lexer;
 import Lexing.Token;
 import Parsing.ParsedTokens.ParsedAbstractStatement;
 import Parsing.Parser;
+import Parsing.ParsingExceptions.ParsingException;
 
 import java.util.LinkedList;
 import java.util.logging.Logger;
@@ -120,14 +121,20 @@ public class Testing {
             Lexer l = new Lexer();
             LinkedList<Token> tokens = l.read(test.getInput());
             Parser parser = new Parser();
-            LinkedList<ParsedAbstractStatement> ps = parser.parse(tokens);
-            String result = Executor.execute(ps);
-            if (result.equals(test.getOutput()))
-                return 0;
-        } catch (Exception e) {
+            parser.parse(tokens);
+            if (parser.isWithoutError())
+                return 1;
+            else {
+                LinkedList<ParsingException> exceptions = parser.getExceptions();
+                if (exceptions.get(0).getTestingRepresentation().equals(test.getOutput())) {
+                    return 0;
+                } else
+                    return 1;
+            }
 
+        } catch (Exception e) {
+            return 2;
         }
-        return -1;
     }
 
     public static int runNegativeExecution(TestCase test) {

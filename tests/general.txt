@@ -74,3 +74,12 @@ f = " sa
 #title = quotes.1
 #type = LexingError
 #_______________________________________________________________
+#TESTCASE
+#<
+d =  call(
+#>
+#output = ParenthesesException: 0 9
+#commentary = should give ParenthesesException
+#title = ParenthesesException.1
+#type = ParsingError
+#_______________________________________________________________
