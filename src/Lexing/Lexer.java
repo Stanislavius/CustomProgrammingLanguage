@@ -18,7 +18,7 @@ import java.util.regex.Pattern;
 public class Lexer {
     final static Pattern operationPattern = Pattern.compile("[\\+\\-\\/\\*\\.]|[=]{2}|[<]|[>]");
     final static Pattern intPattern = Pattern.compile("\\b(?<!\\.)[0-9]+(?!\\.)\\b");
-    final static Pattern floatPattern = Pattern.compile("[0-9]+\\.[0-9]+");
+    final static Pattern floatPattern = Pattern.compile("[0-9]+\\.[0-9]*");
     final static Pattern parenthesisPattern = Pattern.compile("[\\(\\)]{1}");
     final static Pattern assignmentPattern = Pattern.compile("(?<!\\=)[=](?!\\=)");
     //final static Pattern function_pattern = Pattern.compile("[a-zA-Z]+\\(.*\\)");

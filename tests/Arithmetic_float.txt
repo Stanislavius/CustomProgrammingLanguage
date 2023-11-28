@@ -151,3 +151,12 @@ f
 #commentary = should create negative zero
 #title = float_zero.1
 #_______________________________________________________________
+#TESTCASE
+#<
+f = 4.
+f
+#>
+#output = 4.0
+#commentary = should create float without a digit after point
+#title = float_no_digit_after_point
+#_______________________________________________________________
