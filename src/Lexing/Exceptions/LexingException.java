@@ -18,4 +18,8 @@ public class LexingException extends Exception{
         sb.append(pos);
         return sb.toString();
     }
+
+    public String getTestingRepresentation(){
+        return this.getClass().getSimpleName() + ": " + num + " " + pos;
+    }
 }

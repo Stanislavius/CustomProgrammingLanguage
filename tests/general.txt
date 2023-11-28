@@ -65,3 +65,12 @@ fun2(4)
 #commentary = should create function with digits and execute it
 #title = names.3
 #_______________________________________________________________
+#TESTCASE
+#<
+f = " sa
+#>
+#output = MissingEndOfStringException: 0 4
+#commentary = should give MissingEndOfStringException
+#title = quotes.1
+#type = LexingError
+#_______________________________________________________________

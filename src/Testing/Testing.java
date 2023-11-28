@@ -1,6 +1,7 @@
 package Testing;
 
 import Executing.Executor;
+import Lexing.Exceptions.LexingException;
 import Lexing.Lexer;
 import Lexing.Token;
 import Parsing.ParsedTokens.ParsedAbstractStatement;
@@ -23,14 +24,15 @@ public class Testing {
             "general.txt"};
     final static String DEFAULT_TESTSPATH = "tests/";
     static String testsPath;
-    public static void main(String[] args){
-        if(args.length > 0)
+
+    public static void main(String[] args) {
+        if (args.length > 0)
             testsPath = args[0];
         else
             testsPath = DEFAULT_TESTSPATH;
         logger = TestingLogger.createTestingLogger();
         LinkedList<Integer[]> stats = new LinkedList<Integer[]>();
-        for(int i = 0; i < testFiles.length; ++i){
+        for (int i = 0; i < testFiles.length; ++i) {
             stats.add(runTestFile(testsPath + testFiles[i]));
         }
 
@@ -38,7 +40,7 @@ public class Testing {
         int error_total = 0;
         int wrong_total = 0;
         int total_cases = 0;
-        for(int i = 0; i < stats.size(); ++i){
+        for (int i = 0; i < stats.size(); ++i) {
             logger.finest("Passed " + stats.get(i)[1] + " from " + stats.get(i)[0] + " in file " + testFiles[i]);
             total_cases += stats.get(i)[0];
             passed_total += stats.get(i)[1];
@@ -50,29 +52,25 @@ public class Testing {
         logger.info("In general error occurred in  " + error_total + " out of " + total_cases);
     }
 
-    public static Integer[] runTestFile(String filename){
+    public static Integer[] runTestFile(String filename) {
         LinkedList<TestCase> testCases = TestCase.readFile(filename);
         int counter = 0;
         Integer[] stats = {testCases.size(), 0, 0, 0};
-        for (int j = 0; j < testCases.size(); ++j){
+        for (int j = 0; j < testCases.size(); ++j) {
             int result = runTest(testCases.get(j));
-            if (result == 0){
+            if (result == 0) {
                 logger.info("Test " + j + " from " + filename + " file is passed");
                 counter++;
                 stats[1] += 1;
-            }
-
-            else if (result == 1){
+            } else if (result == 1) {
                 StringBuilder sb = new StringBuilder();
                 sb.append(String.format("Test %s from %s, file is failed \n", testCases.get(j).getTitle(), filename));
                 logger.severe(sb.toString());
                 stats[2] += 1;
-            }
-            else if (result == 2){
+            } else if (result == 2) {
                 logger.severe("Test " + testCases.get(j).getTitle() + " throws exception");
                 stats[3] += 1;
-            }
-            else if (result == -1){
+            } else if (result == -1) {
                 logger.severe("ERROR IN TEST");
                 System.exit(0);
             }
@@ -83,8 +81,8 @@ public class Testing {
         return stats;
     }
 
-    public static int runTest(TestCase test){
-        switch (test.getType()){
+    public static int runTest(TestCase test) {
+        switch (test.getType()) {
             case "output":
                 return runPositiveTest(test);
             case "LexingError":
@@ -101,7 +99,7 @@ public class Testing {
 
     }
 
-    public static int runPositiveTest(TestCase test){
+    public static int runPositiveTest(TestCase test) {
         try {
             Lexer l = new Lexer();
             LinkedList<Token> tokens = l.read(test.getInput());
@@ -112,8 +110,7 @@ public class Testing {
                 return 0;
             else
                 return 1;
-        }
-        catch (Exception e){
+        } catch (Exception e) {
             return 2;
         }
     }
@@ -127,15 +124,13 @@ public class Testing {
             String result = Executor.execute(ps);
             if (result.equals(test.getOutput()))
                 return 0;
-        }
-        catch (Exception e)
-        {
+        } catch (Exception e) {
 
         }
         return -1;
     }
 
-    public static int runNegativeExecution(TestCase test){
+    public static int runNegativeExecution(TestCase test) {
         try {
             Lexer l = new Lexer();
             LinkedList<Token> tokens = l.read(test.getInput());
@@ -144,31 +139,29 @@ public class Testing {
             String result = Executor.execute(ps);
             if (result.equals(test.getOutput()))
                 return 0;
-        }
-        catch (Exception e)
-        {
+        } catch (Exception e) {
 
         }
         return -1;
     }
 
-    public static int runNegativeLexing(TestCase test){
+    public static int runNegativeLexing(TestCase test) {
         try {
             Lexer l = new Lexer();
             LinkedList<Token> tokens = l.read(test.getInput());
-            Parser parser = new Parser();
-            LinkedList<ParsedAbstractStatement> ps = parser.parse(tokens);
-            String result = Executor.execute(ps);
-            if (result.equals(test.getOutput()))
-                return 0;
-        }
-        catch (Exception e)
-        {
+            if (l.isWithoutError())
+                return 1;
+            else {
+                LinkedList<LexingException> exceptions = l.getExceptions();
+                if (exceptions.get(0).getTestingRepresentation().equals(test.getOutput())) {
+                    return 0;
+                } else
+                    return 1;
+            }
 
+        } catch (Exception e) {
+            return 2;
         }
-        return -1;
     }
-
-
 }
 

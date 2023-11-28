@@ -16,7 +16,7 @@ class TestCase {
     String output;
     String commentary;
     String title;
-    String type = "output"; // 0 - output, 1 - LexerError, 2 - ParsingError, 3 - ExecutionError
+    String type = "output"; // 0 - output, 1 - LexingError, 2 - ParsingError, 3 - ExecutionError
 
     public TestCase(String[] input, HashMap<String, String> params) {
         this.input = input;

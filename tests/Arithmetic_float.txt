@@ -133,3 +133,21 @@ float(f)
 #commentary = should create float from float variable
 #title = float_new.6
 #_______________________________________________________________
+#TESTCASE
+#<
+f = 0.0
+f
+#>
+#output = 0.0
+#commentary = should create zero
+#title = float_zero.0
+#_______________________________________________________________
+#TESTCASE
+#<
+f = -0.0
+f
+#>
+#output = 0.0
+#commentary = should create negative zero
+#title = float_zero.1
+#_______________________________________________________________

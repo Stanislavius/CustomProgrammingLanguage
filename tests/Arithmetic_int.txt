@@ -131,3 +131,21 @@ int(s)
 #commentary = should create int
 #title = int_new.5
 #_______________________________________________________________
+#TESTCASE
+#<
+f = 0
+f
+#>
+#output = 0
+#commentary = should create zero
+#title = int_zero.1
+#_______________________________________________________________
+#TESTCASE
+#<
+f = -0
+f
+#>
+#output = 0
+#commentary = should replace negative zero with zero
+#title = int_zero.2
+#_______________________________________________________________
