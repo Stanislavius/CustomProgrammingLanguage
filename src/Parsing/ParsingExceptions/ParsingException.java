@@ -1,4 +1,4 @@
-package Parsing;
+package Parsing.ParsingExceptions;
 
 import Lexing.Token;
 

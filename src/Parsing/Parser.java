@@ -3,6 +3,7 @@ package Parsing;
 import Lexing.Token;
 import Lexing.TokenType;
 import Parsing.ParsedTokens.*;
+import Parsing.ParsingExceptions.ParsingException;
 
 import java.util.*;
 import java.util.logging.Logger;

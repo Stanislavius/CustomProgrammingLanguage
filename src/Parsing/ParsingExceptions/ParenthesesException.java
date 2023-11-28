@@ -1,15 +1,15 @@
-package Parsing;
+package Parsing.ParsingExceptions;
 
 import Lexing.Token;
 
-public class FunctionStartException extends ParsingException {
-    public FunctionStartException(Token t) {
+public class ParenthesesException extends ParsingException {
+    public ParenthesesException(Token t) {
         super(t);
     }
 
     public String toString() {
         StringBuilder sb = new StringBuilder();
-        sb.append("At this position are expected parentheses: ");
+        sb.append("Parentheses don't match. Starts at ");
         sb.append(errorToken.getLine());
         sb.append(" line, position is ");
         sb.append(errorToken.getPos());

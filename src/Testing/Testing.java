@@ -84,18 +84,21 @@ public class Testing {
     }
 
     public static int runTest(TestCase test){
-        if (test.getType().equals("output")) {
-            return runPositiveTest(test);
+        switch (test.getType()){
+            case "output":
+                return runPositiveTest(test);
+            case "LexingError":
+                return runNegativeLexing(test);
+            case "ParsingError":
+                return runNegativeParsing(test);
+            case "ExucutionError":
+                return runNegativeExecution(test);
+            default:
+                System.out.printf("Cannot recognize type %s%n", test.getType());
+                System.exit(-1);
+                return -1;
         }
 
-        if (test.getType().equals("ParsingError")){
-            return runNegativeParsing(test);
-        }
-
-        if (test.getType().equals("ExecutionError")){
-            return runNegativeExecution(test);
-        }
-        return -1;
     }
 
     public static int runPositiveTest(TestCase test){
@@ -127,6 +130,17 @@ public class Testing {
     }
 
     public static int runNegativeExecution(TestCase test){
+        Lexer l = new Lexer();
+        LinkedList<Token> tokens = l.read(test.getInput());
+        Parser parser = new Parser();
+        LinkedList<ParsedAbstractStatement> ps = parser.parse(tokens);
+        String result = Executor.execute(ps);
+        if (result.equals(test.getOutput()))
+            return 0;
+        return -1;
+    }
+
+    public static int runNegativeLexing(TestCase test){
         Lexer l = new Lexer();
         LinkedList<Token> tokens = l.read(test.getInput());
         Parser parser = new Parser();
