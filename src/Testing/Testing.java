@@ -21,11 +21,17 @@ public class Testing {
             "list.txt",
             "class_def.txt",
             "general.txt"};
+    final static String DEFAULT_TESTSPATH = "tests/";
+    static String testsPath;
     public static void main(String[] args){
+        if(args.length > 0)
+            testsPath = args[0];
+        else
+            testsPath = DEFAULT_TESTSPATH;
         logger = TestingLogger.createTestingLogger();
         LinkedList<Integer[]> stats = new LinkedList<Integer[]>();
         for(int i = 0; i < testFiles.length; ++i){
-            stats.add(runTestFile("tests/" + testFiles[i]));
+            stats.add(runTestFile(testsPath + testFiles[i]));
         }
 
         int passed_total = 0;
