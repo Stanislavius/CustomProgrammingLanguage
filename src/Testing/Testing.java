@@ -55,32 +55,26 @@ public class Testing {
         int counter = 0;
         Integer[] stats = {testCases.size(), 0, 0, 0};
         for (int j = 0; j < testCases.size(); ++j){
-            try {
-                Lexer l = new Lexer();
-                LinkedList<Token> tokens = l.read(testCases.get(j).getInput());
-                Parser parser = new Parser();
-                LinkedList<ParsedAbstractStatement> ps = parser.parse(tokens);
-                String result = Executor.execute(ps);
-                if (result.equals(testCases.get(j).getOutput())) {
-                    logger.info("Test " + j + " from " + filename + " file is passed");
-                    counter++;
-                    stats[1] += 1;
-                } else {
-                    StringBuilder sb = new StringBuilder();
-                    sb.append(String.format("Test %s from %s, file is failed \n", testCases.get(j).getTitle(), filename));
-                    sb.append(String.format("Input = < %s > \n %s \n",
-                            testCases.get(j).getInputOneString(),
-                            testCases.get(j).getCommentary()));
-                    sb.append(String.format("Desired output is %s got %s instead.",
-                            testCases.get(j).getOutput(),
-                            result));
-                    logger.severe(sb.toString());
-                    stats[2] += 1;
-                }
+            int result = runTest(testCases.get(j));
+            if (result == 0){
+                logger.info("Test " + j + " from " + filename + " file is passed");
+                counter++;
+                stats[1] += 1;
             }
-            catch (Exception e){
+
+            else if (result == 1){
+                StringBuilder sb = new StringBuilder();
+                sb.append(String.format("Test %s from %s, file is failed \n", testCases.get(j).getTitle(), filename));
+                logger.severe(sb.toString());
+                stats[2] += 1;
+            }
+            else if (result == 2){
                 logger.severe("Test " + testCases.get(j).getTitle() + " throws exception");
                 stats[3] += 1;
+            }
+            else if (result == -1){
+                logger.severe("ERROR IN TEST");
+                System.exit(0);
             }
 
             Executor.clearVariables();
@@ -88,5 +82,61 @@ public class Testing {
         logger.info(String.format("Finished file %s, got %d out of %d tests passed.", filename, counter, testCases.size()));
         return stats;
     }
+
+    public static int runTest(TestCase test){
+        if (test.getType().equals("output")) {
+            return runPositiveTest(test);
+        }
+
+        if (test.getType().equals("ParsingError")){
+            return runNegativeParsing(test);
+        }
+
+        if (test.getType().equals("ExecutionError")){
+            return runNegativeExecution(test);
+        }
+        return -1;
+    }
+
+    public static int runPositiveTest(TestCase test){
+        try {
+            Lexer l = new Lexer();
+            LinkedList<Token> tokens = l.read(test.getInput());
+            Parser parser = new Parser();
+            LinkedList<ParsedAbstractStatement> ps = parser.parse(tokens);
+            String result = Executor.execute(ps);
+            if (result.equals(test.getOutput()))
+                return 0;
+            else
+                return 1;
+        }
+        catch (Exception e){
+            return 2;
+        }
+    }
+
+    public static int runNegativeParsing(TestCase test){
+        Lexer l = new Lexer();
+        LinkedList<Token> tokens = l.read(test.getInput());
+        Parser parser = new Parser();
+        LinkedList<ParsedAbstractStatement> ps = parser.parse(tokens);
+        String result = Executor.execute(ps);
+        if (result.equals(test.getOutput()))
+            return 0;
+        return -1;
+    }
+
+    public static int runNegativeExecution(TestCase test){
+        Lexer l = new Lexer();
+        LinkedList<Token> tokens = l.read(test.getInput());
+        Parser parser = new Parser();
+        LinkedList<ParsedAbstractStatement> ps = parser.parse(tokens);
+        String result = Executor.execute(ps);
+        if (result.equals(test.getOutput()))
+            return 0;
+        return -1;
+    }
+
+
 }
 

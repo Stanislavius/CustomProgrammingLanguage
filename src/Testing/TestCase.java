@@ -102,4 +102,7 @@ class TestCase {
         return sb.toString();
     }
 
+    public String getType(){
+        return type;
+    }
 }
