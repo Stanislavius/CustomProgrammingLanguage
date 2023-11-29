@@ -79,7 +79,7 @@ public class ListType extends ObjectType {
         type.setMember("__eq__", new FunctionType("__eq__", new SourceFunction(){
             public ObjectType execute(LinkedList<ObjectType> args){
                 LinkedList<ObjectType> v1 = ((ListType)(args.get(0))).getValues();
-                LinkedList<ObjectType> v2 = ((ListType)(args.get(0))).getValues();
+                LinkedList<ObjectType> v2 = ((ListType)(args.get(1))).getValues();
                 boolean result = v1.equals(v2);
                 if (result)
                     return new IntType(1);

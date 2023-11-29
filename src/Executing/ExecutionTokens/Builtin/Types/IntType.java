@@ -199,6 +199,11 @@ public class IntType extends ObjectType {
         return value;
     }
 
+    public boolean equals(IntType other){
+        return this.getInt() == other.getInt();
+    }
+
+
     public String toString(){
         return "" + value;
     }
