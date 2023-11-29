@@ -116,6 +116,31 @@ public class FloatType extends ObjectType {
             }
         }
         ));
+
+        type.setMember("__eq__", new FunctionType("__eq__", new SourceFunction(){
+            public ObjectType execute(LinkedList<ObjectType> args){
+                float v1 = ((FloatType)(args.get(0))).getFloat();
+                ObjectType val2 = args.get(1);
+                if (val2.getType().toString().equals("int")) {
+                    int v2 = ((IntType) (val2)).getInt();
+                    if (v1 == v2)
+                        return new IntType(1);
+                    else
+                        return new IntType(0);
+
+                }
+                if (val2.getType().toString().equals("float")) {
+                    float v2 = ((FloatType) (val2)).getFloat();
+                    if (v1 == v2)
+                        return new IntType(1);
+                    else
+                        return new IntType(0);
+                }
+                return VoidType.voidObject;
+            }
+        }
+        ));
+
         Executor.setVariable("float", type);
     }
     public FloatType(Float value) {
