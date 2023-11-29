@@ -62,6 +62,19 @@ public class StringType extends ObjectType {
 
         ));
 
+        type.setMember("__eq__", new FunctionType("__eq__", new SourceFunction(){
+            public ObjectType execute(LinkedList<ObjectType> args){
+                String v1 = ((StringType)(args.get(0))).getValue();
+                String v2 = ((StringType)(args.get(1))).getValue();
+                boolean result = v1.equals(v2);
+                if (result)
+                    return new IntType(1);
+                else
+                    return new IntType(0);
+            }
+        }
+        ));
+
         Executor.setVariable("str", type);
     }
     String value;

@@ -224,8 +224,6 @@ public class Parser {
                         }
                     }
                     else {
-                        System.out.println(operands.size());
-                        System.out.println(operands.get(i));
                         newOperands.add(operands.get(i));
                     }
                     q.clear();
