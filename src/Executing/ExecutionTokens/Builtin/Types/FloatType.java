@@ -12,6 +12,27 @@ public class FloatType extends ObjectType {
     {
         type = new ClassType();
         type.setMember("__name__", new StringType("float"));
+
+        type.setMember("__call__", new FunctionType("__call__", new SourceFunction(){
+            public ObjectType execute(LinkedList<ObjectType> args){
+                ObjectType val1 = args.get(0);
+                switch (val1.getType().toString()) {
+                    case "int":
+                        IntType it = (IntType) val1;
+                        return new FloatType((float) it.getInt());
+                    case "str":
+                        StringType sT = (StringType) val1;
+                        return new FloatType(Float.parseFloat(sT.getValue()));
+                    case "float":
+                        return val1;
+                    default:
+                        return val1.getMember("__float__").call();
+                }
+            }
+        }
+        ));
+
+
         type.setMember("__add__", new FunctionType("__add__", new SourceFunction(){
             public ObjectType execute(LinkedList<ObjectType> args){
                 float v1 = ((FloatType)(args.get(0))).getFloat();
