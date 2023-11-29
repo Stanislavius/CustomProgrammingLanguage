@@ -93,7 +93,7 @@ _______________________________________________________________
 #<
 (444/111)*-4
 #>
-#output = -16
+#output = -16.0
 #commentary = should return calculated expression inside parentheses * calculated expression inside parentheses
 #title = unary.1
 #_______________________________________________________________
@@ -101,35 +101,35 @@ _______________________________________________________________
 #<
 (3+1)*(4+2) + (444/111)*4
 #>
-#output = 40
+#output = 40.0
 #commentary = should woth with different combinations of parentheses
 #_______________________________________________________________
 #TESTCASE
 #<
 (3+1)*(4+2) + (444/111)*-4
 #>
-#output = 8
+#output = 8.0
 #commentary = should work with different combinations of parentheses
 #_______________________________________________________________
 #TESTCASE
 #<
 (3+1)*-(4+2) + (444/111)*-4
 #>
-#output = -40
+#output = -40.0
 #commentary = should work with different combinations of parentheses
 #_______________________________________________________________
 #TESTCASE
 #<
 -(3+1)*-(4+2) + (444/111)*-4
 #>
-#output = 8
+#output = 8.0
 #commentary = should work with different combinations of parentheses
 #_______________________________________________________________
 #TESTCASE
 #<
 -(3+1)*-(4+2) + (444/111)*-4 + (12*5*1*(5+4)) + (12 * 3 - 4*(4-1-2-3-4-5)*5)
 #>
-#output = 804
+#output = 804.0
 #commentary = should work with different combinations of parentheses
 #_______________________________________________________________
 #TESTCASE

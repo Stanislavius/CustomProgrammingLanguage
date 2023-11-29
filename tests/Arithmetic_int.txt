@@ -16,7 +16,7 @@
 #<
 1 / 1
 #>
-#output = 1
+#output = 1.0
 #commentary = Testing arithmetic operator / for two integers.
 #_______________________________________________________________
 #TESTCASE
@@ -65,14 +65,14 @@
 #<
 1 + 8 / 4
 #>
-#output = 3
+#output = 3.0
 #commentary = Testing variants of combining different operators for two integers.
 #_______________________________________________________________
 #TESTCASE
 #<
 4/2 + 2*4
 #>
-#output = 10
+#output = 10.0
 #commentary = Testing variants of combining different operators for two integers.
 #_______________________________________________________________
 #TESTCASE
