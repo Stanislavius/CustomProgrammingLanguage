@@ -45,9 +45,14 @@ public class Parser {
         try {
                 logger.fine("Start parsing");
             for(int i = 0; i < lines.size(); ++i){
-                    logger.fine("Start parsing " + i + " line \r\n"+ParsingLogger.tokensToString(lines.get(i)));
-                parsedLines.add(parseLine(lines.get(i)));
+                if (!lines.get(i).isEmpty()) {
+                    logger.fine("Start parsing " + i + " line \r\n" + ParsingLogger.tokensToString(lines.get(i)));
+                    parsedLines.add(parseLine(lines.get(i)));
                     logger.info(i + " line is parsed \r\n" + parsedLines.getLast().toString());
+                }
+                else
+                    logger.info("line " + i + " is empty, pass");
+
             }
             parsedLines = processBlocks(parsedLines);
         }
