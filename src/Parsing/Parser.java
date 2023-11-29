@@ -211,9 +211,23 @@ public class Parser {
                     q.clear();
                 }
                 else {
-                    if (q.isEmpty() == false)
-                        newOperands.add(q.get(0));
-                    newOperands.add(operands.get(i));
+                    if (q.isEmpty() == false) {
+                        if (operands.get(i).getParsedType() != ParsedTokenType.UNKNOWN_OPERATION) {
+                            if (newOperands.size() == 0 || newOperands.getLast().getParsedType() == ParsedTokenType.UNKNOWN_OPERATION)
+                                newOperands.add(new ParsedUnaryExpression(q.get(0).getToken(), operands.get(i)));
+                            else{
+                                newOperands.add(q.get(0));
+                                newOperands.add(operands.get(i));
+                            }
+                        } else {
+                            newOperands.add(q.get(0));
+                        }
+                    }
+                    else {
+                        System.out.println(operands.size());
+                        System.out.println(operands.get(i));
+                        newOperands.add(operands.get(i));
+                    }
                     q.clear();
                 }
             }

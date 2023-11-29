@@ -91,6 +91,14 @@ _______________________________________________________________
 #_______________________________________________________________
 #TESTCASE
 #<
+(444/111)*-4
+#>
+#output = -16
+#commentary = should return calculated expression inside parentheses * calculated expression inside parentheses
+#title = unary.1
+#_______________________________________________________________
+#TESTCASE
+#<
 (3+1)*(4+2) + (444/111)*4
 #>
 #output = 40
