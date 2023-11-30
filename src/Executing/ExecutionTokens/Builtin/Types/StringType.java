@@ -98,4 +98,8 @@ public class StringType extends ObjectType {
         else
             return false;
     }
+
+    public int hashCode(){
+        return this.value.hashCode();
+    }
 }

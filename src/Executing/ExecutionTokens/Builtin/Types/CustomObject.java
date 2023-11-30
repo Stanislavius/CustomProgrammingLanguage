@@ -35,4 +35,26 @@ public class CustomObject extends ObjectType{
             return new ErrorType();
     }
 
+    public ObjectType getMember(String name){
+        return this.getMember(new StringType(name));
+    }
+
+    public ObjectType getMember(StringType key){
+        if (this.dict.containsKey(key)){
+            ObjectType member = this.dict.get(key);
+            if(member.getClass() == FunctionType.class){
+                return new BoundMethod(this, (FunctionType) member, key.getValue());
+            }
+            else
+                return member;
+        }
+        else {
+            ObjectType member = this.getMember("__class__").getMember(key.getValue());
+            if (member.getClass() == FunctionType.class) {
+                return new BoundMethod(this, (FunctionType) member, key.getValue());
+            } else
+                return member;
+        }
+    }
+
 }

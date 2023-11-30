@@ -97,7 +97,10 @@ public class Executor {
 
         if (pt.getParsedType() == ParsedTokenType.ASSIGNMENT){
             ParsedAssigmentStatement pat = (ParsedAssigmentStatement) pt;
-            return new AssignmentToken(pt.getToken(), new VariableExecutionToken(pat.getVariable().getToken()), getExecutionTreeExpression(pat.getExpression()));
+            if(pat.getVariable().getClass().equals(ParsedVariable.class))
+                return new AssignmentToken(pt.getToken(), new VariableExecutionToken(pat.getVariable().getToken()), getExecutionTreeExpression(pat.getExpression()));
+            else
+                return new AssignmentToken(pt.getToken(), getExecutionTreeExpression(pat.getVariable()), getExecutionTreeExpression(pat.getExpression()));
         }
         return null;
     }

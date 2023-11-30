@@ -36,4 +36,15 @@ public class FunctionType extends ObjectType{
         return this.call;
     }
 
+    public boolean equals(FunctionType other){
+        return false; //TODO: equality for object
+    }
+
+    public boolean equals(Object other){
+        if (other.getClass() == FunctionType.class)
+            return this.equals((FunctionType) other);
+        else
+            return false;
+    }
+
 }

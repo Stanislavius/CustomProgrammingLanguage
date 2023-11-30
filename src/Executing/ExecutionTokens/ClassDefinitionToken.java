@@ -44,12 +44,13 @@ public class ClassDefinitionToken extends ExecutionToken{
                     public ObjectType execute(LinkedList<ObjectType> args) {
                         ObjectType newObject = new CustomObject();
                         args.add(0, newObject);
-                        initFunc.execute(args);
+                        newClass.getMember("__init__").call(args);
                         newObject.setMember("__class__", newClass);
                         return newObject;
                     }
                 }
                 ));
+                newClass.setMember("__init__", new FunctionType(name = "__init__", new CustomFunction(initFunc)));
             }
             else {
                 newClass.setMember(key, member.execute());
