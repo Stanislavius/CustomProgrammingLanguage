@@ -89,4 +89,13 @@ public class StringType extends ObjectType {
     public String toString(){
         return value;
     }
+
+    public boolean equals(Object other){
+        if (other.getClass().equals(this.getClass())){
+            String v = ((StringType) other).getValue();
+            return v.equals(this.value);
+        }
+        else
+            return false;
+    }
 }

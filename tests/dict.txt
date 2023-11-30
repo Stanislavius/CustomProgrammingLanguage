@@ -49,6 +49,33 @@ d = {2:3, "sd":5}
 d.contains(2)
 #>
 #output = 1
-#commentary = should create and return dict
+#commentary = should work with keys
 #title = dict.contains.1
+#_______________________________________________________________
+#TESTCASE
+#<
+d = {"key":3, "sd":5}
+d.contains("key")
+#>
+#output = 1
+#commentary = should work with keys
+#title = dict.contains.2
+#_______________________________________________________________
+#TESTCASE
+#<
+d = {"key":3, "sd":5}
+d.contains("key2")
+#>
+#output = 0
+#commentary = should not non-existent key
+#title = dict.contains.3
+#_______________________________________________________________
+#TESTCASE
+#<
+d = {4.5:3, "sd":5}
+d.contains(4.5)
+#>
+#output = 1
+#commentary = should work with keys
+#title = dict.contains.4
 #_______________________________________________________________
