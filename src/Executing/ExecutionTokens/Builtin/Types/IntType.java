@@ -211,6 +211,21 @@ public class IntType extends ObjectType {
         return this.getInt() == other.getInt();
     }
 
+    public boolean equals(FloatType other){
+        return this.getInt() == other.getFloat();
+    }
+
+    public boolean equals(Object other){
+        if (other.getClass() == IntType.class)
+            return this.equals((IntType) other);
+        else{
+            if (other.getClass() == FloatType.class)
+                return this.equals((FloatType) other);
+            else
+                return false;
+        }
+    }
+
     public String toString(){
         return "" + value;
     }
