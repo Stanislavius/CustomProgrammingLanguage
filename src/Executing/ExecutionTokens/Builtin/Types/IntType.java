@@ -178,6 +178,14 @@ public class IntType extends ObjectType {
         }
         ));
 
+        type.setMember("__hash__", new FunctionType("__hash__", new SourceFunction(){
+            public ObjectType execute(LinkedList<ObjectType> args){
+                int v1 = ((IntType)(args.get(0))).hashCode();
+                return new IntType(v1);
+            }
+        }
+        ));
+
         type.setMember("__str__", new FunctionType("__str__", new SourceFunction(){
             public ObjectType execute(LinkedList<ObjectType> args){
                 int k = 4;

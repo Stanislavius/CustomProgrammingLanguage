@@ -33,5 +33,13 @@ public class BuiltinFunctions {
 
         Executor.setVariable("len", len);
 
+        FunctionType hash = new FunctionType("hash", new SourceFunction(){
+            public ObjectType execute(LinkedList<ObjectType> args){
+                return args.get(0).getMember("__class__").getMember("__hash__").call(args.get(0));
+            }
+        });
+
+        Executor.setVariable("hash", hash);
+
     }
 }
