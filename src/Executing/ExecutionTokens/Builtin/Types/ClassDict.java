@@ -48,6 +48,18 @@ public class ClassDict extends ObjectType {
         }
         ));
 
+        type.setMember("contains", new FunctionType("contains", new SourceFunction(){
+            public ObjectType execute(LinkedList<ObjectType> args){
+                ClassDict v1 = ((ClassDict)(args.get(0)));
+                boolean result = v1.containsKey(args.get(1));
+                if (result)
+                    return new IntType(1);
+                else
+                    return new IntType(0);
+            }
+        }
+        ));
+
         type.setMember("__setitem__", new FunctionType("__setitem__", new SourceFunction(){
             public ObjectType execute(LinkedList<ObjectType> args){
                 ClassDict v1 = ((ClassDict)(args.get(0)));
@@ -114,8 +126,12 @@ public class ClassDict extends ObjectType {
     }
 
 
-    public boolean containsKey(String name) {
-        return this.dict.containsKey(name);
+    public boolean containsKey(ObjectType key) {
+        return this.dict.containsKey(key);
+    }
+
+    public boolean containsKey(String key) {
+        return this.dict.containsKey(new StringType(key));
     }
 
     public ObjectType get(ObjectType key){

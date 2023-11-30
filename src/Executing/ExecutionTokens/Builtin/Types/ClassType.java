@@ -34,4 +34,8 @@ public class ClassType extends ObjectType {
         return members.get(name);
     }
 
+    public static ClassType getTypeClass(){
+        return ClassType.type;
+    }
+
 }

@@ -83,4 +83,12 @@ public class ObjectType{
         return this.getMember("__class__");
     }
 
+    public boolean equals(ObjectType other){
+        boolean result = false;
+        if (this.getType().equals(other.getType()))
+            if(this.getMembers().equals(other.getMembers()))
+                result = true;
+        return result;
+    }
+
 }

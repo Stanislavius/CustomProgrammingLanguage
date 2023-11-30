@@ -203,9 +203,12 @@ public class IntType extends ObjectType {
         return this.getInt() == other.getInt();
     }
 
-
     public String toString(){
         return "" + value;
+    }
+
+    public int hashCode(){
+        return value;
     }
 
 }

@@ -1,9 +1,6 @@
 package Executing.ExecutionTokens;
 
-import Executing.ExecutionExceptions.ExecutionException;
-import Executing.ExecutionTokens.Builtin.Types.ClassType;
-import Executing.ExecutionTokens.Builtin.Types.ObjectType;
-import Executing.ExecutionTokens.Builtin.Types.VoidType;
+import Executing.ExecutionTokens.Builtin.Types.*;
 import Executing.Executor;
 import Lexing.Token;
 
@@ -13,7 +10,6 @@ import java.util.LinkedList;
 
 public class ClassDefinitionToken extends ExecutionToken{
     HashMap<String, ExecutionToken> members = new HashMap<String, ExecutionToken>();
-    FunctionDefinitionToken init;
     LinkedList<ExecutionToken> toDo;
     String name;
     public ClassDefinitionToken(Token t, String name, LinkedList<ExecutionToken> toDo){
@@ -32,30 +28,40 @@ public class ClassDefinitionToken extends ExecutionToken{
                 members.put(functionName, ft);
             }
         }
-
     }
 
     public ObjectType execute(){
         HashMap<String, ObjectType> classMembers = new HashMap<String, ObjectType>();
+        CustomObject newClass = new CustomObject();
+        Executor.setVariable(name, newClass);
         Iterator iter = members.keySet().iterator();
-        while (iter.hasNext()){
-            String key = (String)iter.next();
+        while (iter.hasNext()) {
+            String key = (String) iter.next();
             ExecutionToken member = members.get(key);
-            classMembers.put(name, member.execute());
+            if (key.equals("__init__")) {
+                FunctionDefinitionToken initFunc = (FunctionDefinitionToken) member;
+                newClass.setMember("__call__", new FunctionType("__call__", new SourceFunction() {
+                    public ObjectType execute(LinkedList<ObjectType> args) {
+                        ObjectType newObject = new CustomObject();
+                        args.add(0, newObject);
+                        initFunc.execute(args);
+                        newObject.setMember("__class__", newClass);
+                        return newObject;
+                    }
+                }
+                ));
+            }
+            else {
+                newClass.setMember(key, member.execute());
+            }
         }
-        Executor.setVariable(name, new ClassType(classMembers));
+        newClass.setMember("__class__", ClassType.getTypeClass());
+        Executor.setVariable(name, newClass);
         return new VoidType();
     }
 
     public HashMap<String, ExecutionToken> getMembers(){
         return members;
-    }
-
-    public ObjectType execute(LinkedList<ObjectType> args, Token t) throws ExecutionException {
-        ObjectType newObject = new ObjectType();
-        args.add(0, newObject);
-        init.execute(args);
-        return newObject;
     }
 
 }
