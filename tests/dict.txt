@@ -1,0 +1,54 @@
+#TESTCASE
+#<
+d = {}
+d
+#>
+#output = {}
+#commentary = should create and return an empty dict
+#title = dict.creation.1
+#_______________________________________________________________
+#TESTCASE
+#<
+d = {2:3}
+d
+#>
+#output = {2:3}
+#commentary = should create and return dict
+#title = dict.creation.2
+#_______________________________________________________________
+#TESTCASE
+#<
+d = {2:3, 4:5}
+d
+#>
+#output = {2:3, 4:5}
+#commentary = should create and return dict
+#title = dict.creation.3
+#_______________________________________________________________
+#TESTCASE
+#<
+d = {2:3, 4.5:5}
+d
+#>
+#output = {2:3, 4.5:5}
+#commentary = should create and return dict
+#title = dict.creation.4
+#_______________________________________________________________
+#TESTCASE
+#<
+d = {2:3, "sd":5}
+d
+#>
+#output = {2:3, "sd":5}
+#commentary = should create and return dict
+#title = dict.creation.5
+#_______________________________________________________________
+#TESTCASE
+#<
+d = {2:3, "sd":5}
+d.contains(2)
+#>
+#output = 1
+#commentary = should create and return dict
+#title = dict.contains.1
+#_______________________________________________________________

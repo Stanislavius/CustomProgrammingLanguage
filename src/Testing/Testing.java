@@ -22,7 +22,8 @@ public class Testing {
             "string.txt",
             "list.txt",
             "class_def.txt",
-            "general.txt"};
+            "general.txt",
+            "dict.txt"};
     final static String DEFAULT_TESTSPATH = "tests/";
     static String testsPath;
 
