@@ -154,4 +154,23 @@ public class FloatType extends ObjectType {
     public String toString(){
         return "" + value;
     }
+
+    public boolean equals(IntType other){
+        return this.getFloat() == other.getInt();
+    }
+
+    public boolean equals(FloatType other){
+        return this.getFloat() == other.getFloat();
+    }
+
+    public boolean equals(Object other){
+        if (other.getClass() == IntType.class)
+            return this.equals((IntType) other);
+        else{
+            if (other.getClass() == FloatType.class)
+                return this.equals((FloatType) other);
+            else
+                return false;
+        }
+    }
 }
