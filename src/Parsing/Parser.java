@@ -112,6 +112,22 @@ public class Parser {
                     indent,
                     parseExpressionTokens(new LinkedList<Token>(line.subList(1, line.size()))));
         }
+
+        if (line.get(0).getValue().equals("try")){
+            return new ParsedTryStatement(line.get(0),
+                    indent);
+        }
+
+        if (line.get(0).getValue().equals("except")){
+            return new ParsedExceptStatement(line.get(0),
+                    indent, parseExceptArgs(line));
+        }
+
+        if (line.get(0).getValue().equals("finally")){
+            return new ParsedFinallyStatement(line.get(0),
+                    indent);
+        }
+
         if (line.get(0).getValue().equals("else")){
             return new ParsedConditionalStatement(line.get(0),
                     indent);
@@ -135,6 +151,10 @@ public class Parser {
         line.removeFirst();
         // rest is processed as expression if needed
         return null;
+    }
+
+    private LinkedList<ParsedVariable> parseExceptArgs(LinkedList<Token> line) {
+        return null; // TODO
     }
 
     public LinkedList<ParsedVariable> parseArgsTokens(LinkedList<Token> line) throws ParsingException {
@@ -494,10 +514,37 @@ public class Parser {
                         ((ParsedConditionalStatement)head1).append((ParsedConditionalStatement)curLine);
                         head1 = null;
                     }
-
+                    //TODO IF BLOCKWORDS ORDER IS NOT PRESERVED, THROW EXCEPTION
                 }
 
             }
+
+            iter = tokens.iterator();
+            ParsedTryStatement headTry = null;
+            while (iter.hasNext()) {
+                ParsedAbstractStatement curLine = (ParsedAbstractStatement) iter.next();
+                if (curLine.getType() == TokenType.BLOCKWORD && curLine.getIndentationLevel() == lowerIndent - 1) {
+                    if (curLine.getValue().equals("try"))
+                        headTry = (ParsedTryStatement) curLine;
+                    if (curLine.getValue().equals("except")) {
+                        iter.remove();
+                        assert curLine instanceof ParsedExceptStatement;
+                        assert headTry != null;
+                        headTry.addExcept((ParsedExceptStatement) curLine);
+                    }
+                    if (curLine.getValue().equals("finally")) {
+                        iter.remove();
+                        assert curLine instanceof ParsedFinallyStatement;
+                        assert headTry != null;
+                        headTry.setFinallyStatement((ParsedFinallyStatement) curLine);
+                        headTry = null;
+                    }
+                    //TODO IF BLOCKWORDS ORDER IS NOT PRESERVED, THROW EXCEPTION
+                }
+
+            }
+
+
             lowerIndent--;
         }
         return tokens;

@@ -11,6 +11,8 @@ public class Executor {
     static Variables globalVariables = new Variables();
     static LinkedList<FunctionDefinitionToken> stack = new LinkedList<FunctionDefinitionToken>();
     static LinkedList<Variables> namespaces = new LinkedList<Variables>();
+
+    static LinkedList<TryExecutionToken> tryBlocks = new LinkedList<TryExecutionToken>();
     public static String execute(LinkedList<ParsedAbstractStatement> program) {
         createTypes();
         LinkedList<String> output = new LinkedList<String>();
@@ -23,6 +25,23 @@ public class Executor {
                 output.add("\"" + output.removeLast() + "\"");
         }
         return output.get(output.size()-1);
+    }
+
+    public static void enterTryBlock(TryExecutionToken tryBlock){
+        tryBlocks.add(tryBlock);
+    }
+
+    public static void exitTryBlock(){
+        tryBlocks.removeLast();
+    }
+
+    public static void sendError(ErrorType error){
+        if (!tryBlocks.isEmpty())
+            tryBlocks.getLast().doExcept(error);
+        else{
+            System.out.println(error);
+            System.exit(0);
+        }
     }
 
     public static void createTypes(){
@@ -102,7 +121,27 @@ public class Executor {
             else
                 return new AssignmentToken(pt.getToken(), getExecutionTreeExpression(pat.getVariable()), getExecutionTreeExpression(pat.getExpression()));
         }
+
+        if (pt.getParsedType() == ParsedTokenType.TRY_STATEMENT){
+            ParsedTryStatement pts = (ParsedTryStatement) pt;
+            LinkedList<ExceptExecutionToken> excepts = new LinkedList<ExceptExecutionToken>();
+            LinkedList<ParsedExceptStatement> parsedExcepts = pts.getExcepts();
+            for (int i = 0; i < parsedExcepts.size(); ++i){
+                excepts.add(getExecutionTreeForExcept(parsedExcepts.get(i)));
+            }
+
+            return new TryExecutionToken(pt.getToken(), getExecutionTreeForBlock(pts.getToDo()), excepts);
+        }
+
         return null;
+    }
+
+    public static ExceptExecutionToken getExecutionTreeForExcept(ParsedExceptStatement exceptStatement){
+        LinkedList<ExecutionToken> parsedTypes = new LinkedList<ExecutionToken>();
+        LinkedList<ParsedVariable> typesOfException = exceptStatement.getTypesOfException();
+        for(int i = 0; i < typesOfException.size(); ++i)
+            parsedTypes.add(new VariableExecutionToken(typesOfException.get(i).getToken()));
+        return new ExceptExecutionToken(exceptStatement.getToken(), parsedTypes, getExecutionTreeForBlock(exceptStatement.getToDo()));
     }
 
     public static LinkedList<ExecutionToken> getExecutionTreeForBlock(ParsedBlock pb){

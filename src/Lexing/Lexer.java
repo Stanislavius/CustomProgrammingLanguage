@@ -27,8 +27,8 @@ public class Lexer {
     final static Pattern variablePattern = Pattern.compile("[a-zA-Z_]{1}[a-zA-Z_0-9]*");
     final static Pattern separatorPattern = Pattern.compile(",");
     final static Pattern colonPattern = Pattern.compile("\\:");
-    final static LinkedList<String> blockWordsWithoutArgs = new LinkedList<String>(Arrays.asList("else", "try", "finally"));
-    final static LinkedList<String> blockWordsWithArgs = new LinkedList<String>(Arrays.asList("if", "elif", "while", "def", "class", "catch"));
+    final static LinkedList<String> blockWordsWithoutArgs = new LinkedList<String>(Arrays.asList("else", "try", "finally", "except"));
+    final static LinkedList<String> blockWordsWithArgs = new LinkedList<String>(Arrays.asList("if", "elif", "while", "def", "class", "except"));
     //final static Pattern keywordPattern = Pattern.compile("if ");
     final private String filename;
 

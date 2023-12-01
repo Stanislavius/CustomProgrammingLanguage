@@ -159,7 +159,13 @@ public class IntType extends ObjectType {
                 ObjectType val2 = args.get(1);
                 if (val2.getType().toString().equals("int")) {
                     int v2 = ((IntType) (val2)).getInt();
-                    return new FloatType(((float)v1)/((float)v2));
+                    if (v2 == 0) {
+                        ErrorType error = new ErrorType();
+                        Executor.sendError(error);
+                        return error;
+                    }
+                    else
+                        return new FloatType(((float)v1)/((float)v2));
                 }
                 if (val2.getType().toString().equals("float")) {
                     float v2 = ((FloatType) (val2)).getFloat();
