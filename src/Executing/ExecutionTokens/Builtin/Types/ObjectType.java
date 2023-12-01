@@ -91,4 +91,8 @@ public class ObjectType{
         return result;
     }
 
+    public boolean contains(String name){
+        return this.members.containsKey(name);
+    }
+
 }
