@@ -168,6 +168,10 @@ public class IntType extends ObjectType {
                 }
                 if (val2.getType().toString().equals("float")) {
                     float v2 = ((FloatType) (val2)).getFloat();
+                    if (v2 == 0.0) {
+                        ErrorType error = new ErrorType("DivisionByZero");
+                        throw new ExecutionError(error);
+                    }
                     return new FloatType(v1/v2);
                 }
                 return VoidType.voidObject;

@@ -1,0 +1,32 @@
+#TESTCASE
+#<
+d = 4 / 0
+#>
+#output = DivisionByZero: 0 6
+#commentary = should give DivisionByZero error
+#title = DivisionByZero.1
+#_______________________________________________________________
+#TESTCASE
+#<
+d = 4 / 0.0
+#>
+#output = DivisionByZero: 0 6
+#commentary = should give DivisionByZero error
+#title = DivisionByZero.2
+#_______________________________________________________________
+#TESTCASE
+#<
+d = 4.0 / 0
+#>
+#output = DivisionByZero: 0 8
+#commentary = should give DivisionByZero error
+#title = DivisionByZero.3
+#_______________________________________________________________
+#TESTCASE
+#<
+d = 4.0 / 0.0
+#>
+#output = DivisionByZero: 0 8
+#commentary = should give DivisionByZero error
+#title = DivisionByZero.4
+#_______________________________________________________________

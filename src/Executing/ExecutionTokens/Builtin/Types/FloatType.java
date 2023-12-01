@@ -85,15 +85,23 @@ public class FloatType extends ObjectType {
         ));
 
         type.setMember("__div__", new FunctionType("__div__", new SourceFunction(){
-            public ObjectType execute(LinkedList<ObjectType> args){
+            public ObjectType execute(LinkedList<ObjectType> args) throws ExecutionError {
                 float v1 = ((FloatType)(args.get(0))).getFloat();
                 ObjectType val2 = args.get(1);
                 if (val2.getType().toString().equals("int")) {
                     int v2 = ((IntType) (val2)).getInt();
+                    if (v2 == 0) {
+                        ErrorType error = new ErrorType("DivisionByZero");
+                        throw new ExecutionError(error);
+                    }
                     return new FloatType(v1/v2);
                 }
                 if (val2.getType().toString().equals("float")) {
                     float v2 = ((FloatType) (val2)).getFloat();
+                    if (v2 == 0.0) {
+                        ErrorType error = new ErrorType("DivisionByZero");
+                        throw new ExecutionError(error);
+                    }
                     return new FloatType(v1/v2);
                 }
                 return VoidType.voidObject;
