@@ -160,7 +160,7 @@ public class IntType extends ObjectType {
                 if (val2.getType().toString().equals("int")) {
                     int v2 = ((IntType) (val2)).getInt();
                     if (v2 == 0) {
-                        ErrorType error = new ErrorType();
+                        ErrorType error = new ErrorType("DivisionByZero");
                         throw new ExecutionError(error);
                     }
                     else
@@ -193,7 +193,6 @@ public class IntType extends ObjectType {
 
         type.setMember("__str__", new FunctionType("__str__", new SourceFunction(){
             public ObjectType execute(LinkedList<ObjectType> args){
-                int k = 4;
                 int v1 = ((IntType)(args.get(0))).getInt();
                 return new StringType(v1+"");
             }

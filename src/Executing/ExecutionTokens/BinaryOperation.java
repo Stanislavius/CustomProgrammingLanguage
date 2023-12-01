@@ -40,23 +40,31 @@ public class BinaryOperation extends ExecutionToken {
             else {
                 rRes = right.execute();
                 args = new LinkedList<ObjectType>(Arrays.asList(lRes, rRes));
-                switch (token.getValue()) {
-                    case "+":
-                        return lRes.getMember("__class__").getMember("__add__").call(args);
-                    case "-":
-                        return lRes.getMember("__class__").getMember("__sub__").call(args);
-                    case "*":
-                        return lRes.getMember("__class__").getMember("__mul__").call(args);
-                    case "/":
-                        return lRes.getMember("__class__").getMember("__div__").call(args);
-                    case "==":
-                        return lRes.getMember("__class__").getMember("__eq__").call(args);
-                    case "<":
-                        return lRes.getMember("__class__").getMember("__lt__").call(args);
-                    case ">":
-                        return lRes.getMember("__class__").getMember("__gt__").call(args);
-                    default:
-                        return new ErrorType();
+                try {
+                    switch (token.getValue()) {
+                        case "+":
+                            return lRes.getMember("__class__").getMember("__add__").call(args);
+                        case "-":
+                            return lRes.getMember("__class__").getMember("__sub__").call(args);
+                        case "*":
+                            return lRes.getMember("__class__").getMember("__mul__").call(args);
+                        case "/":
+                            return lRes.getMember("__class__").getMember("__div__").call(args);
+                        case "==":
+                            return lRes.getMember("__class__").getMember("__eq__").call(args);
+                        case "<":
+                            return lRes.getMember("__class__").getMember("__lt__").call(args);
+                        case ">":
+                            return lRes.getMember("__class__").getMember("__gt__").call(args);
+                        default:
+                            return new ErrorType();
+                    }
+                }
+                catch (ExecutionError e){
+                    ErrorType error = e.getError();
+                    error.setLine(this.getToken().getLine());
+                    error.setPosition(this.getToken().getPos());
+                    throw e;
                 }
             }
         }
