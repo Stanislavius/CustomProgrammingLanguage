@@ -93,7 +93,7 @@ public class Testing {
                 return runNegativeLexing(test);
             case "ParsingError":
                 return runNegativeParsing(test);
-            case "ExucutionError":
+            case "ExecutionError":
                 return runNegativeExecution(test);
             default:
                 System.out.printf("Cannot recognize type %s%n", test.getType());
