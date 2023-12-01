@@ -14,7 +14,7 @@ public class IntType extends ObjectType {
         type = new ClassType();
         type.setMember("__name__", new StringType("int"));
         type.setMember("__call__", new FunctionType("__call__", new SourceFunction(){
-            public ObjectType execute(LinkedList<ObjectType> args){
+            public ObjectType execute(LinkedList<ObjectType> args) throws ExecutionError {
                 ObjectType val1 = args.get(0);
                 switch (val1.getType().toString()) {
                     case "int":
@@ -154,15 +154,14 @@ public class IntType extends ObjectType {
         ));
 
         type.setMember("__div__", new FunctionType("__div__", new SourceFunction(){
-            public ObjectType execute(LinkedList<ObjectType> args){
+            public ObjectType execute(LinkedList<ObjectType> args) throws ExecutionError {
                 int v1 = ((IntType)(args.get(0))).getInt();
                 ObjectType val2 = args.get(1);
                 if (val2.getType().toString().equals("int")) {
                     int v2 = ((IntType) (val2)).getInt();
                     if (v2 == 0) {
                         ErrorType error = new ErrorType();
-                        Executor.sendError(error);
-                        return error;
+                        throw new ExecutionError(error);
                     }
                     else
                         return new FloatType(((float)v1)/((float)v2));

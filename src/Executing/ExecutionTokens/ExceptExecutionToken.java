@@ -1,9 +1,6 @@
 package Executing.ExecutionTokens;
 
-import Executing.ExecutionTokens.Builtin.Types.ClassType;
-import Executing.ExecutionTokens.Builtin.Types.ErrorType;
-import Executing.ExecutionTokens.Builtin.Types.ObjectType;
-import Executing.ExecutionTokens.Builtin.Types.VoidType;
+import Executing.ExecutionTokens.Builtin.Types.*;
 import Executing.Executor;
 import Lexing.Token;
 
@@ -24,7 +21,7 @@ public class ExceptExecutionToken extends ExecutionToken{
     }
 
     @Override
-    public ObjectType execute() {
+    public ObjectType execute() throws ExecutionError {
         ObjectType result = new VoidType();
         for(int i = 0; i < toDo.size(); ++i){
             result = toDo.get(i).execute();
@@ -36,7 +33,7 @@ public class ExceptExecutionToken extends ExecutionToken{
         this.errorTypes.add(error);
     }
 
-    public boolean isCatched(ErrorType err){
+    public boolean isCatched(ErrorType err) throws ExecutionError {
         if (errorTypes.isEmpty())
             return true;
         else {

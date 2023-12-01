@@ -1,6 +1,7 @@
 package Executing.ExecutionTokens;
 
 import Executing.ExecutionTokens.Builtin.Types.ErrorType;
+import Executing.ExecutionTokens.Builtin.Types.ExecutionError;
 import Executing.ExecutionTokens.Builtin.Types.ObjectType;
 import Executing.ExecutionTokens.Builtin.Types.VoidType;
 import Executing.Executor;
@@ -20,26 +21,18 @@ public class TryExecutionToken extends ExecutionToken{
         this.excepts = excepts;
     }
 
-    public ObjectType execute() {
+    public ObjectType execute() throws ExecutionError {
         result = new VoidType();
         Executor.enterTryBlock(this);
         for(int i = 0; i < toDo.size(); ++i){
-            if (!stop)
                 result = toDo.get(i).execute();
-            else{
-                stop = false;
-                break;
-            }
         }
-        if (stop == false)
-            Executor.exitTryBlock();
+        Executor.exitTryBlock();
         return result;
     }
 
-    public ObjectType doExcept(ErrorType caught){
+    public ObjectType doExcept(ErrorType caught) throws ExecutionError {
         result = new VoidType();
-        stop = true;
-        Executor.exitTryBlock();
         for(int i = 0; i < excepts.size(); ++i)
             if (excepts.get(i).isCatched(caught)){
                 result = excepts.get(i).execute();

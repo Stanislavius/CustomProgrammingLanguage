@@ -1,8 +1,5 @@
 package Executing.ExecutionTokens;
-import Executing.ExecutionTokens.Builtin.Types.FunctionType;
-import Executing.ExecutionTokens.Builtin.Types.ObjectType;
-import Executing.ExecutionTokens.Builtin.Types.VoidType;
-import Executing.ExecutionTokens.Builtin.Types.CustomFunction;
+import Executing.ExecutionTokens.Builtin.Types.*;
 import Executing.Executor;
 import Lexing.Token;
 
@@ -28,7 +25,7 @@ public class FunctionDefinitionToken extends ExecutionToken{
         Executor.setVariable(funName, new FunctionType(funName, new CustomFunction(fun)));
     }
 
-    public ObjectType execute(LinkedList<ObjectType> funcArgs){
+    public ObjectType execute(LinkedList<ObjectType> funcArgs) throws ExecutionError {
         Executor.addToStack(this);
         for (int i = 0; i < args.size(); ++i){
             Executor.setVariable(args.get(i), funcArgs.get(i));

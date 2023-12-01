@@ -21,7 +21,7 @@ public class StringType extends ObjectType {
         ));
 
         type.setMember("__call__", new FunctionType("__call__", new SourceFunction(){
-            public ObjectType execute(LinkedList<ObjectType> args){
+            public ObjectType execute(LinkedList<ObjectType> args) throws ExecutionError {
                 ObjectType val1 = args.get(0);
                 return val1.getMember("__class__").getMember("__str__").call(val1);
             }
@@ -29,7 +29,7 @@ public class StringType extends ObjectType {
         ));
 
         type.setMember("__add__", new FunctionType("__add__", new SourceFunction(){
-            public ObjectType execute(LinkedList<ObjectType> args){
+            public ObjectType execute(LinkedList<ObjectType> args) throws ExecutionError {
                 String v1 = ((StringType)(args.get(0))).toString();
                 ObjectType val2 = args.get(1);
                 return new StringType(v1 + ((StringType)val2.getMember(

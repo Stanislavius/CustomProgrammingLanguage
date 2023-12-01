@@ -1,5 +1,6 @@
 package Executing.ExecutionTokens;
 
+import Executing.ExecutionTokens.Builtin.Types.ExecutionError;
 import Executing.ExecutionTokens.Builtin.Types.IntType;
 import Executing.ExecutionTokens.Builtin.Types.ObjectType;
 import Executing.ExecutionTokens.Builtin.Types.VoidType;
@@ -20,7 +21,7 @@ public class BlockExecutionToken extends ExecutionToken{
         this.elseToDos = elseToDos;
         this.elseConditions = elseConditions;
     }
-    public ObjectType execute() {
+    public ObjectType execute() throws ExecutionError {
         ObjectType result = new VoidType();
         boolean flag = true;
         if (token.getValue().equals("if")){

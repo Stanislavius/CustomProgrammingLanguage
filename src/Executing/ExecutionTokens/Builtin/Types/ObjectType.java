@@ -40,21 +40,21 @@ public class ObjectType{
         }
     }
 
-    public ObjectType call(LinkedList<ObjectType> args){
+    public ObjectType call(LinkedList<ObjectType> args) throws ExecutionError {
         if (members.containsKey("__call__"))
             return members.get("__call__").call(args);
         else
             return new ErrorType();
     }
 
-    public ObjectType call(ObjectType arg){
+    public ObjectType call(ObjectType arg) throws ExecutionError {
         if (members.containsKey("__call__"))
             return members.get("__call__").call(arg);
         else
             return new ErrorType();
     }
 
-    public ObjectType call(){
+    public ObjectType call() throws ExecutionError {
         if (members.containsKey("__call__"))
             return members.get("__call__").call();
         else

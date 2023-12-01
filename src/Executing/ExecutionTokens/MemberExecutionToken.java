@@ -1,5 +1,6 @@
 package Executing.ExecutionTokens;
 
+import Executing.ExecutionTokens.Builtin.Types.ExecutionError;
 import Executing.ExecutionTokens.Builtin.Types.ObjectType;
 import Executing.ExecutionTokens.Builtin.Types.VoidType;
 import Lexing.Token;
@@ -15,7 +16,7 @@ public class MemberExecutionToken extends ExecutionToken {
         this.member = member;
     }
 
-    public ObjectType execute(){
+    public ObjectType execute() throws ExecutionError {
         ObjectType result = object.execute();
         return result.getMember(member.getToken().getValue());
     }
@@ -23,7 +24,7 @@ public class MemberExecutionToken extends ExecutionToken {
     public String getNameMember(){
         return member.getToken().getValue();
     }
-    public ObjectType executeObject(){
+    public ObjectType executeObject() throws ExecutionError {
         return object.execute();
     }
 

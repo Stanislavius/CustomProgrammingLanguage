@@ -3,6 +3,7 @@ package Executing.ExecutionTokens;
 import Executing.ExecutionExceptions.ExecutionException;
 import Executing.ExecutionExceptions.NoSuchFunctionException;
 import Executing.ExecutionExceptions.WrongNumberOfArgumentsException;
+import Executing.ExecutionTokens.Builtin.Types.ExecutionError;
 import Executing.ExecutionTokens.Builtin.Types.ObjectType;
 import Executing.Executor;
 import Lexing.Token;
@@ -17,7 +18,7 @@ public class FunctionCallToken extends ExecutionToken {
         this.args = args;
     }
 
-    public ObjectType execute() {
+    public ObjectType execute() throws ExecutionError {
         return Executor.getVariable(token.getValue()).call(executeArgs(args));
     }
 
@@ -25,7 +26,7 @@ public class FunctionCallToken extends ExecutionToken {
         return args;
     }
 
-    public LinkedList<ObjectType> executeArgs() {
+    public LinkedList<ObjectType> executeArgs() throws ExecutionError {
         LinkedList<ObjectType> executedArgs = new LinkedList<ObjectType>();
         for(int i = 0; i < args.size(); ++i){
             executedArgs.add(args.get(i).execute());
@@ -33,7 +34,7 @@ public class FunctionCallToken extends ExecutionToken {
         return executedArgs;
     }
 
-    public static LinkedList<ObjectType> executeArgs (LinkedList<ExecutionToken> argsToExecute){
+    public static LinkedList<ObjectType> executeArgs (LinkedList<ExecutionToken> argsToExecute) throws ExecutionError {
         LinkedList<ObjectType> executedArgs = new LinkedList<ObjectType>();
         for(int i = 0; i < argsToExecute.size(); ++i){
             executedArgs.add(argsToExecute.get(i).execute());

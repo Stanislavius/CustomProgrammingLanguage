@@ -30,7 +30,7 @@ public class ClassDefinitionToken extends ExecutionToken{
         }
     }
 
-    public ObjectType execute(){
+    public ObjectType execute() throws ExecutionError {
         HashMap<String, ObjectType> classMembers = new HashMap<String, ObjectType>();
         CustomObject newClass = new CustomObject();
         Executor.setVariable(name, newClass);
@@ -41,7 +41,7 @@ public class ClassDefinitionToken extends ExecutionToken{
             if (key.equals("__init__")) {
                 FunctionDefinitionToken initFunc = (FunctionDefinitionToken) member;
                 newClass.setMember("__call__", new FunctionType("__call__", new SourceFunction() {
-                    public ObjectType execute(LinkedList<ObjectType> args) {
+                    public ObjectType execute(LinkedList<ObjectType> args) throws ExecutionError {
                         ObjectType newObject = new CustomObject();
                         args.add(0, newObject);
                         newClass.getMember("__init__").call(args);

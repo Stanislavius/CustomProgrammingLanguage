@@ -14,7 +14,7 @@ public class FloatType extends ObjectType {
         type.setMember("__name__", new StringType("float"));
 
         type.setMember("__call__", new FunctionType("__call__", new SourceFunction(){
-            public ObjectType execute(LinkedList<ObjectType> args){
+            public ObjectType execute(LinkedList<ObjectType> args) throws ExecutionError {
                 ObjectType val1 = args.get(0);
                 switch (val1.getType().toString()) {
                     case "int":

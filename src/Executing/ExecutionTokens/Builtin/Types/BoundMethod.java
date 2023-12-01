@@ -8,12 +8,12 @@ public class BoundMethod extends FunctionType implements WrapperInterface{
         super(name, function.getCallable());
         this.object = object;
     }
-    public ObjectType execute(LinkedList<ObjectType> args) {
+    public ObjectType execute(LinkedList<ObjectType> args) throws ExecutionError {
         args.add(0, object);
         return super.call(args);
     }
 
-    public ObjectType call(LinkedList<ObjectType> args) {
+    public ObjectType call(LinkedList<ObjectType> args) throws ExecutionError {
         return this.execute(args);
     }
 }

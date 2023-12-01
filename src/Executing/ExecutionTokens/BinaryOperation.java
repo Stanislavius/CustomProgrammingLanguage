@@ -3,6 +3,7 @@ package Executing.ExecutionTokens;
 import Executing.ExecutionExceptions.ExecutionException;
 import Executing.ExecutionExceptions.ZeroDivisionException;
 import Executing.ExecutionTokens.Builtin.Types.ErrorType;
+import Executing.ExecutionTokens.Builtin.Types.ExecutionError;
 import Executing.ExecutionTokens.Builtin.Types.ObjectType;
 import Lexing.Token;
 
@@ -19,7 +20,7 @@ public class BinaryOperation extends ExecutionToken {
         this.right = right;
     }
 
-    public ObjectType execute() {
+    public ObjectType execute() throws ExecutionError {
         ObjectType lRes;
         ObjectType rRes;
         LinkedList<ObjectType> args;
