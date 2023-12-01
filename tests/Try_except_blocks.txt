@@ -2,8 +2,7 @@
 #<
 d = 4 / 0
 #>
-#output = DivisionByZero: 0 7
+#output = DivisionByZero: 0 6
 #commentary = should give DivisionByZero error
 #title = DivisionByZero.1
-#type = ExecutionError
 #_______________________________________________________________

@@ -16,23 +16,28 @@ public class Executor {
     public static String execute(LinkedList<ParsedAbstractStatement> program) {
         createTypes();
         LinkedList<String> output = new LinkedList<String>();
-        for (ParsedAbstractStatement line : program) {
-            //System.out.println(line.toString());
-            ObjectType result = new VoidType();
-            try {
-                ExecutionToken current_line = getExecutionTree(line);
-                result = current_line.execute();
-                output.add(result.toString() + "");
-            } catch (ExecutionError e) {
-                Executor.sendError(e.getError());
+        try {
+            for (ParsedAbstractStatement line : program) {
+                //System.out.println(line.toString());
+                ObjectType result = new VoidType();
+                try {
+                    ExecutionToken current_line = getExecutionTree(line);
+                    result = current_line.execute();
+                    output.add(result.toString() + "");
+                } catch (ExecutionError e) {
+                    output.add(Executor.sendError(e.getError()).toString());
+                }
+                if (result.getType().toString().equals("str"))
+                    output.add("\"" + output.removeLast() + "\"");
             }
-            if (result.getType().toString().equals("str"))
-                output.add("\"" + output.removeLast() + "\"");
+            if (output.isEmpty())
+                return new VoidType().toString();
+            else
+                return output.get(output.size() - 1);
         }
-        if (output.isEmpty())
-            return new VoidType().toString();
-        else
-            return output.get(output.size()-1);
+        catch (EndOfExecutionError e){
+            return e.getError().toString();
+        }
     }
 
     public static void enterTryBlock(TryExecutionToken tryBlock){
@@ -43,18 +48,20 @@ public class Executor {
         tryBlocks.removeLast();
     }
 
-    public static void sendError(ErrorType error) {
+    public static ObjectType sendError(ErrorType error) throws EndOfExecutionError {
+        ObjectType result = error;
         try {
             if (!tryBlocks.isEmpty())
-                tryBlocks.removeLast().doExcept(error);
+                result = tryBlocks.removeLast().doExcept(error);
             else {
                 System.out.println(error);
-                System.exit(0);
+                throw new EndOfExecutionError(error);
             }
         }
         catch (ExecutionError e) {
             Executor.sendError(e.getError());
         }
+        return result;
     }
 
     public static void createTypes(){

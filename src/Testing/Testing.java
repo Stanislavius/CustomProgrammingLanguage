@@ -24,8 +24,8 @@ public class Testing {
             "class_def.txt",
             "general.txt",
             "dict.txt",
-            "ExecutionErrors testing",
-            "Try_except_blocks"};
+            "ExecutionErrors_testing.txt",
+            "Try_except_blocks.txt"};
     final static String DEFAULT_TESTSPATH = "tests/";
     static String testsPath;
 
