@@ -24,16 +24,25 @@ public class ErrorType extends ObjectType {
     public ErrorType() {
         this.setMember("__class__", type);
         this.setMember("message", new StringType("error"));
+        this.setMember("__name__", new StringType("error"));
     }
 
-    public ErrorType(String message){
+    public ErrorType(String name, String message){
         this.setMember("__class__", type);
         this.setMember("message", new StringType(message));
+        this.setMember("__name__", new StringType(name));
     }
 
     public ErrorType(StringType message){
         this.setMember("__class__", type);
         this.setMember("message", message);
+        this.setMember("__name__", new StringType("error"));
+    }
+
+    public ErrorType(String message){
+        this.setMember("__class__", type);
+        this.setMember("message", new StringType(message));
+        this.setMember("__name__", new StringType("error"));
     }
 
     public String toString(){
