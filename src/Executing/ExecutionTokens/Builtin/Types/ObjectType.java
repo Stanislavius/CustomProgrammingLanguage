@@ -54,6 +54,14 @@ public class ObjectType{
             return new ErrorType();
     }
 
+    public ObjectType call(ObjectType... args) throws ExecutionError {
+        if (members.containsKey("__call__"))
+            return members.get("__call__").call(args);
+        else
+            return new ErrorType();
+    }
+
+
     public ObjectType call() throws ExecutionError {
         if (members.containsKey("__call__"))
             return members.get("__call__").call();
@@ -94,5 +102,4 @@ public class ObjectType{
     public boolean contains(String name){
         return this.members.containsKey(name);
     }
-
 }

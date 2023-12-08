@@ -4,6 +4,7 @@ import Lexing.Exceptions.LexingException;
 import Lexing.Token;
 import Lexing.TokenType;
 import Parsing.ParsedTokens.*;
+import Parsing.ParsingExceptions.IndexException;
 import Parsing.ParsingExceptions.ParenthesesException;
 import Parsing.ParsingExceptions.ParsingException;
 
@@ -401,8 +402,11 @@ public class Parser {
         return operands;
     }
 
-    private ParsedToken parseListCall(LinkedList<ParsedToken> operand) {
-        return null; //TODO
+    private ParsedToken parseListCall(LinkedList<ParsedToken> operand) throws ParsingException {
+        if (operand.size() > 1)
+            throw new IndexException(operand.get(0).getToken());
+        else
+            return operand.get(0);
     }
 
     private ParsedToken parseDictCall(LinkedList<ParsedToken> operand) {
