@@ -18,19 +18,22 @@ public class AssignmentToken extends ExecutionToken {
     }
 
     public ObjectType execute() throws ExecutionError {
-        if (assignTo.getClass() == VariableExecutionToken.class) {
+        if(assignTo.getClass().equals(VariableExecutionToken.class)){
             String name = assignTo.getToken().getValue();
             ObjectType val = value.execute();
             Executor.setVariable(name, val);
         }
-        else{
-            if (assignTo.getClass() == MemberExecutionToken.class) {
-                MemberExecutionToken met = (MemberExecutionToken)  assignTo;
-                ObjectType object = met.executeObject();
-                object.setMember(met.getNameMember(), value.execute());
-            }
+
+        if (assignTo.getClass().equals(MemberExecutionToken.class)){
+            MemberExecutionToken met = (MemberExecutionToken)  assignTo;
+            ObjectType object = met.executeObject();
+            object.setMember(met.getNameMember(), value.execute());
         }
+
+        if(assignTo.getClass().equals(ItemExecutionToken.class)){
+            ((ItemExecutionToken) assignTo).executeSetItem(value.execute());
+        }
+
         return new VoidType();
     }
-
 }
