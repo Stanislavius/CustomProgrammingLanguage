@@ -404,7 +404,8 @@ public class Parser {
 
     private ParsedToken parseListCall(LinkedList<ParsedToken> operand) throws ParsingException {
         if (operand.size() > 1)
-            throw new IndexException(operand.get(0).getToken());
+            //throw new IndexException(operand.get(0).getToken());
+            return parseExpression(operand);
         else
             return operand.get(0);
     }
