@@ -47,7 +47,7 @@ public class Lexer {
             BufferedReader br = new BufferedReader(new FileReader(filename));
             while ((st = br.readLine()) != null) {
                 try {
-                    tokens.addAll(this.readLine(st, line_num));
+                    tokens.addAll(this.readLine(st, line_num+1));
                     line_num++;
                 } catch (LexingException e) {
                     exceptions.add(e);
@@ -110,9 +110,9 @@ public class Lexer {
         LinkedList<Token> tokens = new LinkedList<Token>();
         for(int lineNum = 0; lineNum < code.length; ++lineNum){
             try {
-                LinkedList<Token> cur = this.readLine(code[lineNum], lineNum);
+                LinkedList<Token> cur = this.readLine(code[lineNum], lineNum+1);
                 if (cur.size() > 1)
-                    tokens.addAll(this.readLine(code[lineNum], lineNum));
+                    tokens.addAll(this.readLine(code[lineNum], lineNum+1));
             }
             catch (LexingException e) {
                 exceptions.add(e);

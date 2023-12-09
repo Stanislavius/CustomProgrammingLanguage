@@ -79,3 +79,50 @@ d.contains(4.5)
 #commentary = should work with keys
 #title = dict.contains.4
 #_______________________________________________________________
+#TESTCASE
+#<
+s = {1:2, 3:4}
+s[45] = "sa"
+s[45]
+#>
+#output = "sa"
+#commentary = should return value by key
+#title = dict.items.1
+#_______________________________________________________________
+#TESTCASE
+#<
+s = {1:2, 3:4}
+s[45] = "sa"
+s[46]
+#>
+#output = NoSuchKey: 2 2
+#commentary = should work with keys
+#title = dict.items.2
+#_______________________________________________________________
+#TESTCASE
+#<
+s = {}
+len(s)
+#>
+#output = 0
+#commentary = should return len
+#title = dict.len.1
+#_______________________________________________________________
+#TESTCASE
+#<
+s = {2:3}
+len(s)
+#>
+#output = 1
+#commentary = should return len
+#title = dict.len.2
+#_______________________________________________________________
+#TESTCASE
+#<
+s = {2:3, 2:5}
+len(s)
+#>
+#output = 2
+#commentary = should return len
+#title = dict.len.3
+#_______________________________________________________________
