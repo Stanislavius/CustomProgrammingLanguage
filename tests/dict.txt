@@ -96,7 +96,7 @@ s[45] = "sa"
 s[46]
 #>
 #output = NoSuchKey: 2 2
-#commentary = should work with keys
+#commentary = return error if no such key
 #title = dict.items.2
 #_______________________________________________________________
 #TESTCASE

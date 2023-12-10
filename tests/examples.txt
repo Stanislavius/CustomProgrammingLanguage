@@ -1,0 +1,40 @@
+#TESTCASE
+#<
+def factorial(N)
+    i = 1
+    res = 1
+    while i < N
+        res = res * i
+        i = i + 1
+    res
+
+factorial(6)
+#>
+#output = 120
+#commentary = just factorial calculation
+#title = factorial
+#_______________________________________________________________
+#TESTCASE
+#<
+def bubble_sort(arr)
+    i = 0
+    N = len(arr)
+    while i < N
+        j = N-1
+        while j > 0
+            if arr[j] > arr[j-1]
+                tmp = arr[j]
+                arr[j] = arr[j-1]
+                arr[j-1] = tmp
+            j = j - 1
+        i = i + 1
+
+arr = [11, 1, 2, 3, 4, 5, 6, 9, 1, 2, 4, 10, 11, 54, 11, 0, 11, 54, 99, 4, 4, 4, 5, 7, 8, 1, 2, 45, 66, -4, 78]
+bubble_sort(arr)
+arr
+#>
+#output = [99, 78, 66, 54, 54, 45, 11, 11, 11, 11, 10, 9, 8, 7, 6, 5, 5, 4, 4, 4, 4, 4, 3, 2, 2, 2, 1, 1, 1, 0, -4]
+#commentary = bubble_sort
+#title = bubble_sort
+#_______________________________________________________________
+

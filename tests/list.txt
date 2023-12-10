@@ -127,3 +127,13 @@ a[0]
 #commentary = should allow assign to elements
 #title = list.operations.3
 #_______________________________________________________________
+#TESTCASE
+#<
+s = [1, 2, 3]
+s[45] = "sa"
+s[46]
+#>
+#output = NoSuchKey: 2 2
+#commentary = return error if no such key
+#title = dict.NoSuchKey
+#_______________________________________________________________
