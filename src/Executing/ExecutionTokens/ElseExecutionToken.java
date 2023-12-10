@@ -1,7 +1,7 @@
 package Executing.ExecutionTokens;
 
-import Executing.ExecutionTokens.Builtin.Types.IntType;
-import Executing.ExecutionTokens.Builtin.Types.ObjectType;
+import Executing.Types.IntType;
+import Executing.Types.ObjectType;
 import Lexing.Token;
 
 public class ElseExecutionToken extends ExecutionToken{

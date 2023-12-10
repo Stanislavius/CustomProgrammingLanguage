@@ -1,8 +1,8 @@
 package Executing;
 
 import Executing.ExecutionTokens.*;
-import Executing.ExecutionTokens.Builtin.Types.*;
-import Executing.ExecutionTokens.Builtin.Types.IntType;
+import Executing.Types.*;
+import Executing.Types.IntType;
 import Parsing.ParsedTokens.*;
 
 import java.util.LinkedList;

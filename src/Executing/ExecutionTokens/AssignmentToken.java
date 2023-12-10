@@ -1,9 +1,8 @@
 package Executing.ExecutionTokens;
 
-import Executing.ExecutionExceptions.ExecutionException;
-import Executing.ExecutionTokens.Builtin.Types.ExecutionError;
-import Executing.ExecutionTokens.Builtin.Types.ObjectType;
-import Executing.ExecutionTokens.Builtin.Types.VoidType;
+import Executing.Types.ExecutionError;
+import Executing.Types.ObjectType;
+import Executing.Types.VoidType;
 import Executing.Executor;
 import Lexing.Token;
 

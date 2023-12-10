@@ -1,12 +1,9 @@
 package Executing.ExecutionTokens;
 
-import Executing.ExecutionExceptions.ExecutionException;
-import Executing.ExecutionTokens.Builtin.Types.ErrorType;
-import Executing.ExecutionTokens.Builtin.Types.ExecutionError;
-import Executing.ExecutionTokens.Builtin.Types.ObjectType;
+import Executing.Types.ErrorType;
+import Executing.Types.ExecutionError;
+import Executing.Types.ObjectType;
 import Lexing.Token;
-
-import static Executing.ExecutionTokens.Builtin.Types.ObjectType.getMember;
 
 public class UnaryOperation extends ExecutionToken {
     ExecutionToken right;

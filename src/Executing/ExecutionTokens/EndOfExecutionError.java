@@ -1,6 +1,6 @@
 package Executing.ExecutionTokens;
 
-import Executing.ExecutionTokens.Builtin.Types.ErrorType;
+import Executing.Types.ErrorType;
 
 public class EndOfExecutionError extends Exception{
     ErrorType error;

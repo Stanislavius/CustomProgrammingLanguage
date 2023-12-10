@@ -1,10 +1,6 @@
-package Executing.ExecutionTokens.Builtin.Types;
-
-import Executing.ExecutionTokens.ClassDefinitionToken;
-import Executing.ExecutionTokens.ExecutionToken;
+package Executing.Types;
 
 import java.util.HashMap;
-import java.util.LinkedList;
 
 public class ClassType extends ObjectType {
     static ClassType type;

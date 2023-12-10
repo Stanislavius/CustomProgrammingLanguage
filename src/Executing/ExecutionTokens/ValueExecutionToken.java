@@ -1,6 +1,6 @@
 package Executing.ExecutionTokens;
 
-import Executing.ExecutionTokens.Builtin.Types.ObjectType;
+import Executing.Types.ObjectType;
 import Lexing.Token;
 
 public class ValueExecutionToken extends ExecutionToken{

@@ -1,7 +1,7 @@
 package Executing;
 
 
-import Executing.ExecutionTokens.Builtin.Types.ObjectType;
+import Executing.Types.ObjectType;
 
 import java.util.HashMap;
 

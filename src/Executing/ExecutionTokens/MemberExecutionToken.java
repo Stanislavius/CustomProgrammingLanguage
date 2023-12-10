@@ -1,11 +1,8 @@
 package Executing.ExecutionTokens;
 
-import Executing.ExecutionTokens.Builtin.Types.ExecutionError;
-import Executing.ExecutionTokens.Builtin.Types.ObjectType;
-import Executing.ExecutionTokens.Builtin.Types.VoidType;
+import Executing.Types.ExecutionError;
+import Executing.Types.ObjectType;
 import Lexing.Token;
-
-import java.util.LinkedList;
 
 public class MemberExecutionToken extends ExecutionToken {
     ExecutionToken object;

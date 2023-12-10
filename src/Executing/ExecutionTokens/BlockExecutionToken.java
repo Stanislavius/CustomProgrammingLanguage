@@ -1,9 +1,9 @@
 package Executing.ExecutionTokens;
 
-import Executing.ExecutionTokens.Builtin.Types.ExecutionError;
-import Executing.ExecutionTokens.Builtin.Types.IntType;
-import Executing.ExecutionTokens.Builtin.Types.ObjectType;
-import Executing.ExecutionTokens.Builtin.Types.VoidType;
+import Executing.Types.ExecutionError;
+import Executing.Types.IntType;
+import Executing.Types.ObjectType;
+import Executing.Types.VoidType;
 import Lexing.Token;
 import java.util.LinkedList;
 

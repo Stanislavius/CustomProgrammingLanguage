@@ -1,4 +1,4 @@
-package Executing.ExecutionTokens.Builtin.Types;
+package Executing.Types;
 
 import Executing.ExecutionTokens.FunctionDefinitionToken;
 

@@ -1,10 +1,8 @@
 package Executing.ExecutionTokens;
 
-import Executing.ExecutionExceptions.ExecutionException;
-import Executing.ExecutionExceptions.ZeroDivisionException;
-import Executing.ExecutionTokens.Builtin.Types.ErrorType;
-import Executing.ExecutionTokens.Builtin.Types.ExecutionError;
-import Executing.ExecutionTokens.Builtin.Types.ObjectType;
+import Executing.Types.ErrorType;
+import Executing.Types.ExecutionError;
+import Executing.Types.ObjectType;
 import Lexing.Token;
 
 import java.util.Arrays;

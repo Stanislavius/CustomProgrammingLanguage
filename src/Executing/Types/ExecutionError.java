@@ -1,4 +1,4 @@
-package Executing.ExecutionTokens.Builtin.Types;
+package Executing.Types;
 
 public class ExecutionError extends Exception {
     ErrorType e;

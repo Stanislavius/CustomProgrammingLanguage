@@ -1,7 +1,6 @@
-package Executing.ExecutionTokens.Builtin.Types;
+package Executing.Types;
 
 
-import Executing.ExecutionTokens.Builtin.Types.*;
 import Executing.Executor;
 
 import java.util.LinkedList;

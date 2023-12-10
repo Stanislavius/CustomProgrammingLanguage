@@ -1,10 +1,7 @@
 package Executing.ExecutionTokens;
 
-import Executing.ExecutionExceptions.ExecutionException;
-import Executing.ExecutionExceptions.NoSuchFunctionException;
-import Executing.ExecutionExceptions.WrongNumberOfArgumentsException;
-import Executing.ExecutionTokens.Builtin.Types.ExecutionError;
-import Executing.ExecutionTokens.Builtin.Types.ObjectType;
+import Executing.Types.ExecutionError;
+import Executing.Types.ObjectType;
 import Executing.Executor;
 import Lexing.Token;
 
