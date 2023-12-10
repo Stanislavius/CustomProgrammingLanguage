@@ -2,8 +2,7 @@ import Executing.Executor;
 import Lexing.Exceptions.LexingException;
 import Lexing.Lexer;
 import Lexing.Token;
-import Parsing.ParsedTokens.ParsedAbstractStatement;
-import Parsing.ParsedTokens.ParsedToken;
+import Parsing.ParsedTokens.AbstractStatementPT;
 import Parsing.Parser;
 import Parsing.ParsingExceptions.ParsingException;
 
@@ -17,7 +16,7 @@ public class Main {
         try {
             LinkedList<Token> tokens = lexer.read();
             if (lexer.isWithoutError()) {
-                LinkedList<ParsedAbstractStatement> ps = parser.parse(tokens);
+                LinkedList<AbstractStatementPT> ps = parser.parse(tokens);
                 if (parser.isWithoutError()) {
                     String result = Executor.execute(ps);
                     System.out.println(result);

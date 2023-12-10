@@ -2,21 +2,21 @@ package Parsing.ParsedTokens;
 
 import Lexing.Token;
 
-public class ParsedAssigmentStatement extends ParsedAbstractStatement{
+public class AssigmentStatementPT extends AbstractStatementPT {
     ParsedToken expression; // in fact ParsedExpression
     ParsedToken variable;
 
-    public ParsedAssigmentStatement(Token t, int indent){
+    public AssigmentStatementPT(Token t, int indent){
         super(t);
         this.indentationLevel = indent;
     }
 
-    public ParsedAssigmentStatement(int indent, ParsedToken expression){
+    public AssigmentStatementPT(int indent, ParsedToken expression){
         this(expression.getToken(), indent);
         this.expression = expression;
     }
 
-    public ParsedAssigmentStatement(Token t, int indent, ParsedToken variable, ParsedToken expression){
+    public AssigmentStatementPT(Token t, int indent, ParsedToken variable, ParsedToken expression){
         this(t, indent);
         this.variable = variable;
         this.expression = expression;

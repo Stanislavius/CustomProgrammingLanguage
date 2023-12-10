@@ -2,14 +2,14 @@ package Parsing.ParsedTokens;
 
 import Lexing.Token;
 
-public class ParsedBinaryExpression extends ParsedToken{
+public class BinaryPT extends ParsedToken{
     ParsedToken left;
     ParsedToken right;
-    public ParsedBinaryExpression(Token t){
+    public BinaryPT(Token t){
         super(t);
     }
 
-    public ParsedBinaryExpression(Token t, ParsedToken left, ParsedToken right){
+    public BinaryPT(Token t, ParsedToken left, ParsedToken right){
 
         super(t);
         this.left = left;

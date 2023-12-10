@@ -2,20 +2,18 @@ package Parsing.ParsedTokens;
 
 import Lexing.Token;
 
-import java.util.LinkedList;
-
-public class ParsedClassDefinition extends ParsedStatementWithBlock{
+public class ClassDefinitionPT extends StatementWithBlockPT {
     Token className;
-    public ParsedClassDefinition(Token t){
+    public ClassDefinitionPT(Token t){
         super(t, 0);
     }
 
-    public ParsedClassDefinition(Token t, int indent, Token className){
+    public ClassDefinitionPT(Token t, int indent, Token className){
         super(t, indent);
         this.className = className;
     }
 
-    public ParsedClassDefinition(Token t, int indent, Token className, ParsedBlock toDo){
+    public ClassDefinitionPT(Token t, int indent, Token className, BlockPT toDo){
         super(t, indent);
         this.toDo = toDo;
         this.className = className;

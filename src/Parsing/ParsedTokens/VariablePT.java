@@ -2,14 +2,18 @@ package Parsing.ParsedTokens;
 
 import Lexing.Token;
 
-public class ParsedIntToken extends ParsedToken{
-    public ParsedIntToken(Token t){
+public class VariablePT extends ParsedToken{
+    public VariablePT(Token t){
         super(t);
     }
+
     public ParsedTokenType getParsedType(){
         return ParsedTokenType.VALUE;
     }
+
     public String toString(){
-        return token.getValue();
+        StringBuilder sb = new StringBuilder();
+        sb.append(token.getValue());
+        return sb.toString();
     }
 }

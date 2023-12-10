@@ -4,25 +4,25 @@ import Lexing.Token;
 
 import java.util.LinkedList;
 
-public class ParsedFunctionDefinition extends ParsedStatementWithBlock{
+public class FunctionDefinitionPT extends StatementWithBlockPT {
     Token functionName;
-    LinkedList<ParsedVariable> args = new LinkedList<ParsedVariable>(); //in fact ParsedVariables
-    public ParsedFunctionDefinition(Token t){
+    LinkedList<VariablePT> args = new LinkedList<VariablePT>(); //in fact ParsedVariables
+    public FunctionDefinitionPT(Token t){
         super(t, 0);
     }
 
-    public ParsedFunctionDefinition(Token t, int indent, Token functionName){
+    public FunctionDefinitionPT(Token t, int indent, Token functionName){
         super(t, indent);
         this.functionName = functionName;
     }
-    public ParsedFunctionDefinition(Token t, int indent, Token functionName, LinkedList<ParsedVariable> args, ParsedBlock toDo){
+    public FunctionDefinitionPT(Token t, int indent, Token functionName, LinkedList<VariablePT> args, BlockPT toDo){
         super(t, indent);
         this.args = args;
         this.toDo = toDo;
         this.functionName = functionName;
     }
 
-    public ParsedFunctionDefinition(Token t, int indent, Token functionName, LinkedList<ParsedVariable> args){
+    public FunctionDefinitionPT(Token t, int indent, Token functionName, LinkedList<VariablePT> args){
         super(t, indent);
         this.args = args;
         this.functionName = functionName;
@@ -30,7 +30,7 @@ public class ParsedFunctionDefinition extends ParsedStatementWithBlock{
     public ParsedTokenType getParsedType(){
         return ParsedTokenType.FUNCTION_DEFINITION;
     }
-    public LinkedList<ParsedVariable> getArgs(){
+    public LinkedList<VariablePT> getArgs(){
         return args;
     }
     public String toString(){

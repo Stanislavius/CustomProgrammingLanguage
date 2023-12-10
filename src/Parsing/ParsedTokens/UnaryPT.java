@@ -2,12 +2,12 @@ package Parsing.ParsedTokens;
 
 import Lexing.Token;
 
-public class ParsedUnaryExpression extends ParsedToken{
+public class UnaryPT extends ParsedToken{
     ParsedToken right;
-    public ParsedUnaryExpression(Token t){
+    public UnaryPT(Token t){
         super(t);
     }
-    public ParsedUnaryExpression(Token t, ParsedToken right){
+    public UnaryPT(Token t, ParsedToken right){
 
         super(t);
         this.right = right;

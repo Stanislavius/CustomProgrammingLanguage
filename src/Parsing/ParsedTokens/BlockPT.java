@@ -4,21 +4,21 @@ import Lexing.Token;
 
 import java.util.LinkedList;
 
-public class ParsedBlock extends ParsedAbstractStatement{
-    LinkedList<ParsedAbstractStatement> toDo;
-    public ParsedBlock(Token t){
+public class BlockPT extends AbstractStatementPT {
+    LinkedList<AbstractStatementPT> toDo;
+    public BlockPT(Token t){
         super(t);
-        toDo = new LinkedList<ParsedAbstractStatement>();
+        toDo = new LinkedList<AbstractStatementPT>();
     }
     public ParsedTokenType getParsedType(){
         return ParsedTokenType.BLOCK;
     }
 
-    public void addStatement(ParsedAbstractStatement statement){
+    public void addStatement(AbstractStatementPT statement){
         toDo.add(statement);
     }
 
-    public ParsedAbstractStatement get(int i){
+    public AbstractStatementPT get(int i){
         return toDo.get(i);
     }
 

@@ -2,14 +2,14 @@ package Parsing.ParsedTokens;
 
 import Lexing.Token;
 
-public class ParsedAbstractStatement extends ParsedToken{
+public class AbstractStatementPT extends ParsedToken{
     int indentationLevel;
-    public ParsedAbstractStatement(Token t, int indent){
+    public AbstractStatementPT(Token t, int indent){
         super(t);
         indentationLevel = indent;
     }
 
-    public ParsedAbstractStatement(Token t){
+    public AbstractStatementPT(Token t){
         super(t);
         indentationLevel = 0;
     }

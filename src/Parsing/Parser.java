@@ -1,10 +1,8 @@
 package Parsing;
 
-import Lexing.Exceptions.LexingException;
 import Lexing.Token;
 import Lexing.TokenType;
 import Parsing.ParsedTokens.*;
-import Parsing.ParsingExceptions.IndexException;
 import Parsing.ParsingExceptions.ParenthesesException;
 import Parsing.ParsingExceptions.ParsingException;
 
@@ -24,7 +22,7 @@ public class Parser {
     static final HashSet<TokenType> STRUCTURE_TYPES = new HashSet(Arrays.asList(TokenType.LIST, TokenType.DICT, TokenType.PARENTHESIS));
 
     LinkedList<ParsingException> exceptions = new LinkedList<ParsingException>();
-    LinkedList<ParsedAbstractStatement> parsedLines = new LinkedList<ParsedAbstractStatement>();
+    LinkedList<AbstractStatementPT> parsedLines = new LinkedList<AbstractStatementPT>();
 
     public boolean isWithoutError(){
         return this.exceptions.isEmpty();
@@ -37,11 +35,11 @@ public class Parser {
         exceptions.clear();
     }
 
-    public LinkedList<ParsedAbstractStatement> getParsedLines(){
+    public LinkedList<AbstractStatementPT> getParsedLines(){
         return parsedLines;
     }
 
-    public LinkedList<ParsedAbstractStatement> parse (LinkedList<Token> tokens){
+    public LinkedList<AbstractStatementPT> parse (LinkedList<Token> tokens){
         LinkedList<LinkedList<Token>> lines = divideByLines(tokens);
         try {
                 logger.fine("Start parsing");
@@ -79,9 +77,9 @@ public class Parser {
         return lines;
     }
 
-    public ParsedAbstractStatement parseLine(LinkedList<Token> line) throws ParsingException{ //call it to parse whole line
+    public AbstractStatementPT parseLine(LinkedList<Token> line) throws ParsingException{ //call it to parse whole line
         int indent = 0;
-        ParsedAbstractStatement statement;
+        AbstractStatementPT statement;
         while (indent < line.size() && line.get(indent).getType() == TokenType.INDENTATION) //count and remove indentation
             indent++;
         for(int i = 0; i < indent; ++i)
@@ -93,59 +91,59 @@ public class Parser {
             //if not BLOCKWORD then expression or assignment
             for(int i = 0; i < line.size(); ++i)
                 if (line.get(i).getType() == TokenType.ASSIGNMENT){
-                    return new ParsedAssigmentStatement(line.get(i),
+                    return new AssigmentStatementPT(line.get(i),
                             indent,
                             parseExpressionTokens(new LinkedList<Token>(line.subList(0, i))),
                             parseExpressionTokens(new LinkedList<Token>(line.subList(i+1, line.size()))));
                 }
-            return new ParsedStatement(indent, parseExpressionTokens(line));
+            return new StatementPT(indent, parseExpressionTokens(line));
         }
     }
 
-    public ParsedAbstractStatement parseLineWithBlockword(int indent, LinkedList<Token> line) throws ParsingException {
+    public AbstractStatementPT parseLineWithBlockword(int indent, LinkedList<Token> line) throws ParsingException {
         if (line.get(0).getValue().equals("if")){
-            return new ParsedConditionalStatement(line.get(0),
+            return new ConditionalStatementPT(line.get(0),
                     indent,
                     parseExpressionTokens(new LinkedList<Token>(line.subList(1, line.size()))));
         }
         if (line.get(0).getValue().equals("elif")){
-            return new ParsedConditionalStatement(line.get(0),
+            return new ConditionalStatementPT(line.get(0),
                     indent,
                     parseExpressionTokens(new LinkedList<Token>(line.subList(1, line.size()))));
         }
 
         if (line.get(0).getValue().equals("try")){
-            return new ParsedTryStatement(line.get(0),
+            return new TryStatementPT(line.get(0),
                     indent);
         }
 
         if (line.get(0).getValue().equals("except")){
-            return new ParsedExceptStatement(line.get(0),
+            return new ExceptStatementPT(line.get(0),
                     indent, parseExceptArgs(line));
         }
 
         if (line.get(0).getValue().equals("finally")){
-            return new ParsedFinallyStatement(line.get(0),
+            return new FinallyStatementPT(line.get(0),
                     indent);
         }
 
         if (line.get(0).getValue().equals("else")){
-            return new ParsedConditionalStatement(line.get(0),
+            return new ConditionalStatementPT(line.get(0),
                     indent);
         }
         if (line.get(0).getValue().equals("while")){
-            return new ParsedConditionalStatement(line.get(0),
+            return new ConditionalStatementPT(line.get(0),
                     indent,
                     parseExpressionTokens(new LinkedList<Token>(line.subList(1, line.size()))));
         }
         if (line.get(0).getValue().equals("def")){
-            return new ParsedFunctionDefinition(line.get(0),
+            return new FunctionDefinitionPT(line.get(0),
                     indent, line.get(1),
                     parseArgsTokens(new LinkedList<Token>(line.subList(2, line.size()))));
         }
 
         if (line.get(0).getValue().equals("class")){
-            return new ParsedClassDefinition(line.get(0),
+            return new ClassDefinitionPT(line.get(0),
                     indent, line.get(1));
         }
 
@@ -154,12 +152,12 @@ public class Parser {
         return null;
     }
 
-    private LinkedList<ParsedVariable> parseExceptArgs(LinkedList<Token> line) {
+    private LinkedList<VariablePT> parseExceptArgs(LinkedList<Token> line) {
         return null; // TODO
     }
 
-    public LinkedList<ParsedVariable> parseArgsTokens(LinkedList<Token> line) throws ParsingException {
-        LinkedList<ParsedVariable> args = new LinkedList<ParsedVariable>();
+    public LinkedList<VariablePT> parseArgsTokens(LinkedList<Token> line) throws ParsingException {
+        LinkedList<VariablePT> args = new LinkedList<VariablePT>();
         for (int i = 1; i < line.size()-1; ++i) {
             if (line.get(i).getType() == TokenType.PARENTHESIS) {
 
@@ -167,7 +165,7 @@ public class Parser {
             if (line.get(i).getType() == TokenType.SEPARATOR) {
 
             } else {
-                args.add(new ParsedVariable(line.get(i)));
+                args.add(new VariablePT(line.get(i)));
             }
         }
         // can process exceptions here
@@ -181,16 +179,16 @@ public class Parser {
         }
         for(int i = 0; i < parsedLine.size(); ++i){
             if (parsedLine.get(i).getType() == TokenType.VARIABLE){
-                parsedLine.set(i, new ParsedVariable(parsedLine.get(i).getToken()));
+                parsedLine.set(i, new VariablePT(parsedLine.get(i).getToken()));
             }
             if (parsedLine.get(i).getType() == TokenType.STRING){
-                parsedLine.set(i, new ParsedStringToken(parsedLine.get(i).getToken()));
+                parsedLine.set(i, new StringPT(parsedLine.get(i).getToken()));
             }
             if (parsedLine.get(i).getType() == TokenType.INT){
-                parsedLine.set(i, new ParsedIntToken(parsedLine.get(i).getToken()));
+                parsedLine.set(i, new IntPT(parsedLine.get(i).getToken()));
             }
             if (parsedLine.get(i).getType() == TokenType.FLOAT){
-                parsedLine.set(i, new ParsedFloatToken(parsedLine.get(i).getToken()));
+                parsedLine.set(i, new FloatPT(parsedLine.get(i).getToken()));
             }
         } // we can do that much for now
 
@@ -204,10 +202,10 @@ public class Parser {
                 LinkedList<ParsedToken> right = new LinkedList<ParsedToken>(operands.subList(i + 1, operands.size()));
                 if (i != 0) {
                     LinkedList<ParsedToken> left = new LinkedList<ParsedToken>(operands.subList(0, i));
-                    return new ParsedBinaryExpression(operands.get(i).getToken(), parseExpression(left), parseExpression(right));
+                    return new BinaryPT(operands.get(i).getToken(), parseExpression(left), parseExpression(right));
                 }
                 else{
-                    return new ParsedUnaryExpression(operands.get(i).getToken(), parseExpression(right));
+                    return new UnaryPT(operands.get(i).getToken(), parseExpression(right));
                 }
             }
         }
@@ -229,7 +227,7 @@ public class Parser {
                     ParsedToken op = operands.get(i);
                     int j = q.size() - 1;
                     while (j >= 1){
-                        op = new ParsedUnaryExpression(q.get(j).getToken(), op);
+                        op = new UnaryPT(q.get(j).getToken(), op);
                         j--;
                     }
                     newOperands.add(q.get(0));
@@ -240,7 +238,7 @@ public class Parser {
                     if (q.isEmpty() == false) {
                         if (operands.get(i).getParsedType() != ParsedTokenType.UNKNOWN_OPERATION) {
                             if (newOperands.size() == 0 || newOperands.getLast().getParsedType() == ParsedTokenType.UNKNOWN_OPERATION)
-                                newOperands.add(new ParsedUnaryExpression(q.get(0).getToken(), operands.get(i)));
+                                newOperands.add(new UnaryPT(q.get(0).getToken(), operands.get(i)));
                             else{
                                 newOperands.add(q.get(0));
                                 newOperands.add(operands.get(i));
@@ -260,22 +258,22 @@ public class Parser {
         return newOperands;
     }
 
-    public ParsedFunctionCall parseFunctionCall(Token head, LinkedList<ParsedToken> line) throws ParsingException {
+    public FunctionCallPT parseFunctionCall(Token head, LinkedList<ParsedToken> line) throws ParsingException {
         LinkedList<ParsedToken> values = new LinkedList<ParsedToken>();
         LinkedList<LinkedList<ParsedToken>> args = separateArgs(line);
         for(int i = 0; i < args.size(); ++i){
             values.add(parseExpression(args.get(i)));
         }
-        return new ParsedFunctionCall(head, values);
+        return new FunctionCallPT(head, values);
     }
 
-    public ParsedListToken parseList(Token head, LinkedList<ParsedToken> line) throws ParsingException {
+    public ListPT parseList(Token head, LinkedList<ParsedToken> line) throws ParsingException {
         LinkedList<ParsedToken> values = new LinkedList<ParsedToken>();
         LinkedList<LinkedList<ParsedToken>> args = separateArgs(line);
         for(int i = 0; i < args.size(); ++i){
             values.add(parseExpression(args.get(i)));
         }
-        return new ParsedListToken(head, values);
+        return new ListPT(head, values);
     }
 
     public LinkedList<LinkedList<ParsedToken>> separateArgs(LinkedList<ParsedToken> line){
@@ -317,7 +315,7 @@ public class Parser {
         return args;
     }
 
-    public ParsedDictToken parseDict(Token head, LinkedList<ParsedToken> line) throws ParsingException {
+    public DictPT parseDict(Token head, LinkedList<ParsedToken> line) throws ParsingException {
         LinkedList<ParsedToken> keys = new LinkedList<ParsedToken>();
         LinkedList<ParsedToken> values = new LinkedList<ParsedToken>();
         LinkedList<LinkedList<ParsedToken>> args = separateArgs(line);
@@ -327,7 +325,7 @@ public class Parser {
             values.add(curPair.get(1));
         }
 
-        return new ParsedDictToken(head, keys, values);
+        return new DictPT(head, keys, values);
     }
 
     public LinkedList<ParsedToken> processStructures(LinkedList<ParsedToken> line) throws ParsingException {
@@ -381,7 +379,7 @@ public class Parser {
                             case LIST:
                                 right = parseListCall(operand);
                         }
-                        result = new ParsedBinaryExpression(processedStructure, left, right);
+                        result = new BinaryPT(processedStructure, left, right);
                     }
                     if (result != null)
                         operands.add(result);
@@ -445,7 +443,7 @@ public class Parser {
             found = false;
             for (int i = 0; i < operands.size(); ++i) {
                 if (!found && i != operands.size() - 1 && operands.get(i + 1).getType() != TokenType.STRING && operands.get(i + 1).getValue().equals(".")) {
-                    result.add(new ParsedBinaryExpression(operands.get(i + 1).getToken(), operands.get(i), operands.get(i + 2)));
+                    result.add(new BinaryPT(operands.get(i + 1).getToken(), operands.get(i), operands.get(i + 2)));
                     i = i + 2;
                     found = true;
                 } else {
@@ -458,27 +456,27 @@ public class Parser {
         return operands;
     }
 
-    public LinkedList<ParsedAbstractStatement> processBlocks(LinkedList<ParsedAbstractStatement> tokens){
+    public LinkedList<AbstractStatementPT> processBlocks(LinkedList<AbstractStatementPT> tokens){
         int lowerIndent = 0;
-        for (ParsedAbstractStatement curLine: tokens){
+        for (AbstractStatementPT curLine: tokens){
             if (curLine.getIndentationLevel() > lowerIndent)
                 lowerIndent = curLine.getIndentationLevel();
         }
-        ParsedBlock block = null;
+        BlockPT block = null;
         while (lowerIndent != 0) {
-            ParsedStatementWithBlock head = null;
+            StatementWithBlockPT head = null;
             Iterator iter = tokens.iterator();
             while (iter.hasNext()) {
-                ParsedAbstractStatement curLine = (ParsedAbstractStatement) iter.next();
+                AbstractStatementPT curLine = (AbstractStatementPT) iter.next();
                 if (curLine.getType() == TokenType.BLOCKWORD && curLine.getIndentationLevel() == lowerIndent - 1) {
                     if (head == null) {
-                        head = (ParsedStatementWithBlock)curLine;
-                        block = new ParsedBlock(curLine.getToken());
+                        head = (StatementWithBlockPT)curLine;
+                        block = new BlockPT(curLine.getToken());
                     }
                     else {
                         head.setToDo(block);
-                        head = (ParsedStatementWithBlock)curLine;
-                        block = new ParsedBlock(curLine.getToken());
+                        head = (StatementWithBlockPT)curLine;
+                        block = new BlockPT(curLine.getToken());
                     }
                 }
                 else {
@@ -504,19 +502,19 @@ public class Parser {
 
             //now finding if elif else
             iter = tokens.iterator();
-            ParsedConditionalStatement head1 = null;
+            ConditionalStatementPT head1 = null;
             while (iter.hasNext()) {
-                ParsedAbstractStatement curLine = (ParsedAbstractStatement) iter.next();
+                AbstractStatementPT curLine = (AbstractStatementPT) iter.next();
                 if (curLine.getType() == TokenType.BLOCKWORD && curLine.getIndentationLevel() == lowerIndent - 1) {
                     if (curLine.getValue().equals("if") || curLine.getValue().equals("while"))
-                        head1 = (ParsedConditionalStatement) curLine;
+                        head1 = (ConditionalStatementPT) curLine;
                     if (curLine.getValue().equals("elif")) {
                         iter.remove();
-                        ((ParsedConditionalStatement)head1).append((ParsedConditionalStatement)curLine);
+                        ((ConditionalStatementPT)head1).append((ConditionalStatementPT)curLine);
                     }
                     if (curLine.getValue().equals("else")) {
                         iter.remove();
-                        ((ParsedConditionalStatement)head1).append((ParsedConditionalStatement)curLine);
+                        ((ConditionalStatementPT)head1).append((ConditionalStatementPT)curLine);
                         head1 = null;
                     }
                     //TODO IF BLOCKWORDS ORDER IS NOT PRESERVED, THROW EXCEPTION
@@ -525,23 +523,23 @@ public class Parser {
             }
 
             iter = tokens.iterator();
-            ParsedTryStatement headTry = null;
+            TryStatementPT headTry = null;
             while (iter.hasNext()) {
-                ParsedAbstractStatement curLine = (ParsedAbstractStatement) iter.next();
+                AbstractStatementPT curLine = (AbstractStatementPT) iter.next();
                 if (curLine.getType() == TokenType.BLOCKWORD && curLine.getIndentationLevel() == lowerIndent - 1) {
                     if (curLine.getValue().equals("try"))
-                        headTry = (ParsedTryStatement) curLine;
+                        headTry = (TryStatementPT) curLine;
                     if (curLine.getValue().equals("except")) {
                         iter.remove();
-                        assert curLine instanceof ParsedExceptStatement;
+                        assert curLine instanceof ExceptStatementPT;
                         assert headTry != null;
-                        headTry.addExcept((ParsedExceptStatement) curLine);
+                        headTry.addExcept((ExceptStatementPT) curLine);
                     }
                     if (curLine.getValue().equals("finally")) {
                         iter.remove();
-                        assert curLine instanceof ParsedFinallyStatement;
+                        assert curLine instanceof FinallyStatementPT;
                         assert headTry != null;
-                        headTry.setFinallyStatement((ParsedFinallyStatement) curLine);
+                        headTry.setFinallyStatement((FinallyStatementPT) curLine);
                         headTry = null;
                     }
                     //TODO IF BLOCKWORDS ORDER IS NOT PRESERVED, THROW EXCEPTION

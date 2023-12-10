@@ -2,8 +2,8 @@ package Parsing.ParsedTokens;
 
 import Lexing.Token;
 
-public class ParsedFloatToken extends ParsedToken{
-    public ParsedFloatToken(Token t){
+public class IntPT extends ParsedToken{
+    public IntPT(Token t){
         super(t);
     }
     public ParsedTokenType getParsedType(){

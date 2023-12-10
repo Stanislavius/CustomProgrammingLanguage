@@ -2,28 +2,28 @@ package Parsing.ParsedTokens;
 
 import Lexing.Token;
 
-public class ParsedConditionalStatement extends ParsedStatementWithBlock{
+public class ConditionalStatementPT extends StatementWithBlockPT {
     ParsedToken condition;
-    ParsedConditionalStatement next;
-    public ParsedConditionalStatement(Token t, int indent){
+    ConditionalStatementPT next;
+    public ConditionalStatementPT(Token t, int indent){
         super(t, indent);
     }
 
-    public ParsedConditionalStatement(Token t, int indent, ParsedToken condition){
+    public ConditionalStatementPT(Token t, int indent, ParsedToken condition){
         super(t, indent);
         this.condition = condition;
     }
 
-    public ParsedConditionalStatement(Token t, int indent, ParsedToken condition, ParsedBlock toDo){
+    public ConditionalStatementPT(Token t, int indent, ParsedToken condition, BlockPT toDo){
         super(t, indent);
         this.condition = condition;
         this.toDo = toDo;
     }
 
-    public ParsedConditionalStatement(Token t, int indent, ParsedToken condition, ParsedToken toDo){
+    public ConditionalStatementPT(Token t, int indent, ParsedToken condition, ParsedToken toDo){
         super(t, indent);
         this.condition = condition;
-        this.toDo = (ParsedBlock) toDo;
+        this.toDo = (BlockPT) toDo;
     }
 
     public ParsedTokenType getParsedType(){
@@ -34,18 +34,18 @@ public class ParsedConditionalStatement extends ParsedStatementWithBlock{
         return this.next != null;
     }
 
-    public ParsedConditionalStatement getNext() {
+    public ConditionalStatementPT getNext() {
         return this.next;
     }
 
-    public void append(Token t, ParsedToken condition, ParsedBlock toDo){
+    public void append(Token t, ParsedToken condition, BlockPT toDo){
         if (hasNext())
             next.append(t, condition, toDo);
         else
-            next = new ParsedConditionalStatement(t, indentationLevel, condition, toDo);
+            next = new ConditionalStatementPT(t, indentationLevel, condition, toDo);
     }
 
-    public void append(ParsedConditionalStatement pCD){
+    public void append(ConditionalStatementPT pCD){
         if (hasNext())
             next.append(pCD);
         else

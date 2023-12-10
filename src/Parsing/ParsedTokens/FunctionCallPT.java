@@ -4,12 +4,12 @@ import Lexing.Token;
 
 import java.util.LinkedList;
 
-public class ParsedFunctionCall extends ParsedToken{
+public class FunctionCallPT extends ParsedToken{
     LinkedList<ParsedToken> args = new LinkedList<ParsedToken>();
-    public ParsedFunctionCall(Token t){
+    public FunctionCallPT(Token t){
         super(t);
     }
-    public ParsedFunctionCall(Token t, LinkedList<ParsedToken> args){
+    public FunctionCallPT(Token t, LinkedList<ParsedToken> args){
         this(t);
         this.args = args;
     }

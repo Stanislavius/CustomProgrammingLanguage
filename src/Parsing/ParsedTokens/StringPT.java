@@ -3,8 +3,8 @@ package Parsing.ParsedTokens;
 
 import Lexing.Token;
 
-public class ParsedStringToken extends ParsedToken{
-    public ParsedStringToken(Token t){
+public class StringPT extends ParsedToken{
+    public StringPT(Token t){
         super(t);
     }
     public ParsedTokenType getParsedType(){
