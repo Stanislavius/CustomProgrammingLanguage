@@ -9,7 +9,7 @@ import java.util.LinkedList;
 
 public class Executor {
     static Variables globalVariables = new Variables();
-    static LinkedList<FunctionDefinitionToken> stack = new LinkedList<FunctionDefinitionToken>();
+    static LinkedList<FunctionDefinitionET> stack = new LinkedList<FunctionDefinitionET>();
     static LinkedList<Variables> namespaces = new LinkedList<Variables>();
 
     static LinkedList<TryExecutionToken> tryBlocks = new LinkedList<TryExecutionToken>();
@@ -35,7 +35,7 @@ public class Executor {
             else
                 return output.get(output.size() - 1);
         }
-        catch (EndOfExecutionError e){
+        catch (EndOfExecutionException e){
             return e.getError().toString();
         }
     }
@@ -48,14 +48,14 @@ public class Executor {
         tryBlocks.removeLast();
     }
 
-    public static ObjectType sendError(ErrorType error) throws EndOfExecutionError {
+    public static ObjectType sendError(ErrorType error) throws EndOfExecutionException {
         ObjectType result = error;
         try {
             if (!tryBlocks.isEmpty())
                 result = tryBlocks.removeLast().doExcept(error);
             else {
                 System.out.println(error);
-                throw new EndOfExecutionError(error);
+                throw new EndOfExecutionException(error);
             }
         }
         catch (ExecutionException e) {
@@ -77,7 +77,7 @@ public class Executor {
         VoidType.createType();
         BuiltinFunctions.createFunctions();
     }
-    public static void addToStack(FunctionDefinitionToken curFunc){
+    public static void addToStack(FunctionDefinitionET curFunc){
         stack.add(curFunc);
         namespaces.add(new Variables());
     }
@@ -101,11 +101,11 @@ public class Executor {
                 pcs = pcs.getNext();
                 toDos.add(getExecutionTreeForBlock(pcs.getToDo()));
                 if (pcs.getValue().equals("else"))
-                    conditions.add(new ElseExecutionToken(pcs.getToken()));
+                    conditions.add(new ElseET(pcs.getToken()));
                 else
                     conditions.add(getExecutionTreeExpression(pcs.getCondition()));
             }
-            return new BlockExecutionToken(pt.getToken(), condition, toDo, conditions, toDos);
+            return new BlockET(pt.getToken(), condition, toDo, conditions, toDos);
         }
         if (pt.getParsedType() == ParsedTokenType.FUNCTION_DEFINITION){
             FunctionDefinitionPT PFD = (FunctionDefinitionPT) pt;
@@ -120,7 +120,7 @@ public class Executor {
             for (int i = 0; i < toDos.size(); ++i){
                 executionToDos.add(getExecutionTree(toDos.get(i)));
             }
-            return new FunctionDefinitionToken(pt.getToken(), name, variableNames, executionToDos);
+            return new FunctionDefinitionET(pt.getToken(), name, variableNames, executionToDos);
         }
 
         if (pt.getParsedType() == ParsedTokenType.CLASS_DEFINITION){
@@ -131,20 +131,20 @@ public class Executor {
             for (int i = 0; i < toDos.size(); ++i){
                 executionToDos.add(getExecutionTree(toDos.get(i)));
             }
-            return new ClassDefinitionToken(pt.getToken(), name, executionToDos);
+            return new ClassDefinitionET(pt.getToken(), name, executionToDos);
         }
 
         if (pt.getParsedType() == ParsedTokenType.ASSIGNMENT){
             AssigmentStatementPT pat = (AssigmentStatementPT) pt;
             if(pat.getVariable().getClass().equals(VariablePT.class))
-                return new AssignmentToken(pt.getToken(), new VariableExecutionToken(pat.getVariable().getToken()), getExecutionTreeExpression(pat.getExpression()));
+                return new AssignmentET(pt.getToken(), new VariableET(pat.getVariable().getToken()), getExecutionTreeExpression(pat.getExpression()));
             else
-                return new AssignmentToken(pt.getToken(), getExecutionTreeExpression(pat.getVariable()), getExecutionTreeExpression(pat.getExpression()));
+                return new AssignmentET(pt.getToken(), getExecutionTreeExpression(pat.getVariable()), getExecutionTreeExpression(pat.getExpression()));
         }
 
         if (pt.getParsedType() == ParsedTokenType.TRY_STATEMENT){
             TryStatementPT pts = (TryStatementPT) pt;
-            LinkedList<ExceptExecutionToken> excepts = new LinkedList<ExceptExecutionToken>();
+            LinkedList<ExceptET> excepts = new LinkedList<ExceptET>();
             LinkedList<ExceptStatementPT> parsedExcepts = pts.getExcepts();
             for (int i = 0; i < parsedExcepts.size(); ++i){
                 excepts.add(getExecutionTreeForExcept(parsedExcepts.get(i)));
@@ -156,12 +156,12 @@ public class Executor {
         return null;
     }
 
-    public static ExceptExecutionToken getExecutionTreeForExcept(ExceptStatementPT exceptStatement) throws ExecutionException {
+    public static ExceptET getExecutionTreeForExcept(ExceptStatementPT exceptStatement) throws ExecutionException {
         LinkedList<ExecutionToken> parsedTypes = new LinkedList<ExecutionToken>();
         LinkedList<VariablePT> typesOfException = exceptStatement.getTypesOfException();
         for(int i = 0; i < typesOfException.size(); ++i)
-            parsedTypes.add(new VariableExecutionToken(typesOfException.get(i).getToken()));
-        return new ExceptExecutionToken(exceptStatement.getToken(), parsedTypes, getExecutionTreeForBlock(exceptStatement.getToDo()));
+            parsedTypes.add(new VariableET(typesOfException.get(i).getToken()));
+        return new ExceptET(exceptStatement.getToken(), parsedTypes, getExecutionTreeForBlock(exceptStatement.getToDo()));
     }
 
     public static LinkedList<ExecutionToken> getExecutionTreeForBlock(BlockPT pb) throws ExecutionException {
@@ -182,7 +182,7 @@ public class Executor {
             LinkedList<ObjectType> objectValues = new LinkedList<ObjectType>();
             for(int i = 0; i < values.size(); ++i)
                 objectValues.add(values.get(i).execute());
-            return new ValueExecutionToken(pt.getToken(), new ListType(objectValues));
+            return new ValueET(pt.getToken(), new ListType(objectValues));
         }
 
         if (pt.getClass() == DictPT.class){
@@ -202,7 +202,7 @@ public class Executor {
                 objectKeys.add(keys.get(i).execute());
             }
 
-            return new ValueExecutionToken(pt.getToken(), new ClassDict(objectKeys, objectValues));
+            return new ValueET(pt.getToken(), new ClassDict(objectKeys, objectValues));
         }
 
         if (pt.getParsedType() == ParsedTokenType.BINARY_OPERATION) {
@@ -210,30 +210,30 @@ public class Executor {
             ExecutionToken right = getExecutionTreeExpression(((BinaryPT)pt).getRight());
             switch (pt.getToken().getValue()){
                 case ".":
-                    return new MemberExecutionToken(pt.getToken(), left, right);
+                    return new MemberET(pt.getToken(), left, right);
                 case "[":
-                    return new ItemExecutionToken(pt.getToken(), left, right);
+                    return new ItemET(pt.getToken(), left, right);
                 default:
-                    return new BinaryOperation(pt.getToken(), left, right);
+                    return new BinaryOperationET(pt.getToken(), left, right);
             }
         }
 
         if (pt.getParsedType() == ParsedTokenType.UNARY_OPERATION) {
             ExecutionToken right = getExecutionTreeExpression(((UnaryPT)pt).getRight());
-            return new UnaryOperation(pt.getToken(), right);
+            return new UnaryOperationET(pt.getToken(), right);
         }
 
         if (pt.getClass() == IntPT.class) {
-            return new ValueExecutionToken(pt.getToken(),
+            return new ValueET(pt.getToken(),
                     new IntType(Integer.parseInt(pt.getToken().getValue())));
         }
 
         if (pt.getClass() == StringPT.class) {
-            return new ValueExecutionToken(pt.getToken(), new StringType(pt.getToken().getValue()));
+            return new ValueET(pt.getToken(), new StringType(pt.getToken().getValue()));
         }
 
         if (pt.getClass() == FloatPT.class) {
-            return new ValueExecutionToken(pt.getToken(),
+            return new ValueET(pt.getToken(),
                     new FloatType(Float.parseFloat(pt.getToken().getValue())));
         }
 
@@ -243,11 +243,11 @@ public class Executor {
             LinkedList<ParsedToken> args = PFC.getArgs();
             for (int i = 0; i < args.size(); ++i)
                 children.add(getExecutionTreeExpression(args.get(i)));
-            return new FunctionCallToken(pt.getToken(), children);
+            return new FunctionCallET(pt.getToken(), children);
         }
 
         if (pt.getClass() == VariablePT.class) {
-            return new VariableExecutionToken(pt.getToken());
+            return new VariableET(pt.getToken());
         }
 
         return null;

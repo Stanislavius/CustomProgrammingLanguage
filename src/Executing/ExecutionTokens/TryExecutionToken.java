@@ -11,11 +11,11 @@ import java.util.LinkedList;
 
 public class TryExecutionToken extends ExecutionToken{
     LinkedList<ExecutionToken> toDo;
-    LinkedList<ExceptExecutionToken> excepts;
+    LinkedList<ExceptET> excepts;
     boolean stop = false;
     ObjectType result;
 
-    public TryExecutionToken(Token token, LinkedList<ExecutionToken> toDo, LinkedList<ExceptExecutionToken> excepts) {
+    public TryExecutionToken(Token token, LinkedList<ExecutionToken> toDo, LinkedList<ExceptET> excepts) {
         super(token);
         this.toDo = toDo;
         this.excepts = excepts;

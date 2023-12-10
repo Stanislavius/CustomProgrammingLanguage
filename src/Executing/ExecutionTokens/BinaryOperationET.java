@@ -8,11 +8,11 @@ import Lexing.Token;
 import java.util.Arrays;
 import java.util.LinkedList;
 
-public class BinaryOperation extends ExecutionToken {
+public class BinaryOperationET extends ExecutionToken {
     ExecutionToken left;
     ExecutionToken right;
 
-    public BinaryOperation(Token token, ExecutionToken left, ExecutionToken right) {
+    public BinaryOperationET(Token token, ExecutionToken left, ExecutionToken right) {
         super(token);
         this.left = left;
         this.right = right;
@@ -24,14 +24,14 @@ public class BinaryOperation extends ExecutionToken {
         LinkedList<ObjectType> args;
         if (token.getValue().equals(".")){
             lRes = left.execute();
-            VariableExecutionToken veb = (VariableExecutionToken) right;
+            VariableET veb = (VariableET) right;
             return lRes.getMember(veb.token.getValue());
         }
         else{
             lRes = left.execute();
-            if (right.getClass() == FunctionCallToken.class)
+            if (right.getClass() == FunctionCallET.class)
             {
-                FunctionCallToken fct = (FunctionCallToken) right;
+                FunctionCallET fct = (FunctionCallET) right;
                 args = fct.executeArgs();
                 return lRes.call(args);
             }

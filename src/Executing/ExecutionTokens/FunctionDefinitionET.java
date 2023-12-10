@@ -5,11 +5,11 @@ import Lexing.Token;
 
 import java.util.LinkedList;
 
-public class FunctionDefinitionToken extends ExecutionToken{
+public class FunctionDefinitionET extends ExecutionToken{
     LinkedList<String> args = new LinkedList<String>();
     LinkedList<ExecutionToken> toDo;
     String name;
-    public FunctionDefinitionToken(Token t, String name, LinkedList<String> args, LinkedList<ExecutionToken> toDo){
+    public FunctionDefinitionET(Token t, String name, LinkedList<String> args, LinkedList<ExecutionToken> toDo){
         super(t);
         this.args = args;
         this.toDo = toDo;
@@ -21,7 +21,7 @@ public class FunctionDefinitionToken extends ExecutionToken{
         return new VoidType();
     }
 
-    public static void addFun(String funName, FunctionDefinitionToken fun){
+    public static void addFun(String funName, FunctionDefinitionET fun){
         Executor.setVariable(funName, new FunctionType(funName, new CustomFunction(fun)));
     }
 

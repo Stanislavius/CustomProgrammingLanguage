@@ -5,15 +5,15 @@ import Lexing.Token;
 
 import java.util.LinkedList;
 
-public class ExceptExecutionToken extends ExecutionToken{
+public class ExceptET extends ExecutionToken{
     protected LinkedList<ExecutionToken> errorTypes = new LinkedList<ExecutionToken>();
     protected LinkedList<ExecutionToken> toDo;
 
-    public ExceptExecutionToken(Token token) {
+    public ExceptET(Token token) {
         super(token);
     }
 
-    public ExceptExecutionToken(Token token, LinkedList<ExecutionToken> errorTypes, LinkedList<ExecutionToken> toDo) {
+    public ExceptET(Token token, LinkedList<ExecutionToken> errorTypes, LinkedList<ExecutionToken> toDo) {
         super(token);
         this.toDo=toDo;
         this.errorTypes = errorTypes;

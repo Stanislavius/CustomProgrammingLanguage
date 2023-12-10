@@ -7,10 +7,10 @@ import Lexing.Token;
 
 import java.util.LinkedList;
 
-public class FunctionCallToken extends ExecutionToken {
+public class FunctionCallET extends ExecutionToken {
     LinkedList<ExecutionToken> args;
 
-    public FunctionCallToken(Token token, LinkedList<ExecutionToken> args) {
+    public FunctionCallET(Token token, LinkedList<ExecutionToken> args) {
         super(token);
         this.args = args;
     }

@@ -4,8 +4,8 @@ import Executing.Types.IntType;
 import Executing.Types.ObjectType;
 import Lexing.Token;
 
-public class ElseExecutionToken extends ExecutionToken{
-    public ElseExecutionToken(Token token) {
+public class ElseET extends ExecutionToken{
+    public ElseET(Token token) {
         super(token);
     }
     public ObjectType execute(){

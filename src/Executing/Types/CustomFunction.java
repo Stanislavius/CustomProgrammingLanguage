@@ -1,12 +1,12 @@
 package Executing.Types;
 
-import Executing.ExecutionTokens.FunctionDefinitionToken;
+import Executing.ExecutionTokens.FunctionDefinitionET;
 
 import java.util.LinkedList;
 
 public class CustomFunction implements WrapperInterface {
-    FunctionDefinitionToken fDT;
-    public CustomFunction(FunctionDefinitionToken fDT) {
+    FunctionDefinitionET fDT;
+    public CustomFunction(FunctionDefinitionET fDT) {
         this.fDT = fDT;
     }
     public ObjectType execute(LinkedList<ObjectType> args) throws ExecutionException {

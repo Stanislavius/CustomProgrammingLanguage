@@ -1,10 +1,8 @@
-package Executing.ExecutionTokens;
+package Executing.Types;
 
-import Executing.Types.ErrorType;
-
-public class EndOfExecutionError extends Exception{
+public class EndOfExecutionException extends Exception{
     ErrorType error;
-    public EndOfExecutionError(ErrorType error){
+    public EndOfExecutionException(ErrorType error){
         this.error = error;
     }
     public String toString(){

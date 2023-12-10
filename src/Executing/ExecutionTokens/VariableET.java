@@ -6,8 +6,8 @@ import Executing.Types.ObjectType;
 import Executing.Executor;
 import Lexing.Token;
 
-public class VariableExecutionToken extends ExecutionToken {
-    public VariableExecutionToken(Token t) {
+public class VariableET extends ExecutionToken {
+    public VariableET(Token t) {
         super(t);
     }
 

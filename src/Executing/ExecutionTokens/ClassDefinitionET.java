@@ -8,22 +8,22 @@ import java.util.HashMap;
 import java.util.Iterator;
 import java.util.LinkedList;
 
-public class ClassDefinitionToken extends ExecutionToken{
+public class ClassDefinitionET extends ExecutionToken{
     HashMap<String, ExecutionToken> members = new HashMap<String, ExecutionToken>();
     LinkedList<ExecutionToken> toDo;
     String name;
-    public ClassDefinitionToken(Token t, String name, LinkedList<ExecutionToken> toDo){
+    public ClassDefinitionET(Token t, String name, LinkedList<ExecutionToken> toDo){
         super(t);
         this.toDo = toDo;
         this.name = name;
         for(int i = 0; i < toDo.size(); ++i){
-            if (toDo.get(i).getClass() == FunctionDefinitionToken.class){
-                FunctionDefinitionToken ft = (FunctionDefinitionToken)toDo.get(i);
+            if (toDo.get(i).getClass() == FunctionDefinitionET.class){
+                FunctionDefinitionET ft = (FunctionDefinitionET)toDo.get(i);
                 String functionName = ft.getName();
                 members.put(functionName, ft);
             }
-            if (toDo.get(i).getClass() == AssignmentToken.class){
-                FunctionDefinitionToken ft = (FunctionDefinitionToken)toDo.get(i);
+            if (toDo.get(i).getClass() == AssignmentET.class){
+                FunctionDefinitionET ft = (FunctionDefinitionET)toDo.get(i);
                 String functionName = ft.getName();
                 members.put(functionName, ft);
             }
@@ -39,7 +39,7 @@ public class ClassDefinitionToken extends ExecutionToken{
             String key = (String) iter.next();
             ExecutionToken member = members.get(key);
             if (key.equals("__init__")) {
-                FunctionDefinitionToken initFunc = (FunctionDefinitionToken) member;
+                FunctionDefinitionET initFunc = (FunctionDefinitionET) member;
                 newClass.setMember("__call__", new FunctionType("__call__", new SourceFunction() {
                     public ObjectType execute(LinkedList<ObjectType> args) throws ExecutionException {
                         ObjectType newObject = new CustomObject();

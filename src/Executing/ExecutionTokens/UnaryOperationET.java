@@ -5,10 +5,10 @@ import Executing.Types.ExecutionException;
 import Executing.Types.ObjectType;
 import Lexing.Token;
 
-public class UnaryOperation extends ExecutionToken {
+public class UnaryOperationET extends ExecutionToken {
     ExecutionToken right;
 
-    public UnaryOperation(Token token, ExecutionToken right) {
+    public UnaryOperationET(Token token, ExecutionToken right) {
         super(token);
         this.right = right;
     }

@@ -7,14 +7,14 @@ import Executing.Types.VoidType;
 import Lexing.Token;
 import java.util.LinkedList;
 
-public class BlockExecutionToken extends ExecutionToken{
+public class BlockET extends ExecutionToken{
     ExecutionToken condition;
     LinkedList<ExecutionToken> elseConditions;
     LinkedList<LinkedList<ExecutionToken>> elseToDos;
     LinkedList<ExecutionToken> toDo;
-    public BlockExecutionToken(Token t, ExecutionToken condition, LinkedList<ExecutionToken> toDo,
-                               LinkedList<ExecutionToken> elseConditions,
-                               LinkedList<LinkedList<ExecutionToken>> elseToDos){
+    public BlockET(Token t, ExecutionToken condition, LinkedList<ExecutionToken> toDo,
+                   LinkedList<ExecutionToken> elseConditions,
+                   LinkedList<LinkedList<ExecutionToken>> elseToDos){
         super(t);
         this.condition = condition;
         this.toDo = toDo;

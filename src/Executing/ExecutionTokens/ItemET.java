@@ -4,10 +4,10 @@ import Executing.Types.ExecutionException;
 import Executing.Types.ObjectType;
 import Lexing.Token;
 
-public class ItemExecutionToken extends ExecutionToken{
+public class ItemET extends ExecutionToken{
     ExecutionToken object;
     ExecutionToken item;
-    public ItemExecutionToken(Token token, ExecutionToken object, ExecutionToken item) {
+    public ItemET(Token token, ExecutionToken object, ExecutionToken item) {
         super(token);
         this.object = object;
         this.item = item;
