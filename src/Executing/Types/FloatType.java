@@ -12,7 +12,7 @@ public class FloatType extends ObjectType {
         type = new ClassType();
         type.setMember("__name__", new StringType("float"));
 
-        type.setMember("__call__", new FunctionType("__call__", new SourceFunction(){
+        type.setMember("__call__", new FunctionType("__call__", new SourceFunctionType(){
             public ObjectType execute(LinkedList<ObjectType> args) throws ExecutionException {
                 ObjectType val1 = args.get(0);
                 switch (val1.getType().toString()) {
@@ -32,7 +32,7 @@ public class FloatType extends ObjectType {
         ));
 
 
-        type.setMember("__add__", new FunctionType("__add__", new SourceFunction(){
+        type.setMember("__add__", new FunctionType("__add__", new SourceFunctionType(){
             public ObjectType execute(LinkedList<ObjectType> args){
                 float v1 = ((FloatType)(args.get(0))).getFloat();
                 ObjectType val2 = args.get(1);
@@ -49,7 +49,7 @@ public class FloatType extends ObjectType {
         }
         ));
 
-        type.setMember("__sub__", new FunctionType("__sub__", new SourceFunction(){
+        type.setMember("__sub__", new FunctionType("__sub__", new SourceFunctionType(){
             public ObjectType execute(LinkedList<ObjectType> args){
                 float v1 = ((FloatType)(args.get(0))).getFloat();
                 ObjectType val2 = args.get(1);
@@ -66,7 +66,7 @@ public class FloatType extends ObjectType {
         }
         ));
 
-        type.setMember("__mul__", new FunctionType("__mul__", new SourceFunction(){
+        type.setMember("__mul__", new FunctionType("__mul__", new SourceFunctionType(){
             public ObjectType execute(LinkedList<ObjectType> args){
                 float v1 = ((FloatType)(args.get(0))).getFloat();
                 ObjectType val2 = args.get(1);
@@ -83,7 +83,7 @@ public class FloatType extends ObjectType {
         }
         ));
 
-        type.setMember("__div__", new FunctionType("__div__", new SourceFunction(){
+        type.setMember("__div__", new FunctionType("__div__", new SourceFunctionType(){
             public ObjectType execute(LinkedList<ObjectType> args) throws ExecutionException {
                 float v1 = ((FloatType)(args.get(0))).getFloat();
                 ObjectType val2 = args.get(1);
@@ -108,7 +108,7 @@ public class FloatType extends ObjectType {
         }
         ));
 
-        type.setMember("__neg__", new FunctionType("__neg__", new SourceFunction(){
+        type.setMember("__neg__", new FunctionType("__neg__", new SourceFunctionType(){
             public ObjectType execute(LinkedList<ObjectType> args){
                 float v1 = ((FloatType)(args.get(0))).getFloat();
                 return new FloatType(-v1);
@@ -116,7 +116,7 @@ public class FloatType extends ObjectType {
         }
         ));
 
-        type.setMember("__str__", new FunctionType("__str__", new SourceFunction(){
+        type.setMember("__str__", new FunctionType("__str__", new SourceFunctionType(){
             public ObjectType execute(LinkedList<ObjectType> args){
                 float v1 = ((FloatType)(args.get(0))).getFloat();
                 return new StringType(v1+"");
@@ -124,7 +124,7 @@ public class FloatType extends ObjectType {
         }
         ));
 
-        type.setMember("__eq__", new FunctionType("__eq__", new SourceFunction(){
+        type.setMember("__eq__", new FunctionType("__eq__", new SourceFunctionType(){
             public ObjectType execute(LinkedList<ObjectType> args){
                 float v1 = ((FloatType)(args.get(0))).getFloat();
                 ObjectType val2 = args.get(1);

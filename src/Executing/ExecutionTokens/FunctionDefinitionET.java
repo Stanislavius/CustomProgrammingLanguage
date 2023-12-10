@@ -17,12 +17,12 @@ public class FunctionDefinitionET extends ExecutionToken{
     }
 
     public ObjectType execute(){
-        Executor.setVariable(name, new FunctionType(name, new CustomFunction(this)));
+        Executor.setVariable(name, new FunctionType(name, new CustomFunctionType(this)));
         return new VoidType();
     }
 
     public static void addFun(String funName, FunctionDefinitionET fun){
-        Executor.setVariable(funName, new FunctionType(funName, new CustomFunction(fun)));
+        Executor.setVariable(funName, new FunctionType(funName, new CustomFunctionType(fun)));
     }
 
     public ObjectType execute(LinkedList<ObjectType> funcArgs) throws ExecutionException {

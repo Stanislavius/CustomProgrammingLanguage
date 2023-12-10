@@ -3,14 +3,14 @@ package Executing.Types;
 import java.util.Arrays;
 import java.util.LinkedList;
 
-public class MagicalFunction implements WrapperInterface {
+public class MagicalFunctionType implements WrapperInterface {
     final static LinkedList<String> names = new LinkedList<>(Arrays.asList(
             "__add__",
             "__sub__",
             "__mul__"));
     String name;
 
-    public MagicalFunction(String name){
+    public MagicalFunctionType(String name){
         this.name = name;
     }
     public ObjectType execute(LinkedList<ObjectType> args) throws ExecutionException {

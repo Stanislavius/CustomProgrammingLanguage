@@ -12,7 +12,7 @@ public class IntType extends ObjectType {
     public static void createType(){
         type = new ClassType();
         type.setMember("__name__", new StringType("int"));
-        type.setMember("__call__", new FunctionType("__call__", new SourceFunction(){
+        type.setMember("__call__", new FunctionType("__call__", new SourceFunctionType(){
             public ObjectType execute(LinkedList<ObjectType> args) throws ExecutionException {
                 ObjectType val1 = args.get(0);
                 switch (val1.getType().toString()) {
@@ -31,7 +31,7 @@ public class IntType extends ObjectType {
         }
         ));
 
-        type.setMember("__add__", new FunctionType("__add__", new SourceFunction(){
+        type.setMember("__add__", new FunctionType("__add__", new SourceFunctionType(){
             public ObjectType execute(LinkedList<ObjectType> args){
                 int v1 = ((IntType)(args.get(0))).getInt();
                 ObjectType val2 = args.get(1);
@@ -48,7 +48,7 @@ public class IntType extends ObjectType {
         }
         ));
 
-        type.setMember("__sub__", new FunctionType("__sub__", new SourceFunction(){
+        type.setMember("__sub__", new FunctionType("__sub__", new SourceFunctionType(){
             public ObjectType execute(LinkedList<ObjectType> args){
                 int v1 = ((IntType)(args.get(0))).getInt();
                 ObjectType val2 = args.get(1);
@@ -65,7 +65,7 @@ public class IntType extends ObjectType {
         }
         ));
 
-        type.setMember("__eq__", new FunctionType("__eq__", new SourceFunction(){
+        type.setMember("__eq__", new FunctionType("__eq__", new SourceFunctionType(){
             public ObjectType execute(LinkedList<ObjectType> args){
                 int v1 = ((IntType)(args.get(0))).getInt();
                 ObjectType val2 = args.get(1);
@@ -89,7 +89,7 @@ public class IntType extends ObjectType {
         }
         ));
 
-        type.setMember("__lt__", new FunctionType("__lt__", new SourceFunction(){
+        type.setMember("__lt__", new FunctionType("__lt__", new SourceFunctionType(){
             public ObjectType execute(LinkedList<ObjectType> args){
                 int v1 = ((IntType)(args.get(0))).getInt();
                 ObjectType val2 = args.get(1);
@@ -112,7 +112,7 @@ public class IntType extends ObjectType {
         }
         ));
 
-        type.setMember("__gt__", new FunctionType("__gt__", new SourceFunction(){
+        type.setMember("__gt__", new FunctionType("__gt__", new SourceFunctionType(){
             public ObjectType execute(LinkedList<ObjectType> args){
                 int v1 = ((IntType)(args.get(0))).getInt();
                 ObjectType val2 = args.get(1);
@@ -135,7 +135,7 @@ public class IntType extends ObjectType {
         }
         ));
 
-        type.setMember("__mul__", new FunctionType("__mul__", new SourceFunction(){
+        type.setMember("__mul__", new FunctionType("__mul__", new SourceFunctionType(){
             public ObjectType execute(LinkedList<ObjectType> args){
                 int v1 = ((IntType)(args.get(0))).getInt();
                 ObjectType val2 = args.get(1);
@@ -152,7 +152,7 @@ public class IntType extends ObjectType {
         }
         ));
 
-        type.setMember("__div__", new FunctionType("__div__", new SourceFunction(){
+        type.setMember("__div__", new FunctionType("__div__", new SourceFunctionType(){
             public ObjectType execute(LinkedList<ObjectType> args) throws ExecutionException {
                 int v1 = ((IntType)(args.get(0))).getInt();
                 ObjectType val2 = args.get(1);
@@ -178,7 +178,7 @@ public class IntType extends ObjectType {
         }
         ));
 
-        type.setMember("__neg__", new FunctionType("__neg__", new SourceFunction(){
+        type.setMember("__neg__", new FunctionType("__neg__", new SourceFunctionType(){
             public ObjectType execute(LinkedList<ObjectType> args){
                 int v1 = ((IntType)(args.get(0))).getInt();
                 return new IntType(-v1);
@@ -186,7 +186,7 @@ public class IntType extends ObjectType {
         }
         ));
 
-        type.setMember("__hash__", new FunctionType("__hash__", new SourceFunction(){
+        type.setMember("__hash__", new FunctionType("__hash__", new SourceFunctionType(){
             public ObjectType execute(LinkedList<ObjectType> args){
                 int v1 = ((IntType)(args.get(0))).hashCode();
                 return new IntType(v1);
@@ -194,7 +194,7 @@ public class IntType extends ObjectType {
         }
         ));
 
-        type.setMember("__str__", new FunctionType("__str__", new SourceFunction(){
+        type.setMember("__str__", new FunctionType("__str__", new SourceFunctionType(){
             public ObjectType execute(LinkedList<ObjectType> args){
                 int v1 = ((IntType)(args.get(0))).getInt();
                 return new StringType(v1+"");

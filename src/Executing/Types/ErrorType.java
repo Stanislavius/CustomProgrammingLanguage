@@ -10,7 +10,7 @@ public class ErrorType extends ObjectType {
     {
         type = new ClassType();
         type.setMember("__name__", new StringType("error"));
-        type.setMember("__str__", new FunctionType("__str__", new SourceFunction(){
+        type.setMember("__str__", new FunctionType("__str__", new SourceFunctionType(){
             public ObjectType execute(LinkedList<ObjectType> args){
                 ErrorType error = ((ErrorType)(args.get(0)));
                 return new StringType(error.toString());

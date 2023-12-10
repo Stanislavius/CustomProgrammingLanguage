@@ -22,7 +22,7 @@ public class ObjectType{
         if (this.members.containsKey(name)){
             ObjectType member = this.members.get(name);
             if(member.getClass() == FunctionType.class){
-                return new BoundMethod(this, (FunctionType) member, name);
+                return new BoundMethodType(this, (FunctionType) member, name);
             }
             else
                 return member;
@@ -30,7 +30,7 @@ public class ObjectType{
         else {
             ObjectType member = this.getMember("__class__").getMember(name);
             if (member.getClass() == FunctionType.class) {
-                return new BoundMethod(this, (FunctionType) member, name);
+                return new BoundMethodType(this, (FunctionType) member, name);
             } else
                 return member;
         }

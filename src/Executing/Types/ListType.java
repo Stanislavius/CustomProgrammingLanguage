@@ -10,7 +10,7 @@ public class ListType extends ObjectType {
     {
         type = new ClassType();
         type.setMember("__name__", new StringType("list"));
-        type.setMember("__append__", new FunctionType("__append__", new SourceFunction(){
+        type.setMember("__append__", new FunctionType("__append__", new SourceFunctionType(){
             public ObjectType execute(LinkedList<ObjectType> args){
                 ListType list = ((ListType)(args.get(0)));
                 ObjectType val2 = args.get(1);
@@ -20,7 +20,7 @@ public class ListType extends ObjectType {
         }
         ));
 
-        type.setMember("__str__", new FunctionType("__str__", new SourceFunction(){
+        type.setMember("__str__", new FunctionType("__str__", new SourceFunctionType(){
             public ObjectType execute(LinkedList<ObjectType> args){
                 ListType v1 = ((ListType)(args.get(0)));
                 return new StringType(v1.toString());
@@ -28,14 +28,14 @@ public class ListType extends ObjectType {
         }
         ));
 
-        type.setMember("__call__", new FunctionType("__str__", new SourceFunction(){
+        type.setMember("__call__", new FunctionType("__str__", new SourceFunctionType(){
             public ObjectType execute(LinkedList<ObjectType> args){
                 return new ListType(args);
             }
         }
         ));
 
-        type.setMember("__getitem__", new FunctionType("__getitem__", new SourceFunction(){
+        type.setMember("__getitem__", new FunctionType("__getitem__", new SourceFunctionType(){
             public ObjectType execute(LinkedList<ObjectType> args){
                 ListType v1 = ((ListType)(args.get(0)));
                 return v1.get(args.get(1));
@@ -43,7 +43,7 @@ public class ListType extends ObjectType {
         }
         ));
 
-        type.setMember("__setitem__", new FunctionType("__setitem__", new SourceFunction(){
+        type.setMember("__setitem__", new FunctionType("__setitem__", new SourceFunctionType(){
             public ObjectType execute(LinkedList<ObjectType> args){
                 ListType v1 = ((ListType)(args.get(0)));
                 return v1.set(args.get(1), args.get(2));
@@ -51,7 +51,7 @@ public class ListType extends ObjectType {
         }
         ));
 
-        type.setMember("__add__", new FunctionType("__add__", new SourceFunction(){
+        type.setMember("__add__", new FunctionType("__add__", new SourceFunctionType(){
             public ObjectType execute(LinkedList<ObjectType> args){
                 LinkedList<ObjectType> v1 = ((ListType)(args.get(0))).getValues();
                 LinkedList<ObjectType> v2 = ((ListType)(args.get(1))).getValues();
@@ -63,7 +63,7 @@ public class ListType extends ObjectType {
         }
         ));
 
-        type.setMember("__len__", new FunctionType("__len__", new SourceFunction(){
+        type.setMember("__len__", new FunctionType("__len__", new SourceFunctionType(){
             public ObjectType execute(LinkedList<ObjectType> args){
                 LinkedList<ObjectType> v1 = ((ListType)(args.get(0))).getValues();
                 return new IntType(v1.size());
@@ -72,7 +72,7 @@ public class ListType extends ObjectType {
 
         ));
 
-        type.setMember("__eq__", new FunctionType("__eq__", new SourceFunction(){
+        type.setMember("__eq__", new FunctionType("__eq__", new SourceFunctionType(){
             public ObjectType execute(LinkedList<ObjectType> args){
                 LinkedList<ObjectType> v1 = ((ListType)(args.get(0))).getValues();
                 LinkedList<ObjectType> v2 = ((ListType)(args.get(1))).getValues();

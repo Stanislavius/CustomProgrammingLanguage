@@ -3,9 +3,9 @@ package Executing.Types;
 import java.util.LinkedList;
 import java.util.List;
 
-public class BoundMethod extends FunctionType implements WrapperInterface{
+public class BoundMethodType extends FunctionType implements WrapperInterface{
     ObjectType object;
-    public BoundMethod(ObjectType object, FunctionType function, String name){
+    public BoundMethodType(ObjectType object, FunctionType function, String name){
         super(name, function.getCallable());
         this.object = object;
     }

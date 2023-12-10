@@ -3,7 +3,7 @@ package Executing.Types;
 import java.util.LinkedList;
 
 public class CustomObject extends ObjectType{
-    ClassDict dict = new ClassDict();
+    DictType dict = new DictType();
     public static ObjectType setMember(ObjectType object, String name, ObjectType member) {
         object.setMember(name, member);
         return VoidType.voidObject;
@@ -43,7 +43,7 @@ public class CustomObject extends ObjectType{
         if (this.dict.containsKey(key)){
             ObjectType member = this.dict.get(key);
             if(member.getClass() == FunctionType.class){
-                return new BoundMethod(this, (FunctionType) member, key.getValue());
+                return new BoundMethodType(this, (FunctionType) member, key.getValue());
             }
             else
                 return member;
@@ -51,7 +51,7 @@ public class CustomObject extends ObjectType{
         else {
             ObjectType member = this.getMember("__class__").getMember(key.getValue());
             if (member.getClass() == FunctionType.class) {
-                return new BoundMethod(this, (FunctionType) member, key.getValue());
+                return new BoundMethodType(this, (FunctionType) member, key.getValue());
             } else
                 return member;
         }

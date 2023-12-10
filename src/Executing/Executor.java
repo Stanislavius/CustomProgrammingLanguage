@@ -69,7 +69,7 @@ public class Executor {
         StringType.createType();
         ClassType.createType2();
         FunctionType.createType();
-        ClassDict.createType();
+        DictType.createType();
         FloatType.createType();
         IntType.createType();
         ErrorType.createType();
@@ -202,7 +202,7 @@ public class Executor {
                 objectKeys.add(keys.get(i).execute());
             }
 
-            return new ValueET(pt.getToken(), new ClassDict(objectKeys, objectValues));
+            return new ValueET(pt.getToken(), new DictType(objectKeys, objectValues));
         }
 
         if (pt.getParsedType() == ParsedTokenType.BINARY_OPERATION) {
