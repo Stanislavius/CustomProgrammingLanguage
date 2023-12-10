@@ -9,7 +9,7 @@ public class CustomFunction implements WrapperInterface {
     public CustomFunction(FunctionDefinitionToken fDT) {
         this.fDT = fDT;
     }
-    public ObjectType execute(LinkedList<ObjectType> args) throws ExecutionError {
+    public ObjectType execute(LinkedList<ObjectType> args) throws ExecutionException {
         return fDT.execute(args);
     }
 }

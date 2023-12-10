@@ -1,7 +1,7 @@
 package Executing.ExecutionTokens;
 
 import Executing.Types.ErrorType;
-import Executing.Types.ExecutionError;
+import Executing.Types.ExecutionException;
 import Executing.Types.ObjectType;
 import Lexing.Token;
 
@@ -13,7 +13,7 @@ public class UnaryOperation extends ExecutionToken {
         this.right = right;
     }
 
-    public ObjectType execute() throws ExecutionError {
+    public ObjectType execute() throws ExecutionException {
         ObjectType arg = right.execute();
         switch (token.getValue()) {
             case "+":

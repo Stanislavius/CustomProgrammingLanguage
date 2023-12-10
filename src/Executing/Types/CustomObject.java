@@ -14,21 +14,21 @@ public class CustomObject extends ObjectType{
         return VoidType.voidObject;
     }
 
-    public ObjectType call(LinkedList<ObjectType> args) throws ExecutionError {
+    public ObjectType call(LinkedList<ObjectType> args) throws ExecutionException {
         if (dict.containsKey("__call__"))
             return dict.get(new StringType("__call__")).call(args);
         else
             return new ErrorType();
     }
 
-    public ObjectType call(ObjectType arg) throws ExecutionError {
+    public ObjectType call(ObjectType arg) throws ExecutionException {
         if (dict.containsKey("__call__"))
             return dict.get(new StringType("__call__")).call(arg);
         else
             return new ErrorType();
     }
 
-    public ObjectType call() throws ExecutionError {
+    public ObjectType call() throws ExecutionException {
         if (dict.containsKey("__call__"))
             return dict.get(new StringType("__call__")).call();
         else

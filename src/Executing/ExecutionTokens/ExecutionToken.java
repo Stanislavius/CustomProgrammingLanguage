@@ -1,6 +1,6 @@
 package Executing.ExecutionTokens;
 
-import Executing.Types.ExecutionError;
+import Executing.Types.ExecutionException;
 import Executing.Types.ObjectType;
 import Lexing.Token;
 
@@ -15,5 +15,5 @@ public abstract class ExecutionToken {
         return token;
     }
 
-    public abstract ObjectType execute() throws ExecutionError;
+    public abstract ObjectType execute() throws ExecutionException;
 }

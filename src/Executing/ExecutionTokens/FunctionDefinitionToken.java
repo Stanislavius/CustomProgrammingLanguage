@@ -25,7 +25,7 @@ public class FunctionDefinitionToken extends ExecutionToken{
         Executor.setVariable(funName, new FunctionType(funName, new CustomFunction(fun)));
     }
 
-    public ObjectType execute(LinkedList<ObjectType> funcArgs) throws ExecutionError {
+    public ObjectType execute(LinkedList<ObjectType> funcArgs) throws ExecutionException {
         Executor.addToStack(this);
         for (int i = 0; i < args.size(); ++i){
             Executor.setVariable(args.get(i), funcArgs.get(i));

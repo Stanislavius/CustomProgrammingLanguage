@@ -1,6 +1,6 @@
 package Executing.ExecutionTokens;
 
-import Executing.Types.ExecutionError;
+import Executing.Types.ExecutionException;
 import Executing.Types.ObjectType;
 import Executing.Types.VoidType;
 import Executing.Executor;
@@ -16,7 +16,7 @@ public class AssignmentToken extends ExecutionToken {
         this.value = value;
     }
 
-    public ObjectType execute() throws ExecutionError {
+    public ObjectType execute() throws ExecutionException {
         if(assignTo.getClass().equals(VariableExecutionToken.class)){
             String name = assignTo.getToken().getValue();
             ObjectType val = value.execute();

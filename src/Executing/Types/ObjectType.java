@@ -36,21 +36,21 @@ public class ObjectType{
         }
     }
 
-    public ObjectType call(LinkedList<ObjectType> args) throws ExecutionError {
+    public ObjectType call(LinkedList<ObjectType> args) throws ExecutionException {
         if (members.containsKey("__call__"))
             return members.get("__call__").call(args);
         else
             return new ErrorType();
     }
 
-    public ObjectType call(ObjectType arg) throws ExecutionError {
+    public ObjectType call(ObjectType arg) throws ExecutionException {
         if (members.containsKey("__call__"))
             return members.get("__call__").call(arg);
         else
             return new ErrorType();
     }
 
-    public ObjectType call(ObjectType... args) throws ExecutionError {
+    public ObjectType call(ObjectType... args) throws ExecutionException {
         if (members.containsKey("__call__"))
             return members.get("__call__").call(args);
         else
@@ -58,7 +58,7 @@ public class ObjectType{
     }
 
 
-    public ObjectType call() throws ExecutionError {
+    public ObjectType call() throws ExecutionException {
         if (members.containsKey("__call__"))
             return members.get("__call__").call();
         else

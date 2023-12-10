@@ -1,7 +1,7 @@
 package Executing.ExecutionTokens;
 
 import Executing.Types.ErrorType;
-import Executing.Types.ExecutionError;
+import Executing.Types.ExecutionException;
 import Executing.Types.ObjectType;
 import Executing.Types.VoidType;
 import Executing.Executor;
@@ -21,7 +21,7 @@ public class TryExecutionToken extends ExecutionToken{
         this.excepts = excepts;
     }
 
-    public ObjectType execute() throws ExecutionError {
+    public ObjectType execute() throws ExecutionException {
         result = new VoidType();
         Executor.enterTryBlock(this);
         for(int i = 0; i < toDo.size(); ++i){
@@ -31,7 +31,7 @@ public class TryExecutionToken extends ExecutionToken{
         return result;
     }
 
-    public ObjectType doExcept(ErrorType caught) throws ExecutionError {
+    public ObjectType doExcept(ErrorType caught) throws ExecutionException {
         result = new VoidType();
         for(int i = 0; i < excepts.size(); ++i)
             if (excepts.get(i).isCatched(caught)){

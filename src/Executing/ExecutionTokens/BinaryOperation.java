@@ -1,7 +1,7 @@
 package Executing.ExecutionTokens;
 
 import Executing.Types.ErrorType;
-import Executing.Types.ExecutionError;
+import Executing.Types.ExecutionException;
 import Executing.Types.ObjectType;
 import Lexing.Token;
 
@@ -18,7 +18,7 @@ public class BinaryOperation extends ExecutionToken {
         this.right = right;
     }
 
-    public ObjectType execute() throws ExecutionError {
+    public ObjectType execute() throws ExecutionException {
         ObjectType lRes;
         ObjectType rRes;
         LinkedList<ObjectType> args;
@@ -58,7 +58,7 @@ public class BinaryOperation extends ExecutionToken {
                             return new ErrorType();
                     }
                 }
-                catch (ExecutionError e){
+                catch (ExecutionException e){
                     ErrorType error = e.getError();
                     error.setLine(this.getToken().getLine());
                     error.setPosition(this.getToken().getPos());

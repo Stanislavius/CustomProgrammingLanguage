@@ -1,6 +1,6 @@
 package Executing.ExecutionTokens;
 
-import Executing.Types.ExecutionError;
+import Executing.Types.ExecutionException;
 import Executing.Types.ObjectType;
 import Executing.Executor;
 import Lexing.Token;
@@ -15,7 +15,7 @@ public class FunctionCallToken extends ExecutionToken {
         this.args = args;
     }
 
-    public ObjectType execute() throws ExecutionError {
+    public ObjectType execute() throws ExecutionException {
         return Executor.getVariable(token.getValue()).call(executeArgs(args));
     }
 
@@ -23,7 +23,7 @@ public class FunctionCallToken extends ExecutionToken {
         return args;
     }
 
-    public LinkedList<ObjectType> executeArgs() throws ExecutionError {
+    public LinkedList<ObjectType> executeArgs() throws ExecutionException {
         LinkedList<ObjectType> executedArgs = new LinkedList<ObjectType>();
         for(int i = 0; i < args.size(); ++i){
             executedArgs.add(args.get(i).execute());
@@ -31,7 +31,7 @@ public class FunctionCallToken extends ExecutionToken {
         return executedArgs;
     }
 
-    public static LinkedList<ObjectType> executeArgs (LinkedList<ExecutionToken> argsToExecute) throws ExecutionError {
+    public static LinkedList<ObjectType> executeArgs (LinkedList<ExecutionToken> argsToExecute) throws ExecutionException {
         LinkedList<ObjectType> executedArgs = new LinkedList<ObjectType>();
         for(int i = 0; i < argsToExecute.size(); ++i){
             executedArgs.add(argsToExecute.get(i).execute());

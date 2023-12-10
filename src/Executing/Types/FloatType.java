@@ -13,7 +13,7 @@ public class FloatType extends ObjectType {
         type.setMember("__name__", new StringType("float"));
 
         type.setMember("__call__", new FunctionType("__call__", new SourceFunction(){
-            public ObjectType execute(LinkedList<ObjectType> args) throws ExecutionError {
+            public ObjectType execute(LinkedList<ObjectType> args) throws ExecutionException {
                 ObjectType val1 = args.get(0);
                 switch (val1.getType().toString()) {
                     case "int":
@@ -84,14 +84,14 @@ public class FloatType extends ObjectType {
         ));
 
         type.setMember("__div__", new FunctionType("__div__", new SourceFunction(){
-            public ObjectType execute(LinkedList<ObjectType> args) throws ExecutionError {
+            public ObjectType execute(LinkedList<ObjectType> args) throws ExecutionException {
                 float v1 = ((FloatType)(args.get(0))).getFloat();
                 ObjectType val2 = args.get(1);
                 if (val2.getType().toString().equals("int")) {
                     int v2 = ((IntType) (val2)).getInt();
                     if (v2 == 0) {
                         ErrorType error = new ErrorType("DivisionByZero");
-                        throw new ExecutionError(error);
+                        throw new ExecutionException(error);
                     }
                     return new FloatType(v1/v2);
                 }
@@ -99,7 +99,7 @@ public class FloatType extends ObjectType {
                     float v2 = ((FloatType) (val2)).getFloat();
                     if (v2 == 0.0) {
                         ErrorType error = new ErrorType("DivisionByZero");
-                        throw new ExecutionError(error);
+                        throw new ExecutionException(error);
                     }
                     return new FloatType(v1/v2);
                 }

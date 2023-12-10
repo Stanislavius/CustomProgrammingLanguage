@@ -17,17 +17,17 @@ public class FunctionType extends ObjectType{
         this.call = call;
     }
 
-    public ObjectType call(LinkedList<ObjectType> args) throws ExecutionError {
+    public ObjectType call(LinkedList<ObjectType> args) throws ExecutionException {
         return call.execute(args);
     }
 
-    public ObjectType call(ObjectType arg) throws ExecutionError {
+    public ObjectType call(ObjectType arg) throws ExecutionException {
         LinkedList<ObjectType> args = new LinkedList<ObjectType>();
         args.add(arg);
         return call.execute(args);
     }
 
-    public ObjectType call() throws ExecutionError {
+    public ObjectType call() throws ExecutionException {
         LinkedList<ObjectType> args = new LinkedList<ObjectType>();
         return call.execute(args);
     }

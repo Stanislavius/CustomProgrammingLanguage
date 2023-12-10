@@ -24,7 +24,7 @@ public class Executor {
                     ExecutionToken current_line = getExecutionTree(line);
                     result = current_line.execute();
                     output.add(result.toString() + "");
-                } catch (ExecutionError e) {
+                } catch (ExecutionException e) {
                     output.add(Executor.sendError(e.getError()).toString());
                 }
                 if (result.getType().toString().equals("str"))
@@ -58,7 +58,7 @@ public class Executor {
                 throw new EndOfExecutionError(error);
             }
         }
-        catch (ExecutionError e) {
+        catch (ExecutionException e) {
             Executor.sendError(e.getError());
         }
         return result;
@@ -87,7 +87,7 @@ public class Executor {
         namespaces.remove(namespaces.size()-1);
     }
 
-    public static ExecutionToken getExecutionTree(ParsedAbstractStatement pt) throws ExecutionError {
+    public static ExecutionToken getExecutionTree(ParsedAbstractStatement pt) throws ExecutionException {
         if (pt.getParsedType() == ParsedTokenType.STATEMENT){
             return getExecutionTreeExpression(((ParsedStatement)(pt)).getExpression());
         }
@@ -156,7 +156,7 @@ public class Executor {
         return null;
     }
 
-    public static ExceptExecutionToken getExecutionTreeForExcept(ParsedExceptStatement exceptStatement) throws ExecutionError {
+    public static ExceptExecutionToken getExecutionTreeForExcept(ParsedExceptStatement exceptStatement) throws ExecutionException {
         LinkedList<ExecutionToken> parsedTypes = new LinkedList<ExecutionToken>();
         LinkedList<ParsedVariable> typesOfException = exceptStatement.getTypesOfException();
         for(int i = 0; i < typesOfException.size(); ++i)
@@ -164,7 +164,7 @@ public class Executor {
         return new ExceptExecutionToken(exceptStatement.getToken(), parsedTypes, getExecutionTreeForBlock(exceptStatement.getToDo()));
     }
 
-    public static LinkedList<ExecutionToken> getExecutionTreeForBlock(ParsedBlock pb) throws ExecutionError {
+    public static LinkedList<ExecutionToken> getExecutionTreeForBlock(ParsedBlock pb) throws ExecutionException {
         LinkedList<ExecutionToken> tree = new LinkedList<ExecutionToken>();
         for (int i = 0; i < pb.size(); ++i){
             tree.add(getExecutionTree(pb.get(i)));
@@ -172,7 +172,7 @@ public class Executor {
         return tree;
     }
 
-    public static ExecutionToken getExecutionTreeExpression(ParsedToken pt) throws ExecutionError {
+    public static ExecutionToken getExecutionTreeExpression(ParsedToken pt) throws ExecutionException {
         if (pt.getClass() == ParsedListToken.class){
             ParsedListToken PLT = (ParsedListToken)pt;
             LinkedList<ParsedToken> parsedValues = PLT.getValues();

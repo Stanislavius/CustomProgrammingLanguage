@@ -1,8 +1,8 @@
 package Executing.Types;
 
-public class ExecutionError extends Exception {
+public class ExecutionException extends Exception {
     ErrorType e;
-    public ExecutionError(ErrorType e){
+    public ExecutionException(ErrorType e){
         this.e = e;
     }
 

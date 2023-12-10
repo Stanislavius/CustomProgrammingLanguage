@@ -13,7 +13,7 @@ public class MagicalFunction implements WrapperInterface {
     public MagicalFunction(String name){
         this.name = name;
     }
-    public ObjectType execute(LinkedList<ObjectType> args) throws ExecutionError {
+    public ObjectType execute(LinkedList<ObjectType> args) throws ExecutionException {
         ObjectType arg = args.get(0);
         args.removeFirst();
         return arg.getMember(name).call(args);

@@ -20,7 +20,7 @@ public class ExceptExecutionToken extends ExecutionToken{
     }
 
     @Override
-    public ObjectType execute() throws ExecutionError {
+    public ObjectType execute() throws ExecutionException {
         ObjectType result = new VoidType();
         for(int i = 0; i < toDo.size(); ++i){
             result = toDo.get(i).execute();
@@ -32,7 +32,7 @@ public class ExceptExecutionToken extends ExecutionToken{
         this.errorTypes.add(error);
     }
 
-    public boolean isCatched(ErrorType err) throws ExecutionError {
+    public boolean isCatched(ErrorType err) throws ExecutionException {
         if (errorTypes.isEmpty())
             return true;
         else {
