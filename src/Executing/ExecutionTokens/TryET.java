@@ -9,13 +9,13 @@ import Lexing.Token;
 
 import java.util.LinkedList;
 
-public class TryExecutionToken extends ExecutionToken{
+public class TryET extends ExecutionToken{
     LinkedList<ExecutionToken> toDo;
     LinkedList<ExceptET> excepts;
     boolean stop = false;
     ObjectType result;
 
-    public TryExecutionToken(Token token, LinkedList<ExecutionToken> toDo, LinkedList<ExceptET> excepts) {
+    public TryET(Token token, LinkedList<ExecutionToken> toDo, LinkedList<ExceptET> excepts) {
         super(token);
         this.toDo = toDo;
         this.excepts = excepts;

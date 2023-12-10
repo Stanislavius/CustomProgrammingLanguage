@@ -12,7 +12,7 @@ public class Executor {
     static LinkedList<FunctionDefinitionET> stack = new LinkedList<FunctionDefinitionET>();
     static LinkedList<Variables> namespaces = new LinkedList<Variables>();
 
-    static LinkedList<TryExecutionToken> tryBlocks = new LinkedList<TryExecutionToken>();
+    static LinkedList<TryET> tryBlocks = new LinkedList<TryET>();
     public static String execute(LinkedList<AbstractStatementPT> program) {
         createTypes();
         LinkedList<String> output = new LinkedList<String>();
@@ -40,7 +40,7 @@ public class Executor {
         }
     }
 
-    public static void enterTryBlock(TryExecutionToken tryBlock){
+    public static void enterTryBlock(TryET tryBlock){
         tryBlocks.add(tryBlock);
     }
 
@@ -150,7 +150,7 @@ public class Executor {
                 excepts.add(getExecutionTreeForExcept(parsedExcepts.get(i)));
             }
 
-            return new TryExecutionToken(pt.getToken(), getExecutionTreeForBlock(pts.getToDo()), excepts);
+            return new TryET(pt.getToken(), getExecutionTreeForBlock(pts.getToDo()), excepts);
         }
 
         return null;
