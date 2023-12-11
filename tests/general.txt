@@ -147,3 +147,53 @@ a = 4 (*) 5
 #title = SyntaxError.5
 #type = ParsingError
 #_______________________________________________________________
+#TESTCASE
+#<
+def func(a, b, c)
+print(c)
+#>
+#output = NoBodyException: 2 0
+#commentary =
+#title = NoBody.1
+#type = ParsingError
+#_______________________________________________________________
+#TESTCASE
+#<
+if 4 == 4
+print(c)
+#>
+#output = NoBodyException: 2 0
+#commentary =
+#title = NoBody.2
+#type = ParsingError
+#_______________________________________________________________
+#TESTCASE
+#<
+while 4 == 4
+print(c)
+#>
+#output = NoBodyException: 2 0
+#commentary =
+#title = NoBody.3
+#type = ParsingError
+#_______________________________________________________________
+#TESTCASE
+#<
+class cdf
+print(c)
+#>
+#output = NoBodyException: 2 0
+#commentary =
+#title = NoBody.4
+#type = ParsingError
+#_______________________________________________________________
+#TESTCASE
+#<
+try
+print(c)
+#>
+#output = NoBodyException: 2 0
+#commentary =
+#title = NoBody.5
+#type = ParsingError
+#_______________________________________________________________
