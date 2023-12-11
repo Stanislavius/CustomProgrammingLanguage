@@ -41,9 +41,10 @@ a2
 2a = 2
 2a
 #>
-#output = Error //TODO
-#commentary = should return error
+#output = UnrecognizedTokenException: 1 0
+#commentary =
 #title = names.2
+#type = LexingError
 #_______________________________________________________________
 #TESTCASE
 #<
@@ -81,5 +82,68 @@ d =  call(
 #output = ParenthesesException: 1 9
 #commentary = should give ParenthesesException
 #title = ParenthesesException.1
+#type = ParsingError
+#_______________________________________________________________
+#TESTCASE
+#<
+a = 4 ^ 5
+#>
+#output = UnrecognizedTokenException: 1 6
+#commentary = ^ cannot be recognized
+#title = unrecognized.1
+#type = LexingError
+#_______________________________________________________________
+#TESTCASE
+#<
+a = 4 ** 5
+#>
+#output = UnrecognizedTokenException: 1 6
+#commentary = ** cannot be recognized, but * can, so technically it can be passed by Lexer. Need to make sure it will be recognized by Lexer.
+#title = unrecognized.2
+#type = LexingError
+#_______________________________________________________________
+#TESTCASE
+#<
+a = 4 * * 5
+#>
+#output = NoOperandException: 1 6
+#commentary =
+#title = SyntaxError.1
+#type = ParsingError
+#_______________________________________________________________
+#TESTCASE
+#<
+a = 4 + + 5
+#>
+#output = NoOperandException: 1 6
+#commentary =
+#title = SyntaxError.2
+#type = ParsingError
+#_______________________________________________________________
+#TESTCASE
+#<
+a = 4 - - 5
+#>
+#output = NoOperandException: 1 6
+#commentary =
+#title = SyntaxError.3
+#type = ParsingError
+#_______________________________________________________________
+#TESTCASE
+#<
+a = 4 4 +
+#>
+#output = NoOperationException: 1 5
+#commentary =
+#title = SyntaxError.4
+#type = ParsingError
+#_______________________________________________________________
+#TESTCASE
+#<
+a = 4 (*) 5
+#>
+#output = NoOperandException: 1 7
+#commentary =
+#title = SyntaxError.5
 #type = ParsingError
 #_______________________________________________________________

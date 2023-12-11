@@ -135,5 +135,14 @@ s[46]
 #>
 #output = NoSuchKey: 2 2
 #commentary = return error if no such key
-#title = dict.NoSuchKey
+#title = list.NoSuchKey.1
+#_______________________________________________________________
+#TESTCASE
+#<
+s = [1, 2
+#>
+#output = BracketIsNotClosedException: 1 5
+#commentary = return error if no such key
+#title = notClosed.1
+#type = ParsingError
 #_______________________________________________________________
