@@ -127,13 +127,14 @@ public class Lexer {
 
     public LinkedList<Token> readLine(String st, int lineNum) throws LexingException {
         LinkedList<Token> tokens = new LinkedList<Token>();
+        String originalString = st;
         int indentation = 0;
         int i = 0;
         int count = 0;
         while(i < st.length() && st.substring(i, i+1).equals(" ")){
             count++;
             if (count == 4) {
-                tokens.add(new Token(TokenType.INDENTATION, "\t", lineNum, i));
+                tokens.add(new Token(TokenType.INDENTATION, "\t", lineNum, i, originalString));
                 count = 0;
                 indentation++;
             }
@@ -144,7 +145,7 @@ public class Lexer {
         for(i = 0; i < st.length(); ++i){
             if (st.charAt(i) == '\"'){
                 if (strIsExpected){
-                    tokens.add(new Token(TokenType.STRING, st.substring(startStr+1, i), lineNum, startStr));
+                    tokens.add(new Token(TokenType.STRING, st.substring(startStr+1, i), lineNum, startStr, originalString));
                     st = st.substring(0, startStr) + " ".repeat(i-startStr+1) + st.substring(i+1);
                     strIsExpected = false;
                 }
@@ -176,7 +177,7 @@ public class Lexer {
             if (((word.length() + 1) <= st.length())) {
                 if (st.substring(0, word.length() + 1).equals(word + " ")) {
                     int start = indentation * 4;
-                    tokens.add(new Token(TokenType.BLOCKWORD, word, lineNum, start));
+                    tokens.add(new Token(TokenType.BLOCKWORD, word, lineNum, start, originalString));
                     st = " " + st.substring(word.length(), st.length());
                 }
             }
@@ -187,7 +188,7 @@ public class Lexer {
             if (st.length() == word.length()){
                 if (st.equals(word)){
                     int start = indentation * 4;
-                    tokens.add(new Token(TokenType.BLOCKWORD, word, lineNum, start));
+                    tokens.add(new Token(TokenType.BLOCKWORD, word, lineNum, start, originalString));
                     st = " " + st.substring(word.length(), st.length());
                 }
             }
@@ -205,28 +206,28 @@ public class Lexer {
 
         while (listMatcher.find()){
             int start = indentation * 4 + listMatcher.start();
-            tokens.add(new Token(TokenType.LIST, listMatcher.group(), lineNum, start));
+            tokens.add(new Token(TokenType.LIST, listMatcher.group(), lineNum, start, originalString));
         }
 
         while (dictMatcher.find()){
             int start = indentation * 4 + dictMatcher.start();
-            tokens.add(new Token(TokenType.DICT, dictMatcher.group(), lineNum, start));
+            tokens.add(new Token(TokenType.DICT, dictMatcher.group(), lineNum, start, originalString));
         }
 
         while (colonMatcher.find()){
             int start = indentation * 4 + colonMatcher.start();
-            tokens.add(new Token(TokenType.COLON, colonMatcher.group(), lineNum, start));
+            tokens.add(new Token(TokenType.COLON, colonMatcher.group(), lineNum, start, originalString));
         }
 
         while (intMatcher.find()){
             int start = indentation * 4 + intMatcher.start();
-            tokens.add(new Token(TokenType.INT, intMatcher.group(), lineNum, start));
+            tokens.add(new Token(TokenType.INT, intMatcher.group(), lineNum, start, originalString));
         }
 
         while (floatMatcher.find()){
             int start = indentation * 4 + floatMatcher.start();
             String value = floatMatcher.group();
-            tokens.add(new Token(TokenType.FLOAT, value, lineNum, start));
+            tokens.add(new Token(TokenType.FLOAT, value, lineNum, start, originalString));
             st = st.substring(0, start) + " ".repeat(value.length()) + st.substring(start+value.length());
         }
 
@@ -234,31 +235,31 @@ public class Lexer {
         while (operationMatcher.find()){
             int start = indentation * 4 + operationMatcher.start();
             tokens.add(new Token(TokenType.OPERATION,
-                    operationMatcher.group(), lineNum, start));
+                    operationMatcher.group(), lineNum, start, originalString));
         }
 
         while (paranthesisMatcher.find()){
             int start = indentation * 4 + paranthesisMatcher.start();
             tokens.add(new Token(TokenType.PARENTHESIS,
-                    paranthesisMatcher.group(), lineNum, start));
+                    paranthesisMatcher.group(), lineNum, start, originalString));
         }
 
         while (assignmentMatcher.find()){
             int start = indentation * 4 + assignmentMatcher.start();
-            tokens.add(new Token(TokenType.ASSIGNMENT, " = ", lineNum, start));
+            tokens.add(new Token(TokenType.ASSIGNMENT, " = ", lineNum, start, originalString));
         }
 
         while (variableMatcher.find()){
             int start = indentation * 4 + variableMatcher.start();
-            tokens.add(new Token(TokenType.VARIABLE, variableMatcher.group(), lineNum, start));
+            tokens.add(new Token(TokenType.VARIABLE, variableMatcher.group(), lineNum, start, originalString));
         }
 
         while (separatorMatcher.find()){
             int start = indentation * 4 + separatorMatcher.start();
-            tokens.add(new Token(TokenType.SEPARATOR, separatorMatcher.group(), lineNum, start));
+            tokens.add(new Token(TokenType.SEPARATOR, separatorMatcher.group(), lineNum, start, originalString));
         }
 
-        tokens.add(new Token(TokenType.NEWLINE, "", lineNum, indentation * 4 + st.length() - 1));
+        tokens.add(new Token(TokenType.NEWLINE, "", lineNum, indentation * 4 + st.length() - 1, originalString));
         return tokens;
     }
 }
