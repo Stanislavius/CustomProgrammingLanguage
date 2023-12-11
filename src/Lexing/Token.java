@@ -4,13 +4,15 @@ public class Token {
     final private TokenType type;
     final private String value;
     final private int lineNum;
+    final private String line;
     final private int startPos;
 
-    public Token(TokenType type, String value, int line, int startPos) {
+    public Token(TokenType type, String value, int lineNum, int startPos, String line) {
         this.type = type;
         this.value = value;
-        this.lineNum = line;
+        this.lineNum = lineNum;
         this.startPos = startPos;
+        this.line = line;
     }
 
     public String toString() {
@@ -40,4 +42,5 @@ public class Token {
     public final int getPos() {
         return this.startPos;
     }
+    public final String getLine(){return this.line;}
 }
