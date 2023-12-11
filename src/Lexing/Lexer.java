@@ -3,6 +3,7 @@ package Lexing;
 import Lexing.Exceptions.IndentationException;
 import Lexing.Exceptions.LexingException;
 import Lexing.Exceptions.MissingEndOfStringException;
+import Lexing.Exceptions.UnrecognizedTokenException;
 
 import java.io.BufferedReader;
 import java.io.FileReader;
@@ -157,7 +158,7 @@ public class Lexer {
             }
             if (st.charAt(i) == '#'){
                 if (!strIsExpected){
-                    st = st.substring(0, st.indexOf("#"));
+                    st = st.substring(0, st.indexOf("#")) + " ".repeat(st.length()-st.indexOf("#"));
                     break;
                 }
             }
@@ -207,21 +208,33 @@ public class Lexer {
         while (listMatcher.find()){
             int start = indentation * 4 + listMatcher.start();
             tokens.add(new Token(TokenType.LIST, listMatcher.group(), lineNum, start, originalString));
+            st = st.substring(0, listMatcher.start()) +
+                    " ".repeat(listMatcher.group().length()) +
+                    st.substring(listMatcher.start()+listMatcher.group().length());
         }
 
         while (dictMatcher.find()){
             int start = indentation * 4 + dictMatcher.start();
             tokens.add(new Token(TokenType.DICT, dictMatcher.group(), lineNum, start, originalString));
+            st = st.substring(0, dictMatcher.start()) +
+                    " ".repeat(dictMatcher.group().length()) +
+                    st.substring(dictMatcher.start()+dictMatcher.group().length());
         }
 
         while (colonMatcher.find()){
             int start = indentation * 4 + colonMatcher.start();
             tokens.add(new Token(TokenType.COLON, colonMatcher.group(), lineNum, start, originalString));
+            st = st.substring(0, colonMatcher.start()) +
+                    " ".repeat(colonMatcher.group().length()) +
+                    st.substring(colonMatcher.start()+colonMatcher.group().length());
         }
 
         while (intMatcher.find()){
             int start = indentation * 4 + intMatcher.start();
             tokens.add(new Token(TokenType.INT, intMatcher.group(), lineNum, start, originalString));
+            st = st.substring(0, intMatcher.start()) +
+                    " ".repeat(intMatcher.group().length()) +
+                    st.substring(intMatcher.start()+intMatcher.group().length());
         }
 
         while (floatMatcher.find()){
@@ -229,6 +242,7 @@ public class Lexer {
             String value = floatMatcher.group();
             tokens.add(new Token(TokenType.FLOAT, value, lineNum, start, originalString));
             st = st.substring(0, start) + " ".repeat(value.length()) + st.substring(start+value.length());
+
         }
 
         Matcher operationMatcher = operationPattern.matcher(st);
@@ -236,30 +250,49 @@ public class Lexer {
             int start = indentation * 4 + operationMatcher.start();
             tokens.add(new Token(TokenType.OPERATION,
                     operationMatcher.group(), lineNum, start, originalString));
+            st = st.substring(0, operationMatcher.start()) +
+                    " ".repeat(operationMatcher.group().length()) +
+                    st.substring(operationMatcher.start()+operationMatcher.group().length());
         }
 
         while (paranthesisMatcher.find()){
             int start = indentation * 4 + paranthesisMatcher.start();
             tokens.add(new Token(TokenType.PARENTHESIS,
                     paranthesisMatcher.group(), lineNum, start, originalString));
+            st = st.substring(0, paranthesisMatcher.start()) +
+                    " ".repeat(paranthesisMatcher.group().length()) +
+                    st.substring(paranthesisMatcher.start()+paranthesisMatcher.group().length());
         }
 
         while (assignmentMatcher.find()){
             int start = indentation * 4 + assignmentMatcher.start();
             tokens.add(new Token(TokenType.ASSIGNMENT, " = ", lineNum, start, originalString));
+            st = st.substring(0, assignmentMatcher.start()) +
+                    " ".repeat(assignmentMatcher.group().length()) +
+                    st.substring(assignmentMatcher.start()+assignmentMatcher.group().length());
         }
 
         while (variableMatcher.find()){
             int start = indentation * 4 + variableMatcher.start();
             tokens.add(new Token(TokenType.VARIABLE, variableMatcher.group(), lineNum, start, originalString));
+            st = st.substring(0, variableMatcher.start()) +
+                    " ".repeat(variableMatcher.group().length()) +
+                    st.substring(variableMatcher.start()+variableMatcher.group().length());
         }
 
         while (separatorMatcher.find()){
             int start = indentation * 4 + separatorMatcher.start();
             tokens.add(new Token(TokenType.SEPARATOR, separatorMatcher.group(), lineNum, start, originalString));
+            st = st.substring(0, separatorMatcher.start()) +
+                    " ".repeat(separatorMatcher.group().length()) +
+                    st.substring(separatorMatcher.start()+separatorMatcher.group().length());
         }
 
         tokens.add(new Token(TokenType.NEWLINE, "", lineNum, indentation * 4 + st.length() - 1, originalString));
+        for(i = 0; i < st.length(); ++i){
+            if (st.charAt(i) != ' ')
+                throw new UnrecognizedTokenException(originalString, lineNum, i);
+        }
         return tokens;
     }
 }
