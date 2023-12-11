@@ -10,7 +10,7 @@ public class SeparatorExpectedExcveption extends ParsingException{
     public String toString() {
         StringBuilder sb = new StringBuilder();
         sb.append("Two values didn't separated by separator at ");
-        sb.append(errorToken.getLine());
+        sb.append(errorToken.getLineNum());
         sb.append(" line, position is ");
         sb.append(errorToken.getPos());
         return sb.toString();

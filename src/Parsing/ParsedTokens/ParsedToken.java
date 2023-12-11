@@ -12,7 +12,7 @@ public class ParsedToken {
         return this.token;
     }
     public int getLine() {
-        return this.token.getLine();
+        return this.token.getLineNum();
     }
     public int getPos() {
         return this.token.getPos();

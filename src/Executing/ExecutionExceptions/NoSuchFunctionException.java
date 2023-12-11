@@ -1,6 +1,5 @@
 package Executing.ExecutionExceptions;
 
-import Executing.ExecutionExceptions.ExecutionException;
 import Lexing.Token;
 
 public class NoSuchFunctionException extends ExecutionException {
@@ -13,7 +12,7 @@ public class NoSuchFunctionException extends ExecutionException {
         sb.append("No such function ");
         sb.append(errorToken.getValue());
         sb.append(" ");
-        sb.append(errorToken.getLine());
+        sb.append(errorToken.getLineNum());
         sb.append(", position is ");
         sb.append(errorToken.getPos());
         return sb.toString();

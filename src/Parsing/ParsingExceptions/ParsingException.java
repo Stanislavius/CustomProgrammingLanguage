@@ -12,14 +12,14 @@ public class ParsingException extends Exception {
     public String toString() {
         StringBuilder sb = new StringBuilder();
         sb.append("Error in line ");
-        sb.append(errorToken.getLine());
+        sb.append(errorToken.getLineNum());
         sb.append(", position is ");
         sb.append(errorToken.getPos());
         return sb.toString();
     }
 
     public String getTestingRepresentation(){
-        return this.getClass().getSimpleName() + ": " + errorToken.getLine() + " " + errorToken.getPos();
+        return this.getClass().getSimpleName() + ": " + errorToken.getLineNum() + " " + errorToken.getPos();
     }
 
 }

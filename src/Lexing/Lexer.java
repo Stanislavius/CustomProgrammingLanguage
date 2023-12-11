@@ -5,7 +5,6 @@ import Lexing.Exceptions.LexingException;
 import Lexing.Exceptions.MissingEndOfStringException;
 
 import java.io.BufferedReader;
-import java.io.FileNotFoundException;
 import java.io.FileReader;
 import java.io.IOException;
 import java.util.Arrays;
@@ -80,11 +79,11 @@ public class Lexer {
             public int compare(Token t1, Token t2) {
                 // compare two instance of `Score` and return `int` as result.
                 int result = 0;
-                if (t1.getLine() > t2.getLine()){
+                if (t1.getLineNum() > t2.getLineNum()){
                     result = 1;
                 }
                 else{
-                    if (t1.getLine() < t2.getLine())
+                    if (t1.getLineNum() < t2.getLineNum())
                         result = - 1;
                     else{
                         if (t1.getPos() > t2.getPos()){

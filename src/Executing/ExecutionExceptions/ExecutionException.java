@@ -12,7 +12,7 @@ public class ExecutionException extends Exception {
     public String toString() {
         StringBuilder sb = new StringBuilder();
         sb.append("Runtime error in line ");
-        sb.append(errorToken.getLine());
+        sb.append(errorToken.getLineNum());
         sb.append(", position is ");
         sb.append(errorToken.getPos());
         return sb.toString();

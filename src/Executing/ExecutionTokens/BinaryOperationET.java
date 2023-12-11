@@ -60,7 +60,7 @@ public class BinaryOperationET extends ExecutionToken {
                 }
                 catch (ExecutionException e){
                     ErrorType error = e.getError();
-                    error.setLine(this.getToken().getLine());
+                    error.setLine(this.getToken().getLineNum());
                     error.setPosition(this.getToken().getPos());
                     throw e;
                 }

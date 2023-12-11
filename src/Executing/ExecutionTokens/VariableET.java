@@ -15,7 +15,7 @@ public class VariableET extends ExecutionToken {
         ObjectType variable = Executor.getVariable(token.getValue());
         if (variable == null) {
             ErrorType error = new ErrorType("NoSuchVariable");
-            error.setLine(token.getLine());
+            error.setLine(token.getLineNum());
             error.setPosition(token.getPos());
             throw new ExecutionException(error);
         }

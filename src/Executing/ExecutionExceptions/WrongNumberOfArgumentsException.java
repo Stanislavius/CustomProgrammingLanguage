@@ -21,7 +21,7 @@ public class WrongNumberOfArgumentsException extends ExecutionException {
         sb.append(" arguments, ");
         sb.append(provided);
         sb.append(" is given in line");
-        sb.append(errorToken.getLine());
+        sb.append(errorToken.getLineNum());
         sb.append(", position is ");
         sb.append(errorToken.getPos());
         return sb.toString();
