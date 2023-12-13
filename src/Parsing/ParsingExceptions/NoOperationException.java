@@ -3,17 +3,13 @@ package Parsing.ParsingExceptions;
 import Lexing.Token;
 
 public class NoOperationException extends ParsingException{
+    private static String message = "Operation is expected in line ";
     public NoOperationException(Token t) {
-        super(t);
+        super(t, message);
     }
 
-    public String toString() {
-        StringBuilder sb = new StringBuilder();
-        sb.append("Operation is expected in line ");
-        sb.append(errorToken.getLineNum());
-        sb.append(", position is ");
-        sb.append(errorToken.getPos());
-        return sb.toString();
+    public NoOperationException(String line, int lineNum, int posNum) {
+        super(line, lineNum, posNum, message);
     }
 
 }

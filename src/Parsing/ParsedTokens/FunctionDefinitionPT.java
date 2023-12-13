@@ -49,4 +49,11 @@ public class FunctionDefinitionPT extends StatementWithBlockPT {
     public String getFunctionName(){
         return functionName.getValue();
     }
+
+    public Token getLastTokenInLine(){
+        if (args.size() > 0)
+            return args.getLast().getToken();
+        else
+            return functionName;
+    }
 }

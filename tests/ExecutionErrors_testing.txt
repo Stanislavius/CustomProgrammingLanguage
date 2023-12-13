@@ -2,7 +2,7 @@
 #<
 d = 4 / 0
 #>
-#output = DivisionByZero: 1 6
+#output = DivisionByZero: 1 7
 #commentary = should give DivisionByZero error
 #title = DivisionByZero.1
 #_______________________________________________________________
@@ -10,7 +10,7 @@ d = 4 / 0
 #<
 d = 4 / 0.0
 #>
-#output = DivisionByZero: 1 6
+#output = DivisionByZero: 1 7
 #commentary = should give DivisionByZero error
 #title = DivisionByZero.2
 #_______________________________________________________________
@@ -18,7 +18,7 @@ d = 4 / 0.0
 #<
 d = 4.0 / 0
 #>
-#output = DivisionByZero: 1 8
+#output = DivisionByZero: 1 9
 #commentary = should give DivisionByZero error
 #title = DivisionByZero.3
 #_______________________________________________________________
@@ -26,7 +26,7 @@ d = 4.0 / 0
 #<
 d = 4.0 / 0.0
 #>
-#output = DivisionByZero: 1 8
+#output = DivisionByZero: 1 9
 #commentary = should give DivisionByZero error
 #title = DivisionByZero.4
 #_______________________________________________________________

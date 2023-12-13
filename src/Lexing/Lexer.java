@@ -135,7 +135,7 @@ public class Lexer {
         while(i < st.length() && st.substring(i, i+1).equals(" ")){
             count++;
             if (count == 4) {
-                tokens.add(new Token(TokenType.INDENTATION, "\t", lineNum, i, originalString));
+                tokens.add(new Token(TokenType.INDENTATION, "\t", lineNum, i+1, originalString));
                 count = 0;
                 indentation++;
             }
@@ -146,7 +146,7 @@ public class Lexer {
         for(i = 0; i < st.length(); ++i){
             if (st.charAt(i) == '\"'){
                 if (strIsExpected){
-                    tokens.add(new Token(TokenType.STRING, st.substring(startStr+1, i), lineNum, startStr, originalString));
+                    tokens.add(new Token(TokenType.STRING, st.substring(startStr+1, i), lineNum, startStr+1, originalString));
                     st = st.substring(0, startStr) + " ".repeat(i-startStr+1) + st.substring(i+1);
                     strIsExpected = false;
                 }
@@ -178,7 +178,7 @@ public class Lexer {
             if (((word.length() + 1) <= st.length())) {
                 if (st.substring(0, word.length() + 1).equals(word + " ")) {
                     int start = indentation * 4;
-                    tokens.add(new Token(TokenType.BLOCKWORD, word, lineNum, start, originalString));
+                    tokens.add(new Token(TokenType.BLOCKWORD, word, lineNum, start+1, originalString));
                     st = " " + st.substring(word.length(), st.length());
                 }
             }
@@ -189,7 +189,7 @@ public class Lexer {
             if (st.length() == word.length()){
                 if (st.equals(word)){
                     int start = indentation * 4;
-                    tokens.add(new Token(TokenType.BLOCKWORD, word, lineNum, start, originalString));
+                    tokens.add(new Token(TokenType.BLOCKWORD, word, lineNum, start+1, originalString));
                     st = " " + st.substring(word.length(), st.length());
                 }
             }
@@ -207,7 +207,7 @@ public class Lexer {
 
         while (listMatcher.find()){
             int start = indentation * 4 + listMatcher.start();
-            tokens.add(new Token(TokenType.LIST, listMatcher.group(), lineNum, start, originalString));
+            tokens.add(new Token(TokenType.LIST, listMatcher.group(), lineNum, start+1, originalString));
             st = st.substring(0, listMatcher.start()) +
                     " ".repeat(listMatcher.group().length()) +
                     st.substring(listMatcher.start()+listMatcher.group().length());
@@ -215,7 +215,7 @@ public class Lexer {
 
         while (dictMatcher.find()){
             int start = indentation * 4 + dictMatcher.start();
-            tokens.add(new Token(TokenType.DICT, dictMatcher.group(), lineNum, start, originalString));
+            tokens.add(new Token(TokenType.DICT, dictMatcher.group(), lineNum, start+1, originalString));
             st = st.substring(0, dictMatcher.start()) +
                     " ".repeat(dictMatcher.group().length()) +
                     st.substring(dictMatcher.start()+dictMatcher.group().length());
@@ -223,7 +223,7 @@ public class Lexer {
 
         while (colonMatcher.find()){
             int start = indentation * 4 + colonMatcher.start();
-            tokens.add(new Token(TokenType.COLON, colonMatcher.group(), lineNum, start, originalString));
+            tokens.add(new Token(TokenType.COLON, colonMatcher.group(), lineNum, start+1, originalString));
             st = st.substring(0, colonMatcher.start()) +
                     " ".repeat(colonMatcher.group().length()) +
                     st.substring(colonMatcher.start()+colonMatcher.group().length());
@@ -231,7 +231,7 @@ public class Lexer {
 
         while (intMatcher.find()){
             int start = indentation * 4 + intMatcher.start();
-            tokens.add(new Token(TokenType.INT, intMatcher.group(), lineNum, start, originalString));
+            tokens.add(new Token(TokenType.INT, intMatcher.group(), lineNum, start+1, originalString));
             st = st.substring(0, intMatcher.start()) +
                     " ".repeat(intMatcher.group().length()) +
                     st.substring(intMatcher.start()+intMatcher.group().length());
@@ -240,7 +240,7 @@ public class Lexer {
         while (floatMatcher.find()){
             int start = indentation * 4 + floatMatcher.start();
             String value = floatMatcher.group();
-            tokens.add(new Token(TokenType.FLOAT, value, lineNum, start, originalString));
+            tokens.add(new Token(TokenType.FLOAT, value, lineNum, start+1, originalString));
             st = st.substring(0, start) + " ".repeat(value.length()) + st.substring(start+value.length());
 
         }
@@ -249,7 +249,7 @@ public class Lexer {
         while (operationMatcher.find()){
             int start = indentation * 4 + operationMatcher.start();
             tokens.add(new Token(TokenType.OPERATION,
-                    operationMatcher.group(), lineNum, start, originalString));
+                    operationMatcher.group(), lineNum, start+1, originalString));
             st = st.substring(0, operationMatcher.start()) +
                     " ".repeat(operationMatcher.group().length()) +
                     st.substring(operationMatcher.start()+operationMatcher.group().length());
@@ -258,7 +258,7 @@ public class Lexer {
         while (paranthesisMatcher.find()){
             int start = indentation * 4 + paranthesisMatcher.start();
             tokens.add(new Token(TokenType.PARENTHESIS,
-                    paranthesisMatcher.group(), lineNum, start, originalString));
+                    paranthesisMatcher.group(), lineNum, start+1, originalString));
             st = st.substring(0, paranthesisMatcher.start()) +
                     " ".repeat(paranthesisMatcher.group().length()) +
                     st.substring(paranthesisMatcher.start()+paranthesisMatcher.group().length());
@@ -266,7 +266,7 @@ public class Lexer {
 
         while (assignmentMatcher.find()){
             int start = indentation * 4 + assignmentMatcher.start();
-            tokens.add(new Token(TokenType.ASSIGNMENT, " = ", lineNum, start, originalString));
+            tokens.add(new Token(TokenType.ASSIGNMENT, " = ", lineNum, start+1, originalString));
             st = st.substring(0, assignmentMatcher.start()) +
                     " ".repeat(assignmentMatcher.group().length()) +
                     st.substring(assignmentMatcher.start()+assignmentMatcher.group().length());
@@ -274,7 +274,7 @@ public class Lexer {
 
         while (variableMatcher.find()){
             int start = indentation * 4 + variableMatcher.start();
-            tokens.add(new Token(TokenType.VARIABLE, variableMatcher.group(), lineNum, start, originalString));
+            tokens.add(new Token(TokenType.VARIABLE, variableMatcher.group(), lineNum, start+1, originalString));
             st = st.substring(0, variableMatcher.start()) +
                     " ".repeat(variableMatcher.group().length()) +
                     st.substring(variableMatcher.start()+variableMatcher.group().length());
@@ -282,13 +282,13 @@ public class Lexer {
 
         while (separatorMatcher.find()){
             int start = indentation * 4 + separatorMatcher.start();
-            tokens.add(new Token(TokenType.SEPARATOR, separatorMatcher.group(), lineNum, start, originalString));
+            tokens.add(new Token(TokenType.SEPARATOR, separatorMatcher.group(), lineNum, start+1, originalString));
             st = st.substring(0, separatorMatcher.start()) +
                     " ".repeat(separatorMatcher.group().length()) +
                     st.substring(separatorMatcher.start()+separatorMatcher.group().length());
         }
 
-        tokens.add(new Token(TokenType.NEWLINE, "", lineNum, indentation * 4 + st.length() - 1, originalString));
+        tokens.add(new Token(TokenType.NEWLINE, "", lineNum, indentation * 4 + st.length() - 1+1, originalString));
         for(i = 0; i < st.length(); ++i){
             if (st.charAt(i) != ' ')
                 throw new UnrecognizedTokenException(originalString, lineNum, i);

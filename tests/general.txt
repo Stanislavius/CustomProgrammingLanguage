@@ -41,7 +41,7 @@ a2
 2a = 2
 2a
 #>
-#output = UnrecognizedTokenException: 1 0
+#output = UnrecognizedTokenException: 1 1
 #commentary =
 #title = names.2
 #type = LexingError
@@ -70,7 +70,7 @@ fun2(4)
 #<
 f = " sa
 #>
-#output = MissingEndOfStringException: 1 4
+#output = MissingEndOfStringException: 1 5
 #commentary = should give MissingEndOfStringException
 #title = quotes.1
 #type = LexingError
@@ -79,7 +79,7 @@ f = " sa
 #<
 d =  call(
 #>
-#output = ParenthesesException: 1 9
+#output = ParenthesesException: 1 10
 #commentary = should give ParenthesesException
 #title = ParenthesesException.1
 #type = ParsingError
@@ -97,7 +97,7 @@ a = 4 ^ 5
 #<
 a = 4 ** 5
 #>
-#output = UnrecognizedTokenException: 1 6
+#output = UnrecognizedTokenException: 1 7
 #commentary = ** cannot be recognized, but * can, so technically it can be passed by Lexer. Need to make sure it will be recognized by Lexer.
 #title = unrecognized.2
 #type = LexingError
@@ -106,7 +106,7 @@ a = 4 ** 5
 #<
 a = 4 * * 5
 #>
-#output = NoOperandException: 1 6
+#output = NoOperandException: 1 7
 #commentary =
 #title = SyntaxError.1
 #type = ParsingError
@@ -115,7 +115,7 @@ a = 4 * * 5
 #<
 a = 4 + + 5
 #>
-#output = NoOperandException: 1 6
+#output = NoOperandException: 1 7
 #commentary =
 #title = SyntaxError.2
 #type = ParsingError
@@ -124,7 +124,7 @@ a = 4 + + 5
 #<
 a = 4 - - 5
 #>
-#output = NoOperandException: 1 6
+#output = NoOperandException: 1 7
 #commentary =
 #title = SyntaxError.3
 #type = ParsingError
@@ -133,7 +133,7 @@ a = 4 - - 5
 #<
 a = 4 4 +
 #>
-#output = NoOperationException: 1 5
+#output = NoOperationException: 1 6
 #commentary =
 #title = SyntaxError.4
 #type = ParsingError
@@ -142,7 +142,7 @@ a = 4 4 +
 #<
 a = 4 (*) 5
 #>
-#output = NoOperandException: 1 7
+#output = NoOperandException: 1 8
 #commentary =
 #title = SyntaxError.5
 #type = ParsingError
@@ -152,7 +152,7 @@ a = 4 (*) 5
 def func(a, b, c)
 print(c)
 #>
-#output = NoBodyException: 2 0
+#output = NoBodyException: 2 1
 #commentary =
 #title = NoBody.1
 #type = ParsingError
@@ -162,7 +162,7 @@ print(c)
 if 4 == 4
 print(c)
 #>
-#output = NoBodyException: 2 0
+#output = NoBodyException: 2 1
 #commentary =
 #title = NoBody.2
 #type = ParsingError
@@ -172,7 +172,7 @@ print(c)
 while 4 == 4
 print(c)
 #>
-#output = NoBodyException: 2 0
+#output = NoBodyException: 2 1
 #commentary =
 #title = NoBody.3
 #type = ParsingError
@@ -182,7 +182,7 @@ print(c)
 class cdf
 print(c)
 #>
-#output = NoBodyException: 2 0
+#output = NoBodyException: 2 1
 #commentary =
 #title = NoBody.4
 #type = ParsingError
@@ -192,8 +192,63 @@ print(c)
 try
 print(c)
 #>
-#output = NoBodyException: 2 0
+#output = NoBodyException: 2 1
 #commentary =
 #title = NoBody.5
+#type = ParsingError
+#_______________________________________________________________
+#TESTCASE
+#<
+def func(a, b, c)
+#>
+#output = NoBodyException: 1 18
+#commentary =
+#title = NoBody.6
+#type = ParsingError
+#_______________________________________________________________
+#TESTCASE
+#<
+if 4 == 4
+#>
+#output = NoBodyException: 1 10
+#commentary =
+#title = NoBody.7
+#type = ParsingError
+#_______________________________________________________________
+#TESTCASE
+#<
+while 4 == 4
+#>
+#output = NoBodyException: 1 12
+#commentary =
+#title = NoBody.8
+#type = ParsingError
+#_______________________________________________________________
+#TESTCASE
+#<
+class cdf
+#>
+#output = NoBodyException: 1 1
+#commentary =
+#title = NoBody.9
+#type = ParsingError
+#_______________________________________________________________
+#TESTCASE
+#<
+try
+#>
+#output = NoBodyException: 1 1
+#commentary =
+#title = NoBody.10
+#type = ParsingError
+#_______________________________________________________________
+#TESTCASE
+#<
+    def func(a, b, c)
+            print(c)
+#>
+#output = UnexpectedIndentException: 1 5
+#commentary =
+#title = Indent.1
 #type = ParsingError
 #_______________________________________________________________

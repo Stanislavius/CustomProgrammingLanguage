@@ -222,10 +222,10 @@ if a > 0
 #_______________________________________________________________
 #TESTCASE
 #<
-5 > 1
+5 < 1
 #>
 #output = 0
-#commentary = should __gt__ in int
+#commentary = should __lt__ in int
 #title = comparison_int_lt
 #_______________________________________________________________
 #TESTCASE

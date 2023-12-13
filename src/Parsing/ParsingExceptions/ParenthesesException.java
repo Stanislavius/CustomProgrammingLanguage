@@ -3,17 +3,13 @@ package Parsing.ParsingExceptions;
 import Lexing.Token;
 
 public class ParenthesesException extends ParsingException {
+    private static String message = "Parentheses don't match. Starts at ";
     public ParenthesesException(Token t) {
-        super(t);
+        super(t, message);
     }
 
-    public String toString() {
-        StringBuilder sb = new StringBuilder();
-        sb.append("Parentheses don't match. Starts at ");
-        sb.append(errorToken.getLineNum());
-        sb.append(" line, position is ");
-        sb.append(errorToken.getPos());
-        return sb.toString();
+    public ParenthesesException(String line, int lineNum, int posNum) {
+        super(line, lineNum, posNum, message);
     }
 
 }

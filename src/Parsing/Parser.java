@@ -3,13 +3,13 @@ package Parsing;
 import Lexing.Token;
 import Lexing.TokenType;
 import Parsing.ParsedTokens.*;
-import Parsing.ParsingExceptions.ParenthesesException;
-import Parsing.ParsingExceptions.ParsingException;
+import Parsing.ParsingExceptions.*;
 
 import java.util.*;
 import java.util.logging.Logger;
 
 import static Parsing.ParsingLogger.createParsingLogger;
+import static java.lang.Math.abs;
 
 public class Parser {
     static Logger logger = createParsingLogger();
@@ -40,7 +40,14 @@ public class Parser {
     }
 
     public LinkedList<AbstractStatementPT> parse (LinkedList<Token> tokens){
-        LinkedList<LinkedList<Token>> lines = divideByLines(tokens);
+        LinkedList<LinkedList<Token>> lines;
+        try {
+            lines = divideByLines(tokens);
+        }
+        catch (ParsingException e){
+            exceptions.add(e);
+            return null;
+        }
         try {
                 logger.fine("Start parsing");
             for(int i = 0; i < lines.size(); ++i){
@@ -64,11 +71,20 @@ public class Parser {
         return parsedLines;
     }
 
-    public LinkedList<LinkedList<Token>> divideByLines(LinkedList<Token> tokens){
+    public LinkedList<LinkedList<Token>> divideByLines(LinkedList<Token> tokens) throws ParsingException {
         LinkedList<LinkedList<Token>> lines = new LinkedList<LinkedList<Token>>();
         LinkedList<Token> line = new LinkedList<Token>();
         for (Token token : tokens) {
             if (token.getType().equals(TokenType.NEWLINE)) {
+                boolean hasBody = false;
+                for (int i = 0; i< line.size(); ++i){
+                    if (line.get(i).getType() != TokenType.INDENTATION && line.get(i).getType() != TokenType.NEWLINE) {
+                        hasBody = true;
+                        break;
+                    }
+                }
+                if (hasBody == false)
+                    throw new EmptyLineException(line.getFirst());
                 lines.add(line);
                 line = new LinkedList<Token>();
             } else
@@ -456,12 +472,33 @@ public class Parser {
         return operands;
     }
 
-    public LinkedList<AbstractStatementPT> processBlocks(LinkedList<AbstractStatementPT> tokens){
+    public LinkedList<AbstractStatementPT> processBlocks(LinkedList<AbstractStatementPT> tokens) throws ParsingException {
         int lowerIndent = 0;
+        int lowerIndentExpected = 0;
         for (AbstractStatementPT curLine: tokens){
             if (curLine.getIndentationLevel() > lowerIndent)
                 lowerIndent = curLine.getIndentationLevel();
         }
+
+        int maxIndent = 0;
+        for(int i = 0; i < tokens.size(); ++i){
+            if (tokens.get(i).getIndentationLevel() > maxIndent)
+                throw new UnexpectedIndentException(tokens.get(i).getLine(), i, 0);
+            if (tokens.get(i).getType() == TokenType.BLOCKWORD)
+                maxIndent += 1;
+            else if (tokens.get(i).getIndentationLevel() < maxIndent)
+                maxIndent = tokens.get(i).getIndentationLevel();
+        }
+
+        for(int i = 0; i < tokens.size(); ++i){
+            if (tokens.get(i).getType() == TokenType.BLOCKWORD){
+                if (i == tokens.size() - 1)
+                    throw new NoBodyException(tokens.get(i).getLine(), tokens.get(i).getLineNum(), tokens.get(i).getLineLength());
+                if (tokens.get(i).getIndentationLevel() + 1 != tokens.get(i+1).getIndentationLevel())
+                    throw new NoBodyException(tokens.get(i+1).getLine(), tokens.get(i+1).getLineNum(), 0);
+            }
+        }
+
         BlockPT block = null;
         while (lowerIndent != 0) {
             StatementWithBlockPT head = null;
