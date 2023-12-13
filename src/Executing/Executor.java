@@ -224,8 +224,18 @@ public class Executor {
         }
 
         if (pt.getClass() == IntPT.class) {
+            IntType intValue = null;
+            try {
+                intValue = new IntType(Integer.parseInt(pt.getToken().getValue()));
+            }
+            catch (Exception e){
+                ErrorType error = new ErrorType("IncorrectValue");
+                error.setLine(pt.getToken().getLineNum());
+                error.setPosition(pt.getToken().getPos());
+                throw new ExecutionException(error);
+            }
             return new ValueET(pt.getToken(),
-                    new IntType(Integer.parseInt(pt.getToken().getValue())));
+                    intValue);
         }
 
         if (pt.getClass() == StringPT.class) {

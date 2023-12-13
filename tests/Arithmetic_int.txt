@@ -149,3 +149,21 @@ f
 #commentary = should replace negative zero with zero
 #title = int_zero.2
 #_______________________________________________________________
+#TESTCASE
+#<
+f = -33333333333333333
+f
+#>
+#output = IncorrectValue: 1 6
+#commentary = too large value
+#title = int_large.1
+#_______________________________________________________________
+#TESTCASE
+#<
+f = 33333333333333333
+f
+#>
+#output = IncorrectValue: 1 5
+#commentary = too large value
+#title = int_large.2
+#_______________________________________________________________
