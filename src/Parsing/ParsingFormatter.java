@@ -9,8 +9,6 @@ public class ParsingFormatter extends Formatter {
             StringBuilder sb = new StringBuilder();
             sb.append(record.getLevel()).append(':');
             sb.append(record.getMessage()).append('\n');
-            sb.append("Method: ");
-            sb.append(record.getSourceMethodName()).append('\n');
             return sb.toString();
         }
 }
