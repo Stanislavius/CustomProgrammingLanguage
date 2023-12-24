@@ -12,10 +12,14 @@ import java.util.Arrays;
 import java.util.Collections;
 import java.util.Comparator;
 import java.util.LinkedList;
+import java.util.logging.Logger;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
+import static Parsing.ParsingLogger.createParsingLogger;
+
 public class Lexer {
+    static Logger logger = LexingLogger.createLexingLogger();
     final static Pattern operationPattern = Pattern.compile("[\\+\\-\\/\\*\\.]|[=]{2}|[<]|[>]");
     final static Pattern intPattern = Pattern.compile("\\b(?<!\\.)[0-9]+(?!\\.)\\b");
     final static Pattern floatPattern = Pattern.compile("[0-9]+\\.[0-9]*");
@@ -51,6 +55,8 @@ public class Lexer {
                     line_num++;
                 } catch (LexingException e) {
                     exceptions.add(e);
+                    logger.info(e.toString());
+                    line_num++;
                 }
             }
         }
@@ -116,6 +122,7 @@ public class Lexer {
             }
             catch (LexingException e) {
                 exceptions.add(e);
+                logger.info(e.toString());
             }
         }
         return sort(tokens);
@@ -129,6 +136,7 @@ public class Lexer {
     public LinkedList<Token> readLine(String st, int lineNum) throws LexingException {
         LinkedList<Token> tokens = new LinkedList<Token>();
         String originalString = st;
+        logger.info("Lexing " + lineNum + " line \n" + originalString);
         int indentation = 0;
         int i = 0;
         int count = 0;
@@ -295,6 +303,15 @@ public class Lexer {
             if (st.charAt(i) != ' ')
                 throw new UnrecognizedTokenException(originalString, lineNum, i);
         }
+        StringBuilder SB = new StringBuilder();
+        SB.append("Lexing is finished, tokens are \n");
+        tokens = sort(tokens);
+        for (i = 0; i < tokens.size(); ++i){
+            SB.append(tokens.get(i).toString());
+            if (i != tokens.size()-1)
+                SB.append("\n");
+        }
+        logger.info(SB.toString());
         return tokens;
     }
 }
