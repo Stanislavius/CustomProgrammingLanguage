@@ -44,11 +44,14 @@ public class BinaryPT extends ParsedToken{
     }
     public String toString(){
         StringBuilder sb = new StringBuilder();
-        sb.append("(");
+        if (right.getClass() != FunctionCallPT.class)
+            sb.append("(");
         sb.append(left.toString());
-        sb.append(token.getValue());
+        if (right.getClass() != FunctionCallPT.class)
+            sb.append(token.getValue());
         sb.append(right.toString());
-        sb.append(")");
+        if (right.getClass() != FunctionCallPT.class)
+            sb.append(")");
         return sb.toString();
     }
 }
