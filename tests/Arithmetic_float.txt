@@ -3,6 +3,12 @@
 1.0 + 1.0
 #>
 #output = 2.0
+#<lexingOutput
+#FLOAT 1.0 1 1
+#OPERATION + 1 5
+#FLOAT 1.0 1 7
+#NEWLINE  1 9
+#>lexingOutput
 #commentary = Testing arithmetic operator + for two floats.
 #_______________________________________________________________
 #TESTCASE

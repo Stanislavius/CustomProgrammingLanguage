@@ -17,13 +17,24 @@ class TestCase {
     String commentary;
     String title;
     String type = "output"; // 0 - output, 1 - LexingError, 2 - ParsingError, 3 - ExecutionError
-
+    LinkedList<String> expectedLexerOutput;
+    LinkedList<String> expectedParserOutput;
     public TestCase(String[] input, HashMap<String, String> params) {
         this.input = input;
         output = params.getOrDefault("output", DEFAULT_OUTPUT);
         commentary = params.getOrDefault("commentary", DEFAULT_COMMENTARY);
         type = params.getOrDefault("type", DEFAULT_TYPE);
         title = params.getOrDefault("title", DEFAULT_TITLE);
+    }
+
+    public TestCase(String[] input, HashMap<String, String> params, HashMap<String, LinkedList<String>> multiLineParams) {
+        this.input = input;
+        output = params.getOrDefault("output", DEFAULT_OUTPUT);
+        commentary = params.getOrDefault("commentary", DEFAULT_COMMENTARY);
+        type = params.getOrDefault("type", DEFAULT_TYPE);
+        title = params.getOrDefault("title", DEFAULT_TITLE);
+        expectedLexerOutput = multiLineParams.getOrDefault("lexingOutput", null);
+        expectedParserOutput = multiLineParams.getOrDefault("parsingOutput", null);
     }
 
     public String[] getInput() {
@@ -50,20 +61,35 @@ class TestCase {
             BufferedReader br = new BufferedReader(new FileReader(filepath));
             HashMap<String, String> params = new HashMap<String, String>();
             LinkedList<String> inputStrings = new LinkedList<String>();
+            HashMap<String, LinkedList<String>> multiLineParams = new HashMap<String, LinkedList<String>>();
             String line;
-            boolean codeReading = false;
+            LinkedList<String> lines = new LinkedList<String>();
+            boolean reading = false;
+            String paramName = null;
             br.readLine();
             while (((line = br.readLine()) != null)) {
-                if (line.equals("#<")) {
-                    codeReading = true;
+                if (line.startsWith("#<")) {
+                    if (line.equals("#<")) {
+                        paramName = "input";
+                    }
+                    else
+                        paramName = line.substring(2);
+                    reading = true;
                     continue;
                 }
-                if (line.equals("#>")){
-                    codeReading = false;
+                if (line.startsWith("#>")) {
+                    if (line.equals("#>")) {
+                        inputStrings = lines;
+                    }
+                    else
+                        multiLineParams.put(paramName, lines);
+                    lines = new LinkedList<String>();
+                    reading = false;
                     continue;
                 }
-                if (codeReading)
-                    inputStrings.add(line);
+                if (reading){
+                    lines.add(line);
+                }
                 else
                     try {
                         if (line.contains("=")) {
@@ -77,16 +103,20 @@ class TestCase {
                         e.printStackTrace();
                     }
                 if (line.equals(CASE_SEPARATOR)) {
-                    tests.add(new TestCase(inputStrings.toArray(new String[0]), params));
+                    tests.add(new TestCase(inputStrings.toArray(new String[0]), params, multiLineParams));
                     params.clear();
                     inputStrings.clear();
+                    multiLineParams.clear();
+                    reading = false;
                 }
             }
 
             if (inputStrings.size() > 0){
-                tests.add(new TestCase(inputStrings.toArray(new String[0]), params));
+                tests.add(new TestCase(inputStrings.toArray(new String[0]), params, multiLineParams));
                 params.clear();
                 inputStrings.clear();
+                multiLineParams.clear();
+                reading = false;
             }
         } catch (IOException e) {
             System.out.println(e.getMessage());
