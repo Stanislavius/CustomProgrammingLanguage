@@ -56,10 +56,22 @@ public class ConditionalStatementPT extends StatementWithBlockPT {
 
     public String toString(){
         StringBuilder sb = new StringBuilder();
+        if (indentationLevel != 0) {
+            sb.append("\\t");
+            sb.append(indentationLevel);
+            sb.append(" ");
+        }
         sb.append(token.getValue());
-        sb.append(" ");
-        if (condition != null)
+        if (condition != null) {
+            sb.append(" ");
             sb.append(condition.toString());
+        }
+        if (toDo!=null) {
+            sb.append("\n");
+            sb.append(toDo.toString());
+        }
+        if (next != null)
+            sb.append(next.toString());
         return sb.toString();
     }
 }

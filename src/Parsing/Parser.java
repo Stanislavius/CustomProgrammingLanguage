@@ -65,9 +65,12 @@ public class Parser {
         catch (ParsingException e){
             exceptions.add(e);
         }
-        logger.finest("Parsing is finished, parsed program as follows. ");
-        for(int i = 0; i < parsedLines.size(); ++i)
-            logger.finest(parsedLines.get(i).toString());
+        StringBuilder sb = new StringBuilder();
+        sb.append("Parsing is finished, parsed program as follows: \n");
+        for(int i = 0; i < parsedLines.size(); ++i) {
+            sb.append(parsedLines.get(i).toString());
+        }
+        logger.finest(sb.toString());
         return parsedLines;
     }
 

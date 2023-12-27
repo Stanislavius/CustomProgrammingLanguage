@@ -41,26 +41,33 @@ public class Testing {
             stats.add(runTestFile(testsPath + testFiles[i]));
         }
 
-        int passed_total = 0;
-        int error_total = 0;
-        int wrong_total = 0;
-        int total_cases = 0;
+        int passedTotal = 0;
+        int errorTotal = 0;
+        int wrongTotal = 0;
+        int totalCases = 0;
+        int lexingWrongTotal = 0;
+        int parsingWrongTotal = 0;
+
         for (int i = 0; i < stats.size(); ++i) {
             logger.finest("Passed " + stats.get(i)[1] + " from " + stats.get(i)[0] + " in file " + testFiles[i]);
-            total_cases += stats.get(i)[0];
-            passed_total += stats.get(i)[1];
-            wrong_total += stats.get(i)[2];
-            error_total += stats.get(i)[3];
+            totalCases += stats.get(i)[0];
+            passedTotal += stats.get(i)[1];
+            wrongTotal += stats.get(i)[2];
+            errorTotal += stats.get(i)[3];
+            lexingWrongTotal += stats.get(i)[4];
+            parsingWrongTotal += stats.get(i)[5];
         }
-        logger.info("In general passed " + passed_total + " out of " + total_cases);
-        logger.info("In general wrong result in " + wrong_total + " out of " + total_cases);
-        logger.info("In general error occurred in  " + error_total + " out of " + total_cases);
+        logger.info("In general passed " + passedTotal + " out of " + totalCases);
+        logger.info("In general wrong result in " + wrongTotal + " out of " + totalCases);
+        logger.info("In general error occurred in  " + errorTotal + " out of " + totalCases);
+        logger.info("In general lexing result is wrong in " + lexingWrongTotal + " out of " + totalCases);
+        logger.info("In general parsing result is wrong in " + parsingWrongTotal + " out of " + totalCases);
     }
 
     public static Integer[] runTestFile(String filename) {
         LinkedList<TestCase> testCases = TestCase.readFile(filename);
         int counter = 0;
-        Integer[] stats = {testCases.size(), 0, 0, 0};
+        Integer[] stats = {testCases.size(), 0, 0, 0, 0, 0};
         for (int j = 0; j < testCases.size(); ++j) {
             int result = runTest(testCases.get(j));
             if (result == 0) {
@@ -75,7 +82,16 @@ public class Testing {
             } else if (result == 2) {
                 logger.severe("Test " + testCases.get(j).getTitle() + " throws exception");
                 stats[3] += 1;
-            } else if (result == -1) {
+            }
+            else if (result == 3) {
+                logger.severe("Test " + testCases.get(j).getTitle() + " output of lexer is wrong");
+                stats[4] += 1;
+            }
+            else if (result == 4) {
+                logger.severe("Test " + testCases.get(j).getTitle() + " output of parser is wrong");
+                stats[5] += 1;
+            }
+            else if (result == -1) {
                 logger.severe("ERROR IN TEST");
                 System.exit(0);
             }
@@ -102,12 +118,42 @@ public class Testing {
 
     }
 
+    public static boolean isLexerOutputEqual(LinkedList<Token> tokens, LinkedList<String> expected){
+        if (!(tokens.size() == expected.size()))
+            return false;
+        for (int i = 0; i < tokens.size(); ++i)
+            if (!(tokens.get(i).toString().equals(expected.get(i).substring(1))))
+                return false;
+        return true;
+    }
+
+    public static boolean isParserOutputEqual(LinkedList<AbstractStatementPT> ps, LinkedList<String> expected){
+        StringBuilder sb = new StringBuilder();
+        for(int i = 0; i < ps.size(); ++i){
+            sb.append(ps.get(i).toString());
+        }
+        String output = sb.toString();
+        sb = new StringBuilder();
+        for(int i = 0; i < expected.size(); ++i){
+            sb.append(expected.get(i).substring(1));
+            sb.append("\n");
+        }
+        return output.equals(sb.toString());
+    }
+
     public static int runPositiveTest(TestCase test) {
+        //0 - test passed, 1 - wrong, 2 - error, 3 - lexer output is wrong, 4 - parser output is wrong
         try {
             Lexer l = new Lexer();
             LinkedList<Token> tokens = l.read(test.getInput());
+            if (test.hasExpectedLexerOutput())
+                if (!isLexerOutputEqual(tokens, test.getExpectedLexerOutput()))
+                    return 3;
             Parser parser = new Parser();
             LinkedList<AbstractStatementPT> ps = parser.parse(tokens);
+            if (test.hasExpectedParserOutput())
+                if (!isParserOutputEqual(ps, test.getExpectedParserOutput()))
+                    return 4;
             String result = Executor.execute(ps);
             if (result.equals(test.getOutput()))
                 return 0;
@@ -122,6 +168,9 @@ public class Testing {
         try {
             Lexer l = new Lexer();
             LinkedList<Token> tokens = l.read(test.getInput());
+            if (test.hasExpectedLexerOutput())
+                if (!isLexerOutputEqual(tokens, test.getExpectedLexerOutput()))
+                    return 3;
             Parser parser = new Parser();
             parser.parse(tokens);
             if (parser.isWithoutError())
@@ -158,4 +207,3 @@ public class Testing {
         }
     }
 }
-

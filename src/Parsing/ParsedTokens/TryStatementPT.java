@@ -28,7 +28,14 @@ public class TryStatementPT extends StatementWithBlockPT {
     }
 
     public String toString(){
-        return "try";
+        StringBuilder sb = new StringBuilder();
+        if (indentationLevel != 0) {
+            sb.append("\\t");
+            sb.append(indentationLevel);
+            sb.append(" ");
+        }
+        sb.append("try");
+        return sb.toString();
     }
 
     public void addExcept(ExceptStatementPT pet){

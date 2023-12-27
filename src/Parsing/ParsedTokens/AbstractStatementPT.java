@@ -24,4 +24,15 @@ public class AbstractStatementPT extends ParsedToken{
     public ParsedTokenType getParsedType(){
         return ParsedTokenType.STATEMENT;
     }
+
+    public String toString(){
+        StringBuilder sb = new StringBuilder();
+        if (indentationLevel != 0) {
+            sb.append("\\t");
+            sb.append(indentationLevel);
+            sb.append(" ");
+        }
+        sb.append("\n");
+        return sb.toString();
+    }
 }

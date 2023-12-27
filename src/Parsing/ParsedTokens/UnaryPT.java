@@ -31,7 +31,9 @@ public class UnaryPT extends ParsedToken{
     public String toString(){
         StringBuilder sb = new StringBuilder();
         sb.append(token.getValue());
+        sb.append("(");
         sb.append(right.toString());
+        sb.append(")");
         return sb.toString();
     }
 }

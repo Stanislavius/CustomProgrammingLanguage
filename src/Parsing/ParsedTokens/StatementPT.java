@@ -31,9 +31,13 @@ public class StatementPT extends AbstractStatementPT {
     }
     public String toString(){
         StringBuilder sb = new StringBuilder();
-        for(int i = 0; i < indentationLevel; ++i)
-            sb.append("\t");
+        if (indentationLevel != 0) {
+            sb.append("\\t");
+            sb.append(indentationLevel);
+            sb.append(" ");
+        }
         sb.append(expression.toString());
+        sb.append("\n");
         return sb.toString();
     }
 }

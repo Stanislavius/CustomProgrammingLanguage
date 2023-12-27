@@ -9,6 +9,9 @@
 #FLOAT 1.0 1 7
 #NEWLINE  1 9
 #>lexingOutput
+#<parsingOutput
+#(1.0+1.0)
+#>parsingOutput
 #commentary = Testing arithmetic operator + for two floats.
 #_______________________________________________________________
 #TESTCASE

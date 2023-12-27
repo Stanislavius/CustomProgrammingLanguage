@@ -30,7 +30,6 @@ public class BlockPT extends AbstractStatementPT {
         StringBuilder sb = new StringBuilder();
         for(int i = 0; i < toDo.size(); ++i) {
             sb.append(toDo.get(i).toString());
-            sb.append("\n");
         }
         return sb.toString();
     }

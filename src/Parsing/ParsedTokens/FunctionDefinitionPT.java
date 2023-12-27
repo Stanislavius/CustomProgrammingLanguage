@@ -35,6 +35,11 @@ public class FunctionDefinitionPT extends StatementWithBlockPT {
     }
     public String toString(){
         StringBuilder sb = new StringBuilder();
+        if (indentationLevel != 0) {
+            sb.append("\\t");
+            sb.append(indentationLevel);
+            sb.append(" ");
+        }
         sb.append("def ");
         sb.append(functionName.getValue());
         sb.append("(");
@@ -43,6 +48,10 @@ public class FunctionDefinitionPT extends StatementWithBlockPT {
             sb.append(" ");
         }
         sb.append(")");
+        if (toDo != null) {
+            sb.append("\n");
+            sb.append(toDo.toString());
+        }
         return sb.toString();
     }
 

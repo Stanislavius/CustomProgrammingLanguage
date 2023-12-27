@@ -53,6 +53,21 @@ class TestCase {
         return commentary;
     }
 
+    public boolean hasExpectedLexerOutput(){
+        return !(this.expectedLexerOutput == null);
+    }
+
+    public boolean hasExpectedParserOutput(){
+        return !(this.expectedParserOutput == null);
+    }
+
+    public LinkedList<String> getExpectedLexerOutput(){
+        return this.expectedLexerOutput;
+    }
+
+    public LinkedList<String> getExpectedParserOutput(){
+        return this.expectedParserOutput;
+    }
 
     public static LinkedList<TestCase> readFile(String filepath) {
         LinkedList<TestCase> tests = new LinkedList<TestCase>();

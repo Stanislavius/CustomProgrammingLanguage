@@ -40,9 +40,15 @@ public class AssigmentStatementPT extends AbstractStatementPT {
     }
     public String toString(){
         StringBuilder sb = new StringBuilder();
+        if (indentationLevel != 0) {
+            sb.append("\\t");
+            sb.append(indentationLevel);
+            sb.append(" ");
+        }
         sb.append(variable.toString());
         sb.append("=");
         sb.append(expression.toString());
+        sb.append("\n");
         return sb.toString();
     }
 }
