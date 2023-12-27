@@ -14,7 +14,7 @@ import java.util.logging.Logger;
 public class Testing {
     static Logger logger;
     final static String[] testFiles = {"Arithmetic_int.txt",
-            "Arithmetic_float.txt",
+            "Float.txt",
             "Arithmetic_parentheses.txt",
             "conditional.txt",
             "function_def.txt",

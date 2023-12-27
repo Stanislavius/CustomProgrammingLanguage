@@ -1,0 +1,843 @@
+#TESTCASE
+#<
+6.0
+#>
+#<lexingOutput
+#FLOAT 6.0 1 1
+#NEWLINE  1 3
+#>lexingOutput
+#<parsingOutput
+#6.0
+#>parsingOutput
+#output = 6.0
+#title = float.init.1
+#_______________________________________________________________
+#TESTCASE
+#<
+float(6)
+#>
+#<lexingOutput
+#VARIABLE float 1 1
+#PARENTHESIS ( 1 6
+#INT 6 1 7
+#PARENTHESIS ) 1 8
+#NEWLINE  1 8
+#>lexingOutput
+#<parsingOutput
+#float(6)
+#>parsingOutput
+#output = 6.0
+#title = float.init.2
+#_______________________________________________________________
+#TESTCASE
+#<
+float(6.0)
+#>
+#<lexingOutput
+#VARIABLE float 1 1
+#PARENTHESIS ( 1 6
+#FLOAT 6.0 1 7
+#PARENTHESIS ) 1 10
+#NEWLINE  1 10
+#>lexingOutput
+#<parsingOutput
+#float(6.0)
+#>parsingOutput
+#output = 6.0
+#title = float.init.3
+#_______________________________________________________________
+#TESTCASE
+#<
+float("6.0")
+#>
+#<lexingOutput
+#VARIABLE float 1 1
+#PARENTHESIS ( 1 6
+#STRING 6.0 1 7
+#PARENTHESIS ) 1 12
+#NEWLINE  1 12
+#>lexingOutput
+#<parsingOutput
+#float("6.0")
+#>parsingOutput
+#output = 6.0
+#title = float.init.4
+#_______________________________________________________________
+#TESTCASE
+#<
+6.
+#>
+#<lexingOutput
+#FLOAT 6. 1 1
+#NEWLINE  1 2
+#>lexingOutput
+#<parsingOutput
+#6.
+#>parsingOutput
+#output = 6.0
+#title = float.init.5
+#_______________________________________________________________
+#TESTCASE
+#<
+-1.0
+#>
+#<lexingOutput
+#OPERATION - 1 1
+#FLOAT 1.0 1 2
+#NEWLINE  1 4
+#>lexingOutput
+#<parsingOutput
+#-(1.0)
+#>parsingOutput
+#output = -1.0
+#title = float.init.6
+#_______________________________________________________________
+#TESTCASE
+#<
++1.0
+#>
+#<lexingOutput
+#OPERATION + 1 1
+#FLOAT 1.0 1 2
+#NEWLINE  1 4
+#>lexingOutput
+#<parsingOutput
+#+(1.0)
+#>parsingOutput
+#output = 1.0
+#title = float.init.7
+#_______________________________________________________________
+#TESTCASE
+#<
+3.343436555
+#>
+#<lexingOutput
+#FLOAT 3.343436555 1 1
+#NEWLINE  1 11
+#>lexingOutput
+#<parsingOutput
+#3.343436555
+#>parsingOutput
+#output = 3.343436555
+#title = float.init.8
+#_______________________________________________________________
+#TESTCASE
+#<
+f = 5.2342
+float(f)
+#>
+#<lexingOutput
+#VARIABLE f 1 1
+#ASSIGNMENT  =  1 3
+#FLOAT 5.2342 1 5
+#NEWLINE  1 10
+#VARIABLE float 2 1
+#PARENTHESIS ( 2 6
+#VARIABLE f 2 7
+#PARENTHESIS ) 2 8
+#NEWLINE  2 8
+#>lexingOutput
+#<parsingOutput
+#f=5.2342
+#float(f)
+#>parsingOutput
+#output = 5.2342
+#commentary = should create float from float variable
+#title = float.init.9
+#_______________________________________________________________
+#TESTCASE
+#<
+.5
+#>
+#<lexingOutput
+#FLOAT .5 1 1
+#NEWLINE  1 2
+#>lexingOutput
+#<parsingOutput
+#.5
+#>parsingOutput
+#output = 0.5
+#title = float.init.10
+#_______________________________________________________________
+#TESTCASE
+#<
+1.0 + 1.0
+#>
+#<lexingOutput
+#FLOAT 1.0 1 1
+#OPERATION + 1 5
+#FLOAT 1.0 1 7
+#NEWLINE  1 9
+#>lexingOutput
+#<parsingOutput
+#(1.0+1.0)
+#>parsingOutput
+#output = 2.0
+#title = float.operations.1
+#_______________________________________________________________
+#TESTCASE
+#<
+1.0 - 1.0
+#>
+#<lexingOutput
+#FLOAT 1.0 1 1
+#OPERATION - 1 5
+#FLOAT 1.0 1 7
+#NEWLINE  1 9
+#>lexingOutput
+#<parsingOutput
+#(1.0-1.0)
+#>parsingOutput
+#output = 0.0
+#title = float.operations.2
+#_______________________________________________________________
+#TESTCASE
+#<
+1.0 / 1.0
+#>
+#<lexingOutput
+#FLOAT 1.0 1 1
+#OPERATION / 1 5
+#FLOAT 1.0 1 7
+#NEWLINE  1 9
+#>lexingOutput
+#<parsingOutput
+#(1.0/1.0)
+#>parsingOutput
+#output = 1.0
+#title = float.operations.3
+#_______________________________________________________________
+#TESTCASE
+#<
+1.0 * 2.0
+#>
+#output = 2.0
+#title = float.operations.4
+#_______________________________________________________________
+#TESTCASE
+#<
+1.0 + 1.0 + 1.0
+#>
+#<lexingOutput
+#FLOAT 1.0 1 1
+#OPERATION + 1 5
+#FLOAT 1.0 1 7
+#OPERATION + 1 11
+#FLOAT 1.0 1 13
+#NEWLINE  1 15
+#>lexingOutput
+#<parsingOutput
+#((1.0+1.0)+1.0)
+#>parsingOutput
+#output = 3.0
+#title = float.operations.three_operands.1
+#_______________________________________________________________
+#TESTCASE
+#<
+2.0 + 2.0 - 2.0
+#>
+#<lexingOutput
+#FLOAT 2.0 1 1
+#OPERATION + 1 5
+#FLOAT 2.0 1 7
+#OPERATION - 1 11
+#FLOAT 2.0 1 13
+#NEWLINE  1 15
+#>lexingOutput
+#<parsingOutput
+#((2.0+2.0)-2.0)
+#>parsingOutput
+#output = 2.0
+#title = float.operations.three_operands.2
+#_______________________________________________________________
+#TESTCASE
+#<
+2.0 - 2.0 + 2.0
+#>
+#<lexingOutput
+#FLOAT 2.0 1 1
+#OPERATION - 1 5
+#FLOAT 2.0 1 7
+#OPERATION + 1 11
+#FLOAT 2.0 1 13
+#NEWLINE  1 15
+#>lexingOutput
+#<parsingOutput
+#((2.0-2.0)+2.0)
+#>parsingOutput
+#output = 2.0
+#title = float.operations.three_operands.3
+#_______________________________________________________________
+#TESTCASE
+#<
+2.0 - 2.0 - 2.0
+#>
+#<lexingOutput
+#FLOAT 2.0 1 1
+#OPERATION - 1 5
+#FLOAT 2.0 1 7
+#OPERATION - 1 11
+#FLOAT 2.0 1 13
+#NEWLINE  1 15
+#>lexingOutput
+#<parsingOutput
+#((2.0-2.0)-2.0)
+#>parsingOutput
+#output = -2.0
+#title = float.operations.three_operands.4
+#_______________________________________________________________
+#TESTCASE
+#<
+-2.0 - 2.0 - 2.0
+#>
+#<lexingOutput
+#OPERATION - 1 1
+#FLOAT 2.0 1 2
+#OPERATION - 1 6
+#FLOAT 2.0 1 8
+#OPERATION - 1 12
+#FLOAT 2.0 1 14
+#NEWLINE  1 16
+#>lexingOutput
+#<parsingOutput
+#((-(2.0)-2.0)-2.0)
+#>parsingOutput
+#output = -6.0
+#title = float.operations.three_operands.5
+#_______________________________________________________________
+#TESTCASE
+#<
++2.0 - 2.0 - 2.0
+#>
+#<lexingOutput
+#OPERATION + 1 1
+#FLOAT 2.0 1 2
+#OPERATION - 1 6
+#FLOAT 2.0 1 8
+#OPERATION - 1 12
+#FLOAT 2.0 1 14
+#NEWLINE  1 16
+#>lexingOutput
+#<parsingOutput
+#((+(2.0)-2.0)-2.0)
+#>parsingOutput
+#output = -2.0
+#title = float.operations.three_operands.6
+#_______________________________________________________________
+#TESTCASE
+#<
+2.0 + 2.0 * 2.0
+#>
+#<lexingOutput
+#FLOAT 2.0 1 1
+#OPERATION + 1 5
+#FLOAT 2.0 1 7
+#OPERATION * 1 11
+#FLOAT 2.0 1 13
+#NEWLINE  1 15
+#>lexingOutput
+#<parsingOutput
+#(2.0+(2.0*2.0))
+#>parsingOutput
+#output = 6.0
+#title = float.operations.three_operands.7
+#_______________________________________________________________
+#TESTCASE
+#<
+2.0 * 2.0 + 2.0
+#>
+#<lexingOutput
+#FLOAT 2.0 1 1
+#OPERATION * 1 5
+#FLOAT 2.0 1 7
+#OPERATION + 1 11
+#FLOAT 2.0 1 13
+#NEWLINE  1 15
+#>lexingOutput
+#<parsingOutput
+#((2.0*2.0)+2.0)
+#>parsingOutput
+#output = 6.0
+#title = float.operations.three_operands.8
+#_______________________________________________________________
+#TESTCASE
+#<
+2.0 * -2.0 + 2.0
+#>
+#<lexingOutput
+#FLOAT 2.0 1 1
+#OPERATION * 1 5
+#OPERATION - 1 7
+#FLOAT 2.0 1 8
+#OPERATION + 1 12
+#FLOAT 2.0 1 14
+#NEWLINE  1 16
+#>lexingOutput
+#<parsingOutput
+#((2.0*-(2.0))+2.0)
+#>parsingOutput
+#output = -2.0
+#title = float.operations.three_operands.9
+#_______________________________________________________________
+#TESTCASE
+#<
+-2.0 * -2.0 + 2.0
+#>
+#<lexingOutput
+#OPERATION - 1 1
+#FLOAT 2.0 1 2
+#OPERATION * 1 6
+#OPERATION - 1 8
+#FLOAT 2.0 1 9
+#OPERATION + 1 13
+#FLOAT 2.0 1 15
+#NEWLINE  1 17
+#>lexingOutput
+#<parsingOutput
+#((-(2.0)*-(2.0))+2.0)
+#>parsingOutput
+#output = 6.0
+#title = float.operations.three_operands.10
+#_______________________________________________________________
+#TESTCASE
+#<
+-2.0 * -2.0 - 2.0
+#>
+#<lexingOutput
+#OPERATION - 1 1
+#FLOAT 2.0 1 2
+#OPERATION * 1 6
+#OPERATION - 1 8
+#FLOAT 2.0 1 9
+#OPERATION - 1 13
+#FLOAT 2.0 1 15
+#NEWLINE  1 17
+#>lexingOutput
+#<parsingOutput
+#((-(2.0)*-(2.0))-2.0)
+#>parsingOutput
+#output = 2.0
+#title = float.operations.three_operands.11
+#_______________________________________________________________
+#TESTCASE
+#<
+2.0 * 2.0 / 2.0
+#>
+#<lexingOutput
+#FLOAT 2.0 1 1
+#OPERATION * 1 5
+#FLOAT 2.0 1 7
+#OPERATION / 1 11
+#FLOAT 2.0 1 13
+#NEWLINE  1 15
+#>lexingOutput
+#<parsingOutput
+#((2.0*2.0)/2.0)
+#>parsingOutput
+#output = 2.0
+#title = float.operations.three_operands.12
+#_______________________________________________________________
+#TESTCASE
+#<
+2.0 / 2.0 * 2.0
+#>
+#<lexingOutput
+#FLOAT 2.0 1 1
+#OPERATION / 1 5
+#FLOAT 2.0 1 7
+#OPERATION * 1 11
+#FLOAT 2.0 1 13
+#NEWLINE  1 15
+#>lexingOutput
+#<parsingOutput
+#((2.0/2.0)*2.0)
+#>parsingOutput
+#output = 2.0
+#title = float.operations.three_operands.13
+#_______________________________________________________________
+#TESTCASE
+#<
+2.0 / 2.0 / 2.0
+#>
+#<lexingOutput
+#FLOAT 2.0 1 1
+#OPERATION / 1 5
+#FLOAT 2.0 1 7
+#OPERATION / 1 11
+#FLOAT 2.0 1 13
+#NEWLINE  1 15
+#>lexingOutput
+#<parsingOutput
+#((2.0/2.0)/2.0)
+#>parsingOutput
+#output = 0.5
+#title = float.operations.three_operands.14
+#_______________________________________________________________
+#TESTCASE
+#<
+2.0 / 2.0 / -2.0
+#>
+#<lexingOutput
+#FLOAT 2.0 1 1
+#OPERATION / 1 5
+#FLOAT 2.0 1 7
+#OPERATION / 1 11
+#OPERATION - 1 13
+#FLOAT 2.0 1 14
+#NEWLINE  1 16
+#>lexingOutput
+#<parsingOutput
+#((2.0/2.0)/-(2.0))
+#>parsingOutput
+#output = -0.5
+#title = float.operations.three_operands.15
+#_______________________________________________________________
+#TESTCASE
+#<
+2.0 / -2.0 / -2.0
+#>
+#<lexingOutput
+#FLOAT 2.0 1 1
+#OPERATION / 1 5
+#OPERATION - 1 7
+#FLOAT 2.0 1 8
+#OPERATION / 1 12
+#OPERATION - 1 14
+#FLOAT 2.0 1 15
+#NEWLINE  1 17
+#>lexingOutput
+#<parsingOutput
+#((2.0/-(2.0))/-(2.0))
+#>parsingOutput
+#output = 0.5
+#title = float.operations.three_operands.16
+#_______________________________________________________________
+#TESTCASE
+#<
+2.0 / -2.0 / 2.0
+#>
+#<lexingOutput
+#FLOAT 2.0 1 1
+#OPERATION / 1 5
+#OPERATION - 1 7
+#FLOAT 2.0 1 8
+#OPERATION / 1 12
+#FLOAT 2.0 1 14
+#NEWLINE  1 16
+#>lexingOutput
+#<parsingOutput
+#((2.0/-(2.0))/2.0)
+#>parsingOutput
+#output = -0.5
+#title = float.operations.three_operands.17
+#_______________________________________________________________
+#TESTCASE
+#<
+2.0 / -2.0 + 2.0
+#>
+#<lexingOutput
+#FLOAT 2.0 1 1
+#OPERATION / 1 5
+#OPERATION - 1 7
+#FLOAT 2.0 1 8
+#OPERATION + 1 12
+#FLOAT 2.0 1 14
+#NEWLINE  1 16
+#>lexingOutput
+#<parsingOutput
+#((2.0/-(2.0))+2.0)
+#>parsingOutput
+#output = 1.0
+#title = float.operations.three_operands.18
+#_______________________________________________________________
+#TESTCASE
+#<
+2.0 +- 2.0*2.0
+#>
+#<lexingOutput
+#FLOAT 2.0 1 1
+#OPERATION + 1 5
+#OPERATION - 1 6
+#FLOAT 2.0 1 8
+#OPERATION * 1 11
+#FLOAT 2.0 1 12
+#NEWLINE  1 14
+#>lexingOutput
+#<parsingOutput
+#(2.0+(-(2.0)*2.0))
+#>parsingOutput
+#output = -2.0
+#title = float.operations.three_operands.19
+#_______________________________________________________________
+#TESTCASE
+#<
+1.0 + 2.0 + 3.0 + 4.0
+#>
+#<lexingOutput
+#FLOAT 1.0 1 1
+#OPERATION + 1 5
+#FLOAT 2.0 1 7
+#OPERATION + 1 11
+#FLOAT 3.0 1 13
+#OPERATION + 1 17
+#FLOAT 4.0 1 19
+#NEWLINE  1 21
+#>lexingOutput
+#<parsingOutput
+#(((1.0+2.0)+3.0)+4.0)
+#>parsingOutput
+#output = 10.0
+#title = float.operations.four_operands.1
+#_______________________________________________________________
+#TESTCASE
+#<
+1.0 + 2.0 - 3.0 + 4.0
+#>
+#<lexingOutput
+#FLOAT 1.0 1 1
+#OPERATION + 1 5
+#FLOAT 2.0 1 7
+#OPERATION - 1 11
+#FLOAT 3.0 1 13
+#OPERATION + 1 17
+#FLOAT 4.0 1 19
+#NEWLINE  1 21
+#>lexingOutput
+#<parsingOutput
+#(((1.0+2.0)-3.0)+4.0)
+#>parsingOutput
+#output = 4.0
+#title = float.operations.four_operands.2
+#_______________________________________________________________
+#TESTCASE
+#<
+-1.0 + 2.0 - 3.0 + 4.0
+#>
+#<lexingOutput
+#OPERATION - 1 1
+#FLOAT 1.0 1 2
+#OPERATION + 1 6
+#FLOAT 2.0 1 8
+#OPERATION - 1 12
+#FLOAT 3.0 1 14
+#OPERATION + 1 18
+#FLOAT 4.0 1 20
+#NEWLINE  1 22
+#>lexingOutput
+#<parsingOutput
+#(((-(1.0)+2.0)-3.0)+4.0)
+#>parsingOutput
+#output = 2.0
+#title = float.operations.four_operands.3
+#_______________________________________________________________
+#TESTCASE
+#<
+-1.0 + 2.0 - 3.0 - 4.0
+#>
+#<lexingOutput
+#OPERATION - 1 1
+#FLOAT 1.0 1 2
+#OPERATION + 1 6
+#FLOAT 2.0 1 8
+#OPERATION - 1 12
+#FLOAT 3.0 1 14
+#OPERATION - 1 18
+#FLOAT 4.0 1 20
+#NEWLINE  1 22
+#>lexingOutput
+#<parsingOutput
+#(((-(1.0)+2.0)-3.0)-4.0)
+#>parsingOutput
+#output = -6.0
+#title = float.operations.four_operands.4
+#_______________________________________________________________
+#TESTCASE
+#<
+-1.0 - 2.0 - 3.0 - 4.0
+#>
+#<lexingOutput
+#OPERATION - 1 1
+#FLOAT 1.0 1 2
+#OPERATION - 1 6
+#FLOAT 2.0 1 8
+#OPERATION - 1 12
+#FLOAT 3.0 1 14
+#OPERATION - 1 18
+#FLOAT 4.0 1 20
+#NEWLINE  1 22
+#>lexingOutput
+#<parsingOutput
+#(((-(1.0)-2.0)-3.0)-4.0)
+#>parsingOutput
+#output = -10.0
+#title = float.operations.four_operands.5
+#_______________________________________________________________
+#TESTCASE
+#<
+1.0 * 2.0 + 3.0 * 4.0
+#>
+#<lexingOutput
+#FLOAT 1.0 1 1
+#OPERATION * 1 5
+#FLOAT 2.0 1 7
+#OPERATION + 1 11
+#FLOAT 3.0 1 13
+#OPERATION * 1 17
+#FLOAT 4.0 1 19
+#NEWLINE  1 21
+#>lexingOutput
+#<parsingOutput
+#((1.0*2.0)+(3.0*4.0))
+#>parsingOutput
+#output = 14.0
+#title = float.operations.four_operands.6
+#_______________________________________________________________
+#TESTCASE
+#<
+1.0 / 2.0 + 3.0 / 4.0
+#>
+#<lexingOutput
+#FLOAT 1.0 1 1
+#OPERATION / 1 5
+#FLOAT 2.0 1 7
+#OPERATION + 1 11
+#FLOAT 3.0 1 13
+#OPERATION / 1 17
+#FLOAT 4.0 1 19
+#NEWLINE  1 21
+#>lexingOutput
+#<parsingOutput
+#((1.0/2.0)+(3.0/4.0))
+#>parsingOutput
+#output = 1.25
+#title = float.operations.four_operands.7
+#_______________________________________________________________
+#TESTCASE
+#<
+1.0 * 2.0 * 3.0 * 4.0
+#>
+#<lexingOutput
+#FLOAT 1.0 1 1
+#OPERATION * 1 5
+#FLOAT 2.0 1 7
+#OPERATION * 1 11
+#FLOAT 3.0 1 13
+#OPERATION * 1 17
+#FLOAT 4.0 1 19
+#NEWLINE  1 21
+#>lexingOutput
+#<parsingOutput
+#(((1.0*2.0)*3.0)*4.0)
+#>parsingOutput
+#output = 24.0
+#title = float.operations.four_operands.8
+#_______________________________________________________________
+#TESTCASE
+#<
+4.0/2.0 + 2.0*4.0
+#>
+#<lexingOutput
+#FLOAT 4.0 1 1
+#OPERATION / 1 4
+#FLOAT 2.0 1 5
+#OPERATION + 1 9
+#FLOAT 2.0 1 11
+#OPERATION * 1 14
+#FLOAT 4.0 1 15
+#NEWLINE  1 17
+#>lexingOutput
+#<parsingOutput
+#((4.0/2.0)+(2.0*4.0))
+#>parsingOutput
+#output = 10.0
+#title = float.operations.four_operands.9
+#_______________________________________________________________
+#TESTCASE
+#<
+d = 4.0 / 0.0
+#>
+#<lexingOutput
+#VARIABLE d 1 1
+#ASSIGNMENT  =  1 3
+#FLOAT 4.0 1 5
+#OPERATION / 1 9
+#FLOAT 0.0 1 11
+#NEWLINE  1 13
+#>lexingOutput
+#<parsingOutput
+#d=(4.0/0.0)
+#>parsingOutput
+#output = DivisionByZero: 1 9
+#commentary = should give DivisionByZero error
+#title = float.DivisionByZero.1
+#_______________________________________________________________
+#TESTCASE
+#<
+d = 4.0 / 0
+#>
+#<lexingOutput
+#VARIABLE d 1 1
+#ASSIGNMENT  =  1 3
+#FLOAT 4.0 1 5
+#OPERATION / 1 9
+#INT 0 1 11
+#NEWLINE  1 11
+#>lexingOutput
+#<parsingOutput
+#d=(4.0/0)
+#>parsingOutput
+#output = DivisionByZero: 1 9
+#commentary = should give DivisionByZero error
+#title = float.DivisionByZero.2
+#_______________________________________________________________
+#TESTCASE
+#<
+d = 0.0
+d
+#>
+#<lexingOutput
+#VARIABLE d 1 1
+#ASSIGNMENT  =  1 3
+#FLOAT 0.0 1 5
+#NEWLINE  1 7
+#VARIABLE d 2 1
+#NEWLINE  2 1
+#>lexingOutput
+#<parsingOutput
+#d=0.0
+#d
+#>parsingOutput
+#output = 0.0
+#commentary = should create zero
+#title = float.zero.1
+#_______________________________________________________________
+#TESTCASE
+#<
+d = -0.0
+d
+#>
+#<lexingOutput
+#VARIABLE d 1 1
+#ASSIGNMENT  =  1 3
+#OPERATION - 1 5
+#FLOAT 0.0 1 6
+#NEWLINE  1 8
+#VARIABLE d 2 1
+#NEWLINE  2 1
+#>lexingOutput
+#<parsingOutput
+#d=-(0.0)
+#d
+#>parsingOutput
+#output = -0.0
+#commentary = should create negative zero
+#title = float.zero.2
+#_______________________________________________________________
+#TESTCASE
+#<
+5.5.5
+#>
+#output = UnrecognizedTokenException: 1 4
+#title = float.lexingError
+#type = LexingError
+#_______________________________________________________________
