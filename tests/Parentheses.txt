@@ -2,29 +2,54 @@
 #<
 (4.1)
 #>
+#<lexingOutput
+#PARENTHESIS ( 1 1
+#FLOAT 4.1 1 2
+#PARENTHESIS ) 1 5
+#NEWLINE  1 5
+#>lexingOutput
+#<parsingOutput
+4.1
+#>parsingOutput
 #output = 4.1
 #commentary = should return float inside
+#title = parentheses.1
 #_______________________________________________________________
 #TESTCASE
 #<
 (3)
 #>
+#<lexingOutput
+#PARENTHESIS ( 1 1
+#INT 3 1 2
+#PARENTHESIS ) 1 3
+#NEWLINE  1 3
+#>lexingOutput
+#<parsingOutput
+3
+#>parsingOutput
 #output = 3
-#commentary = should return digit inside
-#_______________________________________________________________
-#TESTCASE
-#<
-(3.0)
-#>
-#output = 3.0
-#commentary = should return digit inside
+#title = parentheses.2
 #_______________________________________________________________
 #TESTCASE
 #<
 (3) * (4)
 #>
+#<lexingOutput
+#PARENTHESIS ( 1 1
+#INT 3 1 2
+#PARENTHESIS ) 1 3
+#OPERATION * 1 5
+#PARENTHESIS ( 1 7
+#INT 4 1 8
+#PARENTHESIS ) 1 9
+#NEWLINE  1 9
+#>lexingOutput
+#<parsingOutput
+#(3*4)
+#>parsingOutput
 #output = 12
-#commentary = should return digit inside multiplied on 4
+#title = parentheses.3
 #_______________________________________________________________
 #TESTCASE
 #<
@@ -32,6 +57,7 @@
 #>
 #output = 12
 #commentary = should return digit inside multiplied on 4
+#title = parentheses.4
 #_______________________________________________________________
 #TESTCASE
 #<
@@ -39,124 +65,202 @@
 #>
 #output = 7
 #commentary = should return digit inside plus 4
+#title = parentheses.5
 #_______________________________________________________________
 #TESTCASE
 #<
 (3) + 4*4
 #>
+#<lexingOutput
+#PARENTHESIS ( 1 1
+#INT 3 1 2
+#PARENTHESIS ) 1 3
+#OPERATION + 1 5
+#INT 4 1 7
+#OPERATION * 1 8
+#INT 4 1 9
+#NEWLINE  1 9
+#>lexingOutput
+#<parsingOutput
+#(3+(4*4))
+#>parsingOutput
 #output = 19
 #commentary = should return digit inside + calculated expression on the right
+#title = parentheses.6
 #_______________________________________________________________
 #TESTCASE
 #<
 (3+4) - 4*4
 #>
+#<parsingOutput
+#((3+4)-(4*4))
+#>parsingOutput
 #output = -9
 #commentary = should return calculated expression inside parentheses  - calculated expression on the left
+#title = parentheses.7
 #_______________________________________________________________
 #TESTCASE
 #<
 (3+4) + 4*4
 #>
+#<parsingOutput
+#((3+4)+(4*4))
+#>parsingOutput
 #output = 23
 #commentary = should return calculated expression inside parentheses  + calculated expression on the left
+#title = parentheses.8
 _______________________________________________________________
 #TESTCASE
 #<
 (3+4) + 4*4 + 1
 #>
+#<parsingOutput
+#(((3+4)+(4*4))+1)
+#>parsingOutput
 #output = 24
+#title = parentheses.9
 #commentary = should return calculated expression inside parentheses  + calculated expression on the left + 1
 #_______________________________________________________________
 #TESTCASE
 #<
 (3+4)*4 + 4*4
 #>
+#<parsingOutput
+#(((3+4)*4)+(4*4))
+#>parsingOutput
 #output = 44
+#title = parentheses.10
 #commentary = should return calculated expression inside parentheses * 4  + calculated expression on the left
 #_______________________________________________________________
 #TESTCASE
 #<
 (3*5)*4 + 4*4
 #>
+#<parsingOutput
+#(((3*5)*4)+(4*4))
+#>parsingOutput
 #output = 76
+#title = parentheses.11
 #commentary = should return calculated expression inside parentheses * 4  + calculated expression on the left
 #_______________________________________________________________
 #TESTCASE
 #<
 (3+1)*(4+2)
 #>
+#<parsingOutput
+#(3+1)*(4+2)
+#>parsingOutput
 #output = 24
+#title = parentheses.12
 #commentary = should return calculated expression inside parentheses * calculated expression inside parentheses
 #_______________________________________________________________
 #TESTCASE
 #<
 (444/111)*-4
 #>
+#<parsingOutput
+#((444/111)*-(4))
+#>parsingOutput
 #output = -16.0
 #commentary = should return calculated expression inside parentheses * calculated expression inside parentheses
-#title = unary.1
+#title = parentheses.13
 #_______________________________________________________________
 #TESTCASE
 #<
 (3+1)*(4+2) + (444/111)*4
 #>
+#<parsingOutput
+(((3+1)*(4+2))+((444/111)*4))
+#>parsingOutput
 #output = 40.0
-#commentary = should woth with different combinations of parentheses
+#title = parentheses.14
+#commentary = should work with different combinations of parentheses
 #_______________________________________________________________
 #TESTCASE
 #<
 (3+1)*(4+2) + (444/111)*-4
 #>
+#<parsingOutput
+#(((3+1)*(4+2))+((444/111)*-(4)))
+#>parsingOutput
 #output = 8.0
+#title = parentheses.15
 #commentary = should work with different combinations of parentheses
 #_______________________________________________________________
 #TESTCASE
 #<
 (3+1)*-(4+2) + (444/111)*-4
 #>
+#<parsingOutput
+#(((3+1)*-((4+2)))+((444/111)*-(4)))
+#>parsingOutput
 #output = -40.0
+#title = parentheses.16
 #commentary = should work with different combinations of parentheses
 #_______________________________________________________________
 #TESTCASE
 #<
 -(3+1)*-(4+2) + (444/111)*-4
 #>
+#<parsingOutput
+#((-((3+1))*-((4+2)))+((444/111)*-(4)))
+#>parsingOutput
 #output = 8.0
+#title = parentheses.17
 #commentary = should work with different combinations of parentheses
 #_______________________________________________________________
 #TESTCASE
 #<
 -(3+1)*-(4+2) + (444/111)*-4 + (12*5*1*(5+4)) + (12 * 3 - 4*(4-1-2-3-4-5)*5)
 #>
+#<parsingOutput
+#((((-((3+1))*-((4+2)))+((444/111)*-(4)))+(((12*5)*1)*(5+4)))+((12*3)-((4*(((((4-1)-2)-3)-4)-5))*5)))
+#>parsingOutput
 #output = 804.0
+#title = parentheses.18
 #commentary = should work with different combinations of parentheses
 #_______________________________________________________________
 #TESTCASE
 #<
 1 + 2 + 3 + 4 + 5 + 6 +7 +8 +9 + 10
 #>
+#<parsingOutput
+#(((((((((1+2)+3)+4)+5)+6)+7)+8)+9)+10)
+#>parsingOutput
 #output = 55
+#title = parentheses.19
 #commentary = should work with multiple operations in a row
 #_______________________________________________________________
 #TESTCASE
 #<
 1 * 2 * 3 * 4 * 5 * 6 * 7 * 8 * 9 * 10
 #>
+#<parsingOutput
+#(((((((((1*2)*3)*4)*5)*6)*7)*8)*9)*10)
+#>parsingOutput
 #output = 3628800
+#title = parentheses.20
 #commentary = should work with multiple operations in a row
 #_______________________________________________________________
 #TESTCASE
 #<
 -1 * -2 * -3 * -4 * -5 * -6 * -7 * -8 * -9 * -10
 #>
+#<parsingOutput
+#(((((((((-(1)*-(2))*-(3))*-(4))*-(5))*-(6))*-(7))*-(8))*-(9))*-(10))
+#>parsingOutput
 #output = 3628800
+#title = parentheses.21
 #commentary = should work with multiple operations in a row
 #_______________________________________________________________
 #TESTCASE
 #<
 10/2/5
 #>
+#<parsingOutput
+#((10/2)/5)
+#>parsingOutput
 #output = 1.0
+#title = parentheses.22
 #commentary = should work with multiple operations in a row
 #_______________________________________________________________

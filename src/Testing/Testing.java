@@ -15,7 +15,7 @@ public class Testing {
     static Logger logger;
     final static String[] testFiles = {"Int.txt",
             "Float.txt",
-            "Arithmetic_parentheses.txt",
+            "Parentheses.txt",
             "conditional.txt",
             "function_def.txt",
             "variables.txt",
