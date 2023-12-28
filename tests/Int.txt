@@ -1,0 +1,248 @@
+#TESTCASE
+#<
+6
+#>
+#<lexingOutput
+#INT 6 1 1
+#NEWLINE  1 1
+#>lexingOutput
+#<parsingOutput
+#6
+#>parsingOutput
+#output = 6
+#title = int.init.1
+#_______________________________________________________________
+#TESTCASE
+#<
+int(6)
+#>
+#<lexingOutput
+#VARIABLE int 1 1
+#PARENTHESIS ( 1 4
+#INT 6 1 5
+#PARENTHESIS ) 1 6
+#NEWLINE  1 6
+#>lexingOutput
+#<parsingOutput
+#int(6)
+#>parsingOutput
+#output = 6
+#title = int.init.2
+#_______________________________________________________________
+#TESTCASE
+#<
+int(6.0)
+#>
+#<lexingOutput
+#VARIABLE int 1 1
+#PARENTHESIS ( 1 4
+#FLOAT 6.0 1 5
+#PARENTHESIS ) 1 8
+#NEWLINE  1 8
+#>lexingOutput
+#<parsingOutput
+#int(6.0)
+#>parsingOutput
+#output = 6
+#title = int.init.3
+#_______________________________________________________________
+#TESTCASE
+#<
+int("6")
+#>
+#<lexingOutput
+#VARIABLE int 1 1
+#PARENTHESIS ( 1 4
+#STRING 6.0 1 5
+#PARENTHESIS ) 1 10
+#NEWLINE  1 10
+#>lexingOutput
+#<parsingOutput
+#int("6")
+#>parsingOutput
+#output = 6
+#title = int.init.4
+#_______________________________________________________________
+#TESTCASE
+#<
+-1
+#>
+#<lexingOutput
+#OPERATION - 1 1
+#INT 1 1 2
+#NEWLINE  1 2
+#>lexingOutput
+#<parsingOutput
+#-(1)
+#>parsingOutput
+#output = -1
+#title = int.init.5
+#_______________________________________________________________
+#TESTCASE
+#<
++1
+#>
+#<lexingOutput
+#OPERATION + 1 1
+#INT 1 1 2
+#NEWLINE  1 2
+#>lexingOutput
+#<parsingOutput
+#+(1)
+#>parsingOutput
+#output = 1
+#title = int.init.6
+#_______________________________________________________________
+#TESTCASE
+#<
+1+1
+#>
+#<lexingOutput
+#INT 1 1 1
+#OPERATION + 1 2
+#INT 1 1 3
+#NEWLINE  1 3
+#>lexingOutput
+#<parsingOutput
+#(1+1)
+#>parsingOutput
+#output = 2
+#title = int.operations.1
+#_______________________________________________________________
+#TESTCASE
+#<
+1-1
+#>
+#<lexingOutput
+#INT 1 1 1
+#OPERATION - 1 2
+#INT 1 1 3
+#NEWLINE  1 3
+#>lexingOutput
+#<parsingOutput
+#(1-1)
+#>parsingOutput
+#output = 0
+#title = int.operations.2
+#_______________________________________________________________
+#TESTCASE
+#<
+2*5
+#>
+#<lexingOutput
+#INT 2 1 1
+#OPERATION * 1 2
+#INT 5 1 3
+#NEWLINE  1 3
+#>lexingOutput
+#<parsingOutput
+#(2*5)
+#>parsingOutput
+#output = 10
+#title = int.operations.3
+#_______________________________________________________________
+#TESTCASE
+#<
+4/2
+#>
+#<lexingOutput
+#INT 4 1 1
+#OPERATION / 1 2
+#INT 2 1 3
+#NEWLINE  1 3
+#>lexingOutput
+#<parsingOutput
+#(4/2)
+#>parsingOutput
+#output = 2
+#title = int.operations.4
+#_______________________________________________________________
+#TESTCASE
+#<
+4/2
+#>
+#<lexingOutput
+#INT 4 1 1
+#OPERATION / 1 2
+#INT 2 1 3
+#NEWLINE  1 3
+#>lexingOutput
+#<parsingOutput
+#(4/2)
+#>parsingOutput
+#output = 2
+#title = int.operations.multiple.1
+#_______________________________________________________________
+#TESTCASE
+#<
+f = 0
+f
+#>
+#lexingOutput
+#VARIABLE f 1 1
+#ASSIGNMENT  =  1 3
+#INT 0 1 5
+#NEWLINE  1 5
+#VARIABLE f 2 1
+#NEWLINE  2 1
+#>lexingOutput
+#<parsingOutput
+#f=0
+#f
+#>parsingOutput
+#output = 0
+#commentary = should create zero
+#title = int_zero.1
+#_______________________________________________________________
+#TESTCASE
+#<
+f = -0
+f
+#>
+#output = 0
+#commentary = should replace negative zero with zero
+#title = int_zero.2
+#_______________________________________________________________
+#TESTCASE
+#<
+f = -33333333333333333
+f
+#>
+#lexingOutput
+#VARIABLE f 1 1
+#ASSIGNMENT  =  1 3
+#OPERATION - 1 5
+#INT 33333333333333333 1 6
+#NEWLINE  1 22
+#VARIABLE f 2 1
+#NEWLINE  2 1
+#>lexingOutput
+#<parsingOutput
+#f=-(33333333333333333)
+#f
+#>parsingOutput
+#output = IncorrectValue: 1 6
+#commentary = too large value
+#title = int_large.1
+#_______________________________________________________________
+#TESTCASE
+#<
+f = 33333333333333333
+f
+#>
+#lexingOutput
+#VARIABLE f 1 1
+#ASSIGNMENT  =  1 3
+#INT 33333333333333333 1 5
+#NEWLINE  1 21
+#VARIABLE f 2 1
+#NEWLINE  2 1
+#>lexingOutput
+#<parsingOutput
+#f=33333333333333333
+#f
+#>parsingOutput
+#output = IncorrectValue: 1 5
+#commentary = too large value
+#title = int_large.2
+#_______________________________________________________________

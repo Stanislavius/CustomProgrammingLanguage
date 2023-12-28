@@ -13,7 +13,7 @@ import java.util.logging.Logger;
 
 public class Testing {
     static Logger logger;
-    final static String[] testFiles = {"Arithmetic_int.txt",
+    final static String[] testFiles = {"Int.txt",
             "Float.txt",
             "Arithmetic_parentheses.txt",
             "conditional.txt",
