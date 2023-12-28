@@ -86,10 +86,12 @@ public class Parser {
                         break;
                     }
                 }
-                if (hasBody == false)
+                if (hasBody == false && line.size() != 0)
                     throw new EmptyLineException(line.getFirst());
-                lines.add(line);
-                line = new LinkedList<Token>();
+                if (line.size() != 0) {
+                    lines.add(line);
+                    line = new LinkedList<Token>();
+                }
             } else
                 line.add(token);
         }
