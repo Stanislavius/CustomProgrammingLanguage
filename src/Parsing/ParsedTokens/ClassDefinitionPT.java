@@ -29,7 +29,6 @@ public class ClassDefinitionPT extends StatementWithBlockPT {
             sb.append("\n");
             for (int i = 0; i < toDo.size(); ++i) {
                 sb.append(toDo.get(i).toString());
-                sb.append("\n");
             }
         }
         return sb.toString();
