@@ -16,7 +16,7 @@ public class Testing {
     final static String[] testFiles = {"Int.txt",
             "Float.txt",
             "Parentheses.txt",
-            "conditional.txt",
+            "Conditional.txt",
             "function_def.txt",
             "variables.txt",
             "string.txt",
