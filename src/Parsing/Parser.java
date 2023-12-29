@@ -463,7 +463,9 @@ public class Parser {
         while (found) {
             found = false;
             for (int i = 0; i < operands.size(); ++i) {
-                if (!found && i != operands.size() - 1 && operands.get(i + 1).getType() != TokenType.STRING && operands.get(i + 1).getValue().equals(".")) {
+                if (!found && i != operands.size() - 1 && operands.get(i + 1).getType() != TokenType.STRING &&
+                        operands.get(i + 1).getValue().equals(".") &&
+                        operands.get(i + 1).getParsedType() == ParsedTokenType.UNKNOWN_OPERATION) {
                     result.add(new BinaryPT(operands.get(i + 1).getToken(), operands.get(i), operands.get(i + 2)));
                     i = i + 2;
                     found = true;
