@@ -1,6 +1,6 @@
 #TESTCASE
 #<
-class c:
+class c
     def __init__(self)
         self.a = 5
 
@@ -13,7 +13,7 @@ obj.a
 #_______________________________________________________________
 #TESTCASE
 #<
-class c:
+class c
     def __init__(self, val)
         self.a = val
 
@@ -26,7 +26,7 @@ obj.a
 #_______________________________________________________________
 #TESTCASE
 #<
-class c:
+class c
     def __init__(self, val)
         self.a = val
     def __add__(self, other)
@@ -42,7 +42,7 @@ obj.a
 #_______________________________________________________________
 #TESTCASE
 #<
-class c:
+class c
     def __init__(self, val)
         self.a = val
     def __str__(self, other)
@@ -57,7 +57,7 @@ str(obj)
 #_______________________________________________________________
 #TESTCASE
 #<
-class c:
+class c
     def __init__(self, val)
         self.a = val
     def __str__(self, other)
@@ -71,7 +71,7 @@ str(c)
 #_______________________________________________________________
 #TESTCASE
 #<
-class c:
+class c
     def __init__(self, val)
         self.a = val
     def __str__(self, other)
@@ -88,7 +88,7 @@ obj == 4
 #_______________________________________________________________
 #TESTCASE
 #<
-class c:
+class c
     def __init__(self, val)
         self.a = val
     def __str__(self, other)
@@ -105,7 +105,7 @@ len(s)
 #_______________________________________________________________
 #TESTCASE
 #<
-class c:
+class c
     def __init__(self, val)
         self.a = val
     def __str__(self, other)
@@ -122,7 +122,7 @@ abs(s)
 #_______________________________________________________________
 #TESTCASE
 #<
-class c:
+class c
     def __init__(self, val)
         self.a = val
     def __add__(self, other)
@@ -139,7 +139,7 @@ op1.a
 #_______________________________________________________________
 #TESTCASE
 #<
-class c:
+class c
     def __init__(self, val)
         self.a = val
     def __add__(self, other)
@@ -161,7 +161,7 @@ op1.a
 #_______________________________________________________________
 #TESTCASE
 #<
-class c:
+class c
     def __init__(self, val)
         self.a = val
     def __add__(self, other)
@@ -183,7 +183,7 @@ op1.a
 #_______________________________________________________________
 #TESTCASE
 #<
-class c:
+class c
     def __init__(self, val, func)
         self.val = val
         self.func = func
@@ -202,7 +202,7 @@ obj.func()
 #_______________________________________________________________
 #TESTCASE
 #<
-class c:
+class c
     def __init__(self, val, func)
         self.val = val
         self.func = func
@@ -221,7 +221,7 @@ obj.func()
 #_______________________________________________________________
 #TESTCASE
 #<
-class c:
+class c
     def __init__(self, val)
         self.val = val
         def func(v)
@@ -240,7 +240,7 @@ obj.func()
 #_______________________________________________________________
 #TESTCASE
 #<
-class c:
+class c
     def __init__(self, val, k)
         self.val = val
         def func(v)
