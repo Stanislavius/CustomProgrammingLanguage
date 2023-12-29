@@ -58,7 +58,7 @@ class c
 obj = c(5)
 obj.a
 #>
-<#parsingOutput
+#>parsingOutput
 #class c
 #\t1 def __init__(self, val)
 #\t2 (self.a)=val

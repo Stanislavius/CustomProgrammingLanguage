@@ -71,7 +71,7 @@ public class Lexer {
             sb.append("\n");
         }
         logger.info(sb.toString());
-        return sort(tokens);
+        return tokens;
     }
 
     public boolean isWithoutError(){
@@ -125,8 +125,8 @@ public class Lexer {
         for(int lineNum = 0; lineNum < code.length; ++lineNum){
             try {
                 LinkedList<Token> cur = this.readLine(code[lineNum], lineNum+1);
-                if (cur.size() > 1)
-                    tokens.addAll(this.readLine(code[lineNum], lineNum+1));
+                //if (cur.size() > 1)
+                tokens.addAll(this.readLine(code[lineNum], lineNum+1));
             }
             catch (LexingException e) {
                 exceptions.add(e);
