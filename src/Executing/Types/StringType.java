@@ -39,6 +39,14 @@ public class StringType extends ObjectType {
 
         ));
 
+        type.setMember("__getitem__", new FunctionType("__getitem__", new SourceFunctionType(){
+            public ObjectType execute(LinkedList<ObjectType> args){
+                StringType v1 = ((StringType)(args.get(0)));
+                return v1.get(args.get(1));
+            }
+        }
+        ));
+
         type.setMember("__mul__", new FunctionType("__mul__", new SourceFunctionType(){
             public ObjectType execute(LinkedList<ObjectType> args){
                 String v1 = ((StringType)(args.get(0))).toString();
@@ -76,6 +84,20 @@ public class StringType extends ObjectType {
 
         Executor.setVariable("str", type);
     }
+
+    public ObjectType get(int inx){
+        return new StringType(this.value.substring(inx, inx));
+    }
+
+    public ObjectType get(IntType inx){
+        return new StringType(this.value.substring(inx.getInt(), inx.getInt()+1));
+    }
+
+    public ObjectType get(ObjectType inx){
+        IntType obj = (IntType)inx;
+        return new StringType(this.value.substring(obj.getInt(), obj.getInt()+1));
+    }
+
     String value;
     public StringType(String value) {
         this.value = value;
