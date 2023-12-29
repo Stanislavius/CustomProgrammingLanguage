@@ -9,7 +9,7 @@
 #NEWLINE  1 5
 #>lexingOutput
 #<parsingOutput
-4.1
+#4.1
 #>parsingOutput
 #output = 4.1
 #commentary = should return float inside
@@ -26,7 +26,7 @@
 #NEWLINE  1 3
 #>lexingOutput
 #<parsingOutput
-3
+#3
 #>parsingOutput
 #output = 3
 #title = parentheses.2
