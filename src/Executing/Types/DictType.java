@@ -85,6 +85,48 @@ public class DictType extends ObjectType {
         }
         ));
 
+        type.setMember("__eq__", new FunctionType("__eq__", new SourceFunctionType(){
+            public ObjectType execute(LinkedList<ObjectType> args) throws ExecutionException {
+                HashMap<ObjectType, ObjectType> v1 = ((DictType)(args.get(0))).getValues();
+                ObjectType val2 = args.get(1);
+                if (val2.getType().toString().equals("dict")) {
+                    HashMap<ObjectType, ObjectType> v2 = ((DictType) (args.get(1))).getValues();
+                    boolean result = v1.equals(v2);
+                    if (result)
+                        return new IntType(1);
+                    else
+                        return new IntType(0);
+                }
+
+                if (val2.getType().toString().equals("str")) {
+                    return new IntType(0);
+                }
+                if (val2.getType().toString().equals("list")) {
+                    return new IntType(0);
+                }
+                if (val2.getType().toString().equals("type")) {
+                    return new IntType(0);
+                }
+                if (val2.getType().toString().equals("int")) {
+                    return new IntType(0);
+                }
+                if (val2.getType().toString().equals("float")) {
+                    return new IntType(0);
+                }
+
+                LinkedList<ObjectType> revArgs = new LinkedList<ObjectType>();
+                if (val2.getMember("__class__").contains("__eq__")) {
+                    revArgs.add(val2);
+                    revArgs.add(args.get(0));
+                    return val2.getMember("__eq__").call(revArgs);
+                }
+                else{
+                    return new IntType(0);
+                }
+            }
+        }
+        ));
+
         Executor.setVariable("dict", type);
     }
     HashMap<ObjectType, ObjectType> dict;
@@ -141,5 +183,9 @@ public class DictType extends ObjectType {
     public ObjectType set(ObjectType key, ObjectType value){
        this.dict.put(key, value);
        return new VoidType();
+    }
+
+    public HashMap<ObjectType, ObjectType> getValues(){
+        return dict;
     }
 }

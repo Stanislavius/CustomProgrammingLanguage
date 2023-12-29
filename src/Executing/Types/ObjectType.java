@@ -18,6 +18,17 @@ public class ObjectType{
         return object.getMember(name);
     }
 
+    public ObjectType getMemberNoBound(String name){
+        if (this.members.containsKey(name)){
+            ObjectType member = this.members.get(name);
+            return member;
+        }
+        else {
+            ObjectType member = this.getMember("__class__").getMember(name);
+            return member;
+        }
+    }
+
     public ObjectType getMember(String name){
         if (this.members.containsKey(name)){
             ObjectType member = this.members.get(name);

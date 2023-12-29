@@ -16,6 +16,7 @@ public class FunctionCallET extends ExecutionToken {
     }
 
     public ObjectType execute() throws ExecutionException {
+        ObjectType func = Executor.getVariable(token.getValue());
         return Executor.getVariable(token.getValue()).call(executeArgs(args));
     }
 

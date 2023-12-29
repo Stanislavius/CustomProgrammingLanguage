@@ -2,6 +2,7 @@ package Executing.ExecutionTokens;
 
 import Executing.Types.ErrorType;
 import Executing.Types.ExecutionException;
+import Executing.Types.IntType;
 import Executing.Types.ObjectType;
 import Lexing.Token;
 
@@ -25,7 +26,7 @@ public class BinaryOperationET extends ExecutionToken {
         if (token.getValue().equals(".")){
             lRes = left.execute();
             VariableET veb = (VariableET) right;
-            return lRes.getMember(veb.token.getValue());
+            return lRes.getMemberNoBound(veb.token.getValue());
         }
         else{
             lRes = left.execute();
@@ -41,19 +42,29 @@ public class BinaryOperationET extends ExecutionToken {
                 try {
                     switch (token.getValue()) {
                         case "+":
-                            return lRes.getMember("__class__").getMember("__add__").call(args);
+                            return lRes.getMemberNoBound("__class__").getMemberNoBound("__add__").call(args);
                         case "-":
-                            return lRes.getMember("__class__").getMember("__sub__").call(args);
+                            return lRes.getMemberNoBound("__class__").getMemberNoBound("__sub__").call(args);
                         case "*":
-                            return lRes.getMember("__class__").getMember("__mul__").call(args);
+                            return lRes.getMemberNoBound("__class__").getMemberNoBound("__mul__").call(args);
                         case "/":
-                            return lRes.getMember("__class__").getMember("__div__").call(args);
+                            return lRes.getMemberNoBound("__class__").getMemberNoBound("__div__").call(args);
                         case "==":
-                            return lRes.getMember("__class__").getMember("__eq__").call(args);
+                            if (lRes.getMemberNoBound("__class__").contains("__eq__")) {
+                                ObjectType member = lRes.getMemberNoBound("__class__").getMemberNoBound("__eq__");
+                                return lRes.getMemberNoBound("__class__").getMemberNoBound("__eq__").call(args);
+                            }
+                            else {
+                                boolean identity = (lRes == rRes);
+                                if (identity)
+                                    return new IntType(1);
+                                else
+                                    return new IntType(0);
+                            }
                         case "<":
-                            return lRes.getMember("__class__").getMember("__lt__").call(args);
+                            return lRes.getMemberNoBound("__class__").getMemberNoBound("__lt__").call(args);
                         case ">":
-                            return lRes.getMember("__class__").getMember("__gt__").call(args);
+                            return lRes.getMemberNoBound("__class__").getMemberNoBound("__gt__").call(args);
                         default:
                             return new ErrorType();
                     }

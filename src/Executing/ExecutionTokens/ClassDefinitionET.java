@@ -44,7 +44,7 @@ public class ClassDefinitionET extends ExecutionToken{
                     public ObjectType execute(LinkedList<ObjectType> args) throws ExecutionException {
                         ObjectType newObject = new CustomObject();
                         args.add(0, newObject);
-                        newClass.getMember("__init__").call(args);
+                        newClass.getMemberNoBound("__init__").call(args);
                         newObject.setMember("__class__", newClass);
                         return newObject;
                     }
@@ -53,7 +53,12 @@ public class ClassDefinitionET extends ExecutionToken{
                 newClass.setMember("__init__", new FunctionType(name = "__init__", new CustomFunctionType(initFunc)));
             }
             else {
-                newClass.setMember(key, member.execute());
+                if (member.getClass() == FunctionDefinitionET.class){
+                    FunctionDefinitionET func = (FunctionDefinitionET) member;
+                    newClass.setMember(key, new FunctionType(name = key, new CustomFunctionType(func)));
+                }
+                else
+                    newClass.setMember(key, member.execute());
             }
         }
         newClass.setMember("__class__", ClassType.getTypeClass());

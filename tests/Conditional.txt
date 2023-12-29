@@ -329,7 +329,103 @@ a1 = val(4)
 a2 = val(4)
 a1 == a2
 #>
-#output = 1
+#output = 0
 #commentary = should allow to compare objects
 #title = comparison_objects.2
+#_______________________________________________________________
+#TESTCASE
+#<
+class val
+    def __init__(self, v)
+        self.v = v
+    def __eq__(self, other)
+        self.v == other.v
+a1 = val(4)
+a2 = val(4)
+a1 == a2
+#>
+#output = 1
+#commentary = should allow to compare objects
+#title = comparison_objects.3
+#_______________________________________________________________
+#TESTCASE
+#<
+class val
+    def __init__(self, v)
+        self.v = v
+    def __eq__(self, other)
+        self.v == other.v
+a1 = val(4)
+a2 = val(6)
+a1 == a2
+#>
+#output = 0
+#commentary = should allow to compare objects
+#title = comparison_objects.4
+#_______________________________________________________________
+#TESTCASE
+#<
+a = [2, 4, 5]
+b = [2, 3, 4]
+a == b
+#>
+#output = 0
+#commentary = should allow to compare objects
+#title = comparison_objects.5
+#_______________________________________________________________
+#TESTCASE
+#<
+a = [2, 4, 5]
+b = [2, 4, 5]
+a == b
+#>
+#output = 1
+#commentary = should allow to compare objects
+#title = comparison_objects.6
+#_______________________________________________________________
+#TESTCASE
+#<
+a = {1:2, 3:4}
+b = {1:2, 3:4}
+a == b
+#>
+#output = 1
+#commentary = should allow to compare objects
+#title = comparison_objects.7
+#_______________________________________________________________
+#TESTCASE
+#<
+a = {1:2, 3:6}
+b = {1:2, 3:4}
+a == b
+#>
+#output = 0
+#commentary = should allow to compare objects
+#title = comparison_objects.8
+#_______________________________________________________________
+#TESTCASE
+#<
+class c
+    def __init__(self, a)
+        self.a = 4
+    def __eq__(self, other)
+        self.a == other
+obj = c(4)
+obj == 4
+#>
+#output = 1
+#commentary = should allow to compare objects
+#title = comparison_objects.9
+#_______________________________________________________________
+#TESTCASE
+#<
+class c
+    def __init__(self, a)
+        self.a = 4
+obj = c(4)
+obj == obj
+#>
+#output = 1
+#commentary = should allow to compare objects
+#title = comparison_objects.10
 #_______________________________________________________________

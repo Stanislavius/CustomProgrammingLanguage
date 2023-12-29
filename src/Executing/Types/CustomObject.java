@@ -39,6 +39,21 @@ public class CustomObject extends ObjectType{
         return this.getMember(new StringType(name));
     }
 
+    public ObjectType getMemberNoBound(StringType key){
+        if (this.dict.containsKey(key)){
+            ObjectType member = this.dict.get(key);
+            return member;
+        }
+        else {
+            ObjectType member = this.getMember("__class__").getMember(key.getValue());
+            return member;
+        }
+    }
+
+    public ObjectType getMemberNoBound(String key){
+        return this.getMemberNoBound(new StringType(key));
+    }
+
     public ObjectType getMember(StringType key){
         if (this.dict.containsKey(key)){
             ObjectType member = this.dict.get(key);
@@ -55,6 +70,13 @@ public class CustomObject extends ObjectType{
             } else
                 return member;
         }
+    }
+
+    public boolean contains(String name){
+        boolean result = this.members.containsKey(name);
+        if (!result)
+            result = this.dict.containsKey(name);
+        return result;
     }
 
 }

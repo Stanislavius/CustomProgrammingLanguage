@@ -26,7 +26,8 @@ public class AssignmentET extends ExecutionToken {
         if (assignTo.getClass().equals(MemberET.class)){
             MemberET met = (MemberET)  assignTo;
             ObjectType object = met.executeObject();
-            object.setMember(met.getNameMember(), value.execute());
+            ObjectType val = value.execute();
+            object.setMember(met.getNameMember(), val);
         }
 
         if(assignTo.getClass().equals(ItemET.class)){
