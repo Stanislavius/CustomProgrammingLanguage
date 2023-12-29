@@ -37,3 +37,4 @@ bin/
 /.idea/vcs.xml
 ParserLogs.log
 TestingLogs.log
+LexingLogs.log
