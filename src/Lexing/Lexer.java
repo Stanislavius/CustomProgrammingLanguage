@@ -181,7 +181,7 @@ public class Lexer {
         }
 
         if (strIsExpected)
-            throw new MissingEndOfStringException(st, lineNum, startStr);
+            throw new MissingEndOfStringException(st, lineNum, startStr+1);
 
         if (count != 0){
             throw new IndentationException(st, lineNum, indentation+count);
