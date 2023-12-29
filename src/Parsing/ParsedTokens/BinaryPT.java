@@ -50,6 +50,8 @@ public class BinaryPT extends ParsedToken{
         if (right.getClass() != FunctionCallPT.class)
             sb.append(token.getValue());
         sb.append(right.toString());
+        if (token.getValue().equals("["))
+            sb.append("]");
         if (right.getClass() != FunctionCallPT.class)
             sb.append(")");
         return sb.toString();
