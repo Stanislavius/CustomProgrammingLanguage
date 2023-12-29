@@ -187,9 +187,8 @@ public class Lexer {
                 if (st.substring(0, word.length() + 1).equals(word + " ")) {
                     int start = indentation * 4;
                     tokens.add(new Token(TokenType.BLOCKWORD, word, lineNum, start+1, originalString));
-                    st = st.substring(0, start) +
-                            " ".repeat(word.length()) +
-                            st.substring(start+word.length());
+                    st = " ".repeat(word.length()) +
+                            st.substring(word.length());
                 }
             }
         }
