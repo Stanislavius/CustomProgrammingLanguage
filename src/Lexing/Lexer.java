@@ -308,7 +308,7 @@ public class Lexer {
         tokens.add(new Token(TokenType.NEWLINE, "", lineNum, indentation * 4 + st.length() - 1+1, originalString));
         for(i = 0; i < st.length(); ++i){
             if (st.charAt(i) != ' ')
-                throw new UnrecognizedTokenException(originalString, lineNum, i);
+                throw new UnrecognizedTokenException(originalString, lineNum, i+1);
         }
         StringBuilder SB = new StringBuilder();
         SB.append("Lexing is finished, tokens are \n");
