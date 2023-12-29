@@ -53,9 +53,9 @@ int("6")
 #<lexingOutput
 #VARIABLE int 1 1
 #PARENTHESIS ( 1 4
-#STRING 6.0 1 5
-#PARENTHESIS ) 1 10
-#NEWLINE  1 10
+#STRING 6 1 5
+#PARENTHESIS ) 1 8
+#NEWLINE  1 8
 #>lexingOutput
 #<parsingOutput
 #int("6")
