@@ -64,7 +64,7 @@ obj.a
 #\t2 (self.a)=val
 #obj=c()
 #(obj.a)
-#>
+#>parsingOutput
 #output = 5
 #commentary = simple class definition, should return value
 #title = cls_def.2
@@ -81,6 +81,7 @@ obj = c(5)
 obj = c + 5
 obj.a
 #>
+#<parsingOutput
 #class c
 #\t1 def __init__(self, val)
 #\t2 (self.a)=val
@@ -89,7 +90,7 @@ obj.a
 #obj=c(5)
 #obj=(c+5)
 #(obj.a)
-#>
+#>parsingOutput
 #output = 10
 #commentary = should use magic method __add__ when '+' operator is used
 #title = cls_def.3
