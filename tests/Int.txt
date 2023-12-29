@@ -154,7 +154,7 @@ int("6")
 #<parsingOutput
 #(4/2)
 #>parsingOutput
-#output = 2
+#output = 2.0
 #title = int.operations.4
 #_______________________________________________________________
 #TESTCASE
@@ -170,7 +170,7 @@ int("6")
 #<parsingOutput
 #(4/2)
 #>parsingOutput
-#output = 2
+#output = 2.0
 #title = int.operations.multiple.1
 #_______________________________________________________________
 #TESTCASE
