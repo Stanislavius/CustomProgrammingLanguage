@@ -63,6 +63,14 @@ public class Lexer {
         catch (IOException e){
             e.printStackTrace();
         }
+        tokens = sort(tokens);
+        StringBuilder sb = new StringBuilder();
+        sb.append("Result of lexing is: \n");
+        for(int i = 0; i < tokens.size(); ++i){
+            sb.append(tokens.get(i).toString());
+            sb.append("\n");
+        }
+        logger.info(sb.toString());
         return sort(tokens);
     }
 
