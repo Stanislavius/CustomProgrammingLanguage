@@ -1,7 +1,13 @@
 #TESTCASE
 #<
-a = 4 #a = 43435435345
+a = 4#a = 43435435345
 #>
+#<lexingOutput
+#VARIABLE a 1 1
+#ASSIGNMENT  =  1 3
+#INT 4 1 5
+#NEWLINE  1 5
+#>lexingOutput
 #output = void
 #commentary = should recognize commentary
 #title = commentary.1
@@ -20,8 +26,7 @@ a
 def fun(a, b)
     a + b
 
-func(4, 5)
-a
+fun(4, 5)
 #>
 #output = 9
 #commentary = should not cause error because of empty line after function definition
@@ -32,8 +37,8 @@ a
 a2 = 2
 a2
 #>
-#output = 9
-#commentary = should accept variables with names
+#output = 2
+#commentary = should accept variables with digits in names
 #title = names.1
 #_______________________________________________________________
 #TESTCASE
@@ -64,7 +69,7 @@ fun2(4)
 #>
 #output = 4
 #commentary = should create function with digits and execute it
-#title = names.3
+#title = names.4
 #_______________________________________________________________
 #TESTCASE
 #<
@@ -88,7 +93,7 @@ d =  call(
 #<
 a = 4 ^ 5
 #>
-#output = UnrecognizedTokenException: 1 6
+#output = UnrecognizedTokenException: 1 7
 #commentary = ^ cannot be recognized
 #title = unrecognized.1
 #type = LexingError
@@ -250,5 +255,86 @@ try
 #output = UnexpectedIndentException: 1 5
 #commentary =
 #title = Indent.1
+#type = ParsingError
+#_______________________________________________________________
+#TESTCASE
+#<
+if = 4
+#>
+#output = UsingKeywordAsVariableException: 1 1
+#commentary =
+#title = KeyWordAsVariable.1
+#type = ParsingError
+#_______________________________________________________________
+#TESTCASE
+#<
+while = 4
+#>
+#output = UsingKeywordAsVariableException: 1 1
+#commentary =
+#title = KeyWordAsVariable.2
+#type = ParsingError
+#_______________________________________________________________
+#TESTCASE
+#<
+class = 4
+#>
+#output = UsingKeywordAsVariableException: 1 1
+#commentary =
+#title = KeyWordAsVariable.3
+#type = ParsingError
+#_______________________________________________________________
+#TESTCASE
+#<
+def = 6
+#>
+#output = UsingKeywordAsVariableException: 1 1
+#commentary =
+#title = KeyWordAsVariable.4
+#type = ParsingError
+#_______________________________________________________________
+#TESTCASE
+#<
+25 = 5
+#>
+#output = CannotAssignToLiteralException: 1 1
+#commentary =
+#title = AssignToLiteral.1
+#type = ParsingError
+#_______________________________________________________________
+#TESTCASE
+#<
+25.5 = 5
+#>
+#output = CannotAssignToLiteralException: 1 1
+#commentary =
+#title = AssignToLiteral.2
+#type = ParsingError
+#_______________________________________________________________
+#TESTCASE
+#<
+"dsf" = 5
+#>
+#output = CannotAssignToLiteralException: 1 1
+#commentary =
+#title = AssignToLiteral.3
+#type = ParsingError
+#_______________________________________________________________
+#TESTCASE
+#<
+[4, 5] = 5
+#>
+#output = CannotAssignToLiteralException: 1 1
+#commentary =
+#title = AssignToLiteral.4
+#type = ParsingError
+#_______________________________________________________________
+#TESTCASE
+#<
+{5:4, 1:2} = 5
+#>
+#output = CannotAssignToLiteralException: 1 1
+#commentary =
+#title = AssignToLiteral.5
 #type = ParsingError
 #_______________________________________________________________
