@@ -21,7 +21,7 @@ public class Testing {
             "variables.txt",
             "string.txt",
             "list.txt",
-            "class_def.txt",
+            "ClassDefinition.txt",
             "general.txt",
             "dict.txt",
             "ExecutionErrors_testing.txt",

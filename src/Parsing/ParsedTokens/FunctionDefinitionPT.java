@@ -45,7 +45,8 @@ public class FunctionDefinitionPT extends StatementWithBlockPT {
         sb.append("(");
         for(int i = 0; i < args.size(); ++i){
             sb.append(args.get(i).toString());
-            sb.append(" ");
+            if (i != args.size() - 1)
+                sb.append(", ");
         }
         sb.append(")");
         if (toDo != null) {

@@ -7,6 +7,44 @@ class c
 obj = c()
 obj.a
 #>
+#<lexingOutput
+#BLOCKWORD class 1 1
+#VARIABLE c 1 7
+#NEWLINE  1 7
+#INDENTATION 	 2 4
+#BLOCKWORD def 2 5
+#VARIABLE __init__ 2 9
+#PARENTHESIS ( 2 17
+#VARIABLE self 2 18
+#PARENTHESIS ) 2 22
+#NEWLINE  2 22
+#INDENTATION 	 3 4
+#INDENTATION 	 3 8
+#VARIABLE self 3 9
+#OPERATION . 3 13
+#VARIABLE a 3 14
+#ASSIGNMENT  =  3 16
+#INT 5 3 18
+#NEWLINE  3 18
+#NEWLINE  4 0
+#VARIABLE obj 5 1
+#ASSIGNMENT  =  5 5
+#VARIABLE c 5 7
+#PARENTHESIS ( 5 8
+#PARENTHESIS ) 5 9
+#NEWLINE  5 9
+#VARIABLE obj 6 1
+#OPERATION . 6 4
+#VARIABLE a 6 5
+#NEWLINE  6 5
+#>lexingOutput
+#<parsingOutput
+#class c
+#\t1 def __init__(self)
+#\t2 (self.a)=5
+#obj=c()
+#(obj.a)
+#>parsingOutput
 #output = 5
 #commentary = simple class definition
 #title = cls_def.1
@@ -19,6 +57,13 @@ class c
 
 obj = c(5)
 obj.a
+#>
+<#parsingOutput
+#class c
+#\t1 def __init__(self, val)
+#\t2 (self.a)=val
+#obj=c()
+#(obj.a)
 #>
 #output = 5
 #commentary = simple class definition, should return value
@@ -35,6 +80,15 @@ class c
 obj = c(5)
 obj = c + 5
 obj.a
+#>
+#class c
+#\t1 def __init__(self, val)
+#\t2 (self.a)=val
+#\t1 def __add__(self, other)
+#\t2 c((self.a+other))
+#obj=c(5)
+#obj=(c+5)
+#(obj.a)
 #>
 #output = 10
 #commentary = should use magic method __add__ when '+' operator is used
@@ -217,7 +271,7 @@ obj.func()
 #>
 #output = 4
 #commentary = should accept function as arg
-#title = func_assign.1
+#title = func_assign.2
 #_______________________________________________________________
 #TESTCASE
 #<
@@ -236,7 +290,7 @@ obj.func()
 #>
 #output = 4
 #commentary = function can be created inside class
-#title = func_assign.2
+#title = func_assign.3
 #_______________________________________________________________
 #TESTCASE
 #<
@@ -255,5 +309,64 @@ obj.func()
 #>
 #output = 7
 #commentary = function can be created inside class and accept args from outside
-#title = func_assign.3
+#title = func_assign.4
+#_______________________________________________________________
+#TESTCASE
+#<
+class c
+    def __init__(self, val, k)
+        self.val = val
+        def func(v)
+            v + k
+        self.func = func
+    def func(self)
+        self.func(self.val)
+
+
+obj = c(2, 5)
+obj.func()
+#>
+#output = 7
+#commentary = function can be created inside class and accept args from outside
+#title = func_assign.5
+#_______________________________________________________________
+#TESTCASE
+#<
+class c
+    def __init__(self, val, k)
+
+obj = c(2, 5)
+obj.func()
+#>
+#output = NoBodyException: 3 0
+#title = class_def.error.1
+#type = ParsingError
+#_______________________________________________________________
+#TESTCASE
+#<
+class c
+    def __init__(self, val, k)
+        self.k = k
+        self.val = val
+    def some_func(arg1, arg2)
+
+obj = c(2, 5)
+obj.func()
+#>
+#output = NoBodyException: 6 0
+#title = class_def.error.2
+#type = ParsingError
+#_______________________________________________________________
+#TESTCASE
+#<
+class c
+    def __init__(self, val, k)
+    def some_func(arg1, arg2)
+        self.a = arg1
+obj = c(2, 5)
+obj.func()
+#>
+#output = NoBodyException: 3 0
+#title = class_def.error.3
+#type = ParsingError
 #_______________________________________________________________
