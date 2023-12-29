@@ -501,7 +501,7 @@ public class Parser {
                 if (i == tokens.size() - 1)
                     throw new NoBodyException(tokens.get(i).getLine(), tokens.get(i).getLineNum(), tokens.get(i).getLineLength());
                 if (tokens.get(i).getIndentationLevel() + 1 != tokens.get(i+1).getIndentationLevel())
-                    throw new NoBodyException(tokens.get(i+1).getLine(), tokens.get(i+1).getLineNum(), 0);
+                    throw new NoBodyException(tokens.get(i+1).getLine(), tokens.get(i+1).getLineNum(), 1);
             }
         }
 
