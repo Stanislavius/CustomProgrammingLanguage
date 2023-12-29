@@ -441,9 +441,8 @@ public class Parser {
             return line.getFirst();
         }
         //checks
-
-        LinkedList<ParsedToken> operands = groupByMembership(line);
-        operands = processStructures(operands);
+        LinkedList<ParsedToken> operands = processStructures(line);
+        operands = groupByMembership(operands);
         ParsedToken result = null;
         operands = divideByUnaryOperands(operands);
         if (operands.size() == 1)
