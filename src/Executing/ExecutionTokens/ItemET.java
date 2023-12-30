@@ -1,5 +1,6 @@
 package Executing.ExecutionTokens;
 
+import Executing.Types.ErrorType;
 import Executing.Types.ExecutionException;
 import Executing.Types.ObjectType;
 import Lexing.Token;
@@ -14,14 +15,30 @@ public class ItemET extends ExecutionToken{
     }
 
     public ObjectType execute() throws ExecutionException {
-        ObjectType result = object.execute();
-        ObjectType func = result.getMember("__getitem__");
-        return func.call(item.execute());
+        try {
+            ObjectType result = object.execute();
+            ObjectType func = result.getMember("__getitem__");
+            return func.call(item.execute());
+        }
+        catch (ExecutionException e){
+            ErrorType error = e.getError();
+            error.setLine(this.getToken().getLineNum());
+            error.setPosition(this.getToken().getPos());
+            throw e;
+        }
     }
 
     public ObjectType executeSetItem(ObjectType whatToSet) throws ExecutionException {
-        ObjectType result = object.execute();
-        return result.getMember("__setitem__").call(item.execute(), whatToSet);
+        try {
+            ObjectType result = object.execute();
+            return result.getMember("__setitem__").call(item.execute(), whatToSet);
+        }
+        catch (ExecutionException e){
+            ErrorType error = e.getError();
+            error.setLine(this.getToken().getLineNum());
+            error.setPosition(this.getToken().getPos());
+            throw e;
+        }
     }
 
     public ObjectType executeObject() throws ExecutionException {

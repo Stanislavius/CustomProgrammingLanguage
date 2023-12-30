@@ -36,16 +36,34 @@ public class ListType extends ObjectType {
         ));
 
         type.setMember("__getitem__", new FunctionType("__getitem__", new SourceFunctionType(){
-            public ObjectType execute(LinkedList<ObjectType> args){
+            public ObjectType execute(LinkedList<ObjectType> args) throws ExecutionException {
                 ListType v1 = ((ListType)(args.get(0)));
+                if (args.get(1).getClass() != IntType.class){
+                    ErrorType error = new ErrorType("WrongIndexType");
+                    throw new ExecutionException(error);
+                }
+                IntType inx = (IntType) args.get(1);
+                if (inx.getInt() >= v1.getValues().size()) {
+                    ErrorType error = new ErrorType("NoSuchKey");
+                    throw new ExecutionException(error);
+                }
                 return v1.get(args.get(1));
             }
         }
         ));
 
         type.setMember("__setitem__", new FunctionType("__setitem__", new SourceFunctionType(){
-            public ObjectType execute(LinkedList<ObjectType> args){
+            public ObjectType execute(LinkedList<ObjectType> args) throws ExecutionException {
                 ListType v1 = ((ListType)(args.get(0)));
+                if (args.get(1).getClass() != IntType.class){
+                    ErrorType error = new ErrorType("WrongIndexType");
+                    throw new ExecutionException(error);
+                }
+                IntType inx = (IntType) args.get(1);
+                if (inx.getInt() >= v1.getValues().size()) {
+                    ErrorType error = new ErrorType("NoSuchKey");
+                    throw new ExecutionException(error);
+                }
                 return v1.set(args.get(1), args.get(2));
             }
         }
