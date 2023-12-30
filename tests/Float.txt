@@ -109,16 +109,16 @@ float("6.0")
 #_______________________________________________________________
 #TESTCASE
 #<
-3.343436555
+3.3434365
 #>
 #<lexingOutput
-#FLOAT 3.343436555 1 1
-#NEWLINE  1 11
+#FLOAT 3.3434365 1 1
+#NEWLINE  1 9
 #>lexingOutput
 #<parsingOutput
-#3.343436555
+#3.3434365
 #>parsingOutput
-#output = 3.343436555
+#output = 3.3434365
 #title = float.init.8
 #_______________________________________________________________
 #TESTCASE

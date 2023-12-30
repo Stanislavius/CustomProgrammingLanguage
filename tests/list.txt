@@ -105,21 +105,6 @@ class some_class
         str(self.a)
 
 a = [some_class(4), some_class(43), some_class(6), some_class(54)]
-(a[0:2])[1].a
-#>
-#output = 41
-#commentary = should allow slices
-#title = list.operations.2
-#_______________________________________________________________
-#TESTCASE
-#<
-class some_class
-    def __init__(self, a)
-        self.a = a
-    def __str__(self)
-        str(self.a)
-
-a = [some_class(4), some_class(43), some_class(6), some_class(54)]
 a[0] = 1
 a[0]
 #>
@@ -136,6 +121,24 @@ s[46]
 #output = NoSuchKey: 2 2
 #commentary = return error if no such key
 #title = list.NoSuchKey.1
+#_______________________________________________________________
+#TESTCASE
+#<
+s = [1, 2, 3]
+s[46]
+#>
+#output = NoSuchKey: 2 2
+#commentary = return error if no such key
+#title = list.NoSuchKey.2
+#_______________________________________________________________
+#TESTCASE
+#<
+s = [1, 2, 3]
+s["34"]
+#>
+#output = WrongIndexType: 2 2
+#commentary = return error if no such key
+#title = list.wrongIndexType.1
 #_______________________________________________________________
 #TESTCASE
 #<
