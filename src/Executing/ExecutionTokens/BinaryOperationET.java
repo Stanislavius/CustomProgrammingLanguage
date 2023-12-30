@@ -26,7 +26,7 @@ public class BinaryOperationET extends ExecutionToken {
         if (token.getValue().equals(".")){
             lRes = left.execute();
             VariableET veb = (VariableET) right;
-            return lRes.getMemberNoBound(veb.token.getValue());
+            return lRes.getMember(veb.token.getValue());
         }
         else{
             lRes = left.execute();
