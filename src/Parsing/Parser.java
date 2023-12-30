@@ -416,8 +416,13 @@ public class Parser {
                     operands.add(current);
             }
         }
-        if (balance != 0)
-            throw new ParenthesesException(processedStructure);
+        if (balance != 0) {
+            if (processedStructure.getValue().equals("("))
+                throw new ParenthesesException(processedStructure);
+            if (processedStructure.getValue().equals("["))
+                throw new BracketIsNotClosedException(processedStructure);
+        }
+
         return operands;
     }
 
