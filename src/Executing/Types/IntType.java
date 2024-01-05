@@ -222,6 +222,14 @@ public class IntType extends ObjectType {
         }
         ));
 
+        type.setMember("__abs__", new FunctionType("__str__", new SourceFunctionType(){
+            public ObjectType execute(LinkedList<ObjectType> args){
+                int v1 = ((IntType)(args.get(0))).getInt();
+                return new IntType(Math.abs(v1));
+            }
+        }
+        ));
+
         Executor.setVariable("int", type);
     }
 
