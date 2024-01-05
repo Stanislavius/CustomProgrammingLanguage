@@ -112,9 +112,15 @@ public class Parser {
             //if not BLOCKWORD then expression or assignment
             for(int i = 0; i < line.size(); ++i)
                 if (line.get(i).getType() == TokenType.ASSIGNMENT){
+                    ParsedToken left = parseExpressionTokens(new LinkedList<Token>(line.subList(0, i)));
+                    if (left.getParsedType() == ParsedTokenType.VALUE){
+                        if (!(left.getClass() == VariablePT.class)){
+                            throw new CannotAssignToLiteralException(left.getToken());
+                        }
+                    }
                     return new AssigmentStatementPT(line.get(i),
                             indent,
-                            parseExpressionTokens(new LinkedList<Token>(line.subList(0, i))),
+                            left,
                             parseExpressionTokens(new LinkedList<Token>(line.subList(i+1, line.size()))));
                 }
             return new StatementPT(indent, parseExpressionTokens(line));
