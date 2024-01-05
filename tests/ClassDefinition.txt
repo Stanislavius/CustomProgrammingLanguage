@@ -86,7 +86,7 @@ obj.a
 #\t1 def __init__(self, val)
 #\t2 (self.a)=val
 #\t1 def __add__(self, other)
-#\t2 c((self.a+other))
+#\t2 c(((self.a)+other))
 #obj=c(5)
 #obj=(c+5)
 #(obj.a)
