@@ -15,8 +15,16 @@ public class MemberET extends ExecutionToken {
     }
 
     public ObjectType execute() throws ExecutionException {
+        Executor.logger.info("Get member " + member.toString()+ " from " + object.toString());
         ObjectType result = object.execute();
-        result = result.getMember(member.getToken().getValue());
+        if (member.getClass() == BinaryOperationET.class){
+            BinaryOperationET memberBO = (BinaryOperationET) member;
+            FunctionCallET functionCallET = (FunctionCallET) memberBO.right;
+            result = result.getMember(memberBO.left.getToken().getValue()).call(functionCallET.executeArgs());
+        }
+        else {
+            result = result.getMember(member.getToken().getValue());
+        }
         Executor.logger.info("Get member " + member.toString()+ " from " + object.toString()+ ", result is " + result.toString());
         return result;
     }
