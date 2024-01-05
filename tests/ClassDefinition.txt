@@ -101,7 +101,7 @@ class c
     def __init__(self, val)
         self.a = val
     def __str__(self, other)
-        return str(self.a)
+        str(self.a)
 
 obj = c(5)
 str(obj)
