@@ -39,4 +39,14 @@ public class FunctionCallET extends ExecutionToken {
         }
         return executedArgs;
     }
+
+    public String toString(){
+        StringBuilder sb = new StringBuilder();
+        for(int i = 0; i < args.size(); ++i) {
+            sb.append(args.get(i).toString());
+            if (i != args.size() - 1)
+                sb.append(",");
+        }
+        return sb.toString();
+    }
 }

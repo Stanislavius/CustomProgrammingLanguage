@@ -52,4 +52,8 @@ public class ItemET extends ExecutionToken{
     public ExecutionToken getMember(){
         return item;
     }
+
+    public String toString(){
+        return object.toString() + "[" + item.toString() + "]";
+    }
 }

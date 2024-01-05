@@ -4,6 +4,8 @@ package Executing;
 import Executing.Types.ObjectType;
 
 import java.util.HashMap;
+import java.util.Iterator;
+import java.util.Set;
 
 public class Variables {
     HashMap<String, ObjectType> variables = new HashMap<String, ObjectType>();
@@ -32,8 +34,10 @@ public class Variables {
 
     public String toString(){
         StringBuilder sb = new StringBuilder();
-        for(int i = 0; i < variables.size(); ++i) {
-            sb.append(variables.get(i));
+        Set keys = variables.keySet();
+        Iterator iter = keys.iterator();
+        while (iter.hasNext()){
+            sb.append(variables.get(iter.next()).toString());
             sb.append(" ");
         }
         return sb.toString();

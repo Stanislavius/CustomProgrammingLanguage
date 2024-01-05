@@ -17,6 +17,7 @@ public class FunctionDefinitionET extends ExecutionToken{
     }
 
     public ObjectType execute(){
+        Executor.logger.info("Define custom function " + name);
         Executor.setVariable(name, new FunctionType(name, new CustomFunctionType(this)));
         return new VoidType();
     }
@@ -40,5 +41,26 @@ public class FunctionDefinitionET extends ExecutionToken{
 
     public String getName(){
         return name;
+    }
+
+    public String toString(){
+        StringBuilder sb = new StringBuilder();
+        sb.append("def");
+        sb.append(" ");
+        sb.append(name);
+        sb.append("(");
+        for(int i = 0; i < args.size(); ++i){
+            sb.append(args.get(i).toString());
+            if(i != args.size() - 1)
+                sb.append(", ");
+        }
+        sb.append(")");
+        sb.append("\n");
+        for(int i = 0; i < toDo.size(); ++i){
+            sb.append("\t");
+            sb.append(toDo.get(i).toString());
+            sb.append("\n");
+        }
+        return sb.toString();
     }
 }

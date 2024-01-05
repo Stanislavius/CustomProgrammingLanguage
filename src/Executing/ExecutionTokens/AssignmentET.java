@@ -21,6 +21,7 @@ public class AssignmentET extends ExecutionToken {
             String name = assignTo.getToken().getValue();
             ObjectType val = value.execute();
             Executor.setVariable(name, val);
+            Executor.logger.info("Assign " + name + " = " + val);
         }
 
         if (assignTo.getClass().equals(MemberET.class)){
@@ -28,12 +29,18 @@ public class AssignmentET extends ExecutionToken {
             ObjectType object = met.executeObject();
             ObjectType val = value.execute();
             object.setMember(met.getNameMember(), val);
+            Executor.logger.info("Assign " + met.toString() + " = " + val);
         }
 
         if(assignTo.getClass().equals(ItemET.class)){
             ((ItemET) assignTo).executeSetItem(value.execute());
+            Executor.logger.info("Assign " + assignTo.toString() + " = " + value.toString());
         }
 
         return new VoidType();
+    }
+
+    public String toString(){
+        return assignTo.toString() + "=" + value.toString();
     }
 }

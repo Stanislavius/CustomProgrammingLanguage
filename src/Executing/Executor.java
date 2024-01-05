@@ -3,11 +3,14 @@ package Executing;
 import Executing.ExecutionTokens.*;
 import Executing.Types.*;
 import Executing.Types.IntType;
+import Lexing.LexingLogger;
 import Parsing.ParsedTokens.*;
 
 import java.util.LinkedList;
+import java.util.logging.Logger;
 
 public class Executor {
+    public static Logger logger = ExecutorLogger.createExecutorLogger();
     static Variables globalVariables = new Variables();
     static LinkedList<FunctionDefinitionET> stack = new LinkedList<FunctionDefinitionET>();
     static LinkedList<Variables> namespaces = new LinkedList<Variables>();
@@ -22,7 +25,15 @@ public class Executor {
                 ObjectType result = new VoidType();
                 try {
                     ExecutionToken current_line = getExecutionTree(line);
+                    StringBuilder sb = new StringBuilder();
+                    sb.append("Executing ");
+                    sb.append(current_line.getToken().getLineNum());
+                    sb.append(" line: \n");
+                    sb.append(current_line.getToken().getLine());
+                    //sb.append(current_line.toString()); i think for now let's skip it, we will see how that will do
+                    logger.info(sb.toString());
                     result = current_line.execute();
+                    logger.info("Result is: " + result.toString());
                     output.add(result.toString() + "");
                 } catch (ExecutionException e) {
                     output.add(Executor.sendError(e.getError()).toString());

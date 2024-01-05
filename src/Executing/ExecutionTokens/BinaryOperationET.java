@@ -5,6 +5,7 @@ import Executing.Types.ExecutionException;
 import Executing.Types.IntType;
 import Executing.Types.ObjectType;
 import Lexing.Token;
+import Executing.Executor;
 
 import java.util.Arrays;
 import java.util.LinkedList;
@@ -26,7 +27,9 @@ public class BinaryOperationET extends ExecutionToken {
         if (token.getValue().equals(".")){
             lRes = left.execute();
             VariableET veb = (VariableET) right;
-            return lRes.getMember(veb.token.getValue());
+            ObjectType result = lRes.getMember(veb.token.getValue());
+            Executor.logger.info("Get member" + left.toString() + "." + right.toString() + " result is " + result.toString());
+            return result;
         }
         else{
             lRes = left.execute();
@@ -34,40 +37,56 @@ public class BinaryOperationET extends ExecutionToken {
             {
                 FunctionCallET fct = (FunctionCallET) right;
                 args = fct.executeArgs();
-                return lRes.call(args);
+                Executor.logger.info("Call function " + left.toString() + " with args: (" +
+                        args.toString().substring(1, args.toString().length()-1) + ")");
+                ObjectType result = lRes.call(args);
+                Executor.logger.info("Result of calling function " + left.toString() + " with args: (" +
+                        args.toString().substring(1, args.toString().length()-1) + ") is " + result.toString()) ;
+                return result;
             }
             else {
                 rRes = right.execute();
+                Executor.logger.info("Binary operation " + token.getValue() + " for " + lRes.toString() + " and " + rRes.toString());
                 args = new LinkedList<ObjectType>(Arrays.asList(lRes, rRes));
+                ObjectType result;
                 try {
                     switch (token.getValue()) {
                         case "+":
-                            return lRes.getMemberNoBound("__class__").getMemberNoBound("__add__").call(args);
+                            result = lRes.getMemberNoBound("__class__").getMemberNoBound("__add__").call(args);
+                            break;
                         case "-":
-                            return lRes.getMemberNoBound("__class__").getMemberNoBound("__sub__").call(args);
+                            result = lRes.getMemberNoBound("__class__").getMemberNoBound("__sub__").call(args);
+                            break;
                         case "*":
-                            return lRes.getMemberNoBound("__class__").getMemberNoBound("__mul__").call(args);
+                            result = lRes.getMemberNoBound("__class__").getMemberNoBound("__mul__").call(args);
+                            break;
                         case "/":
-                            return lRes.getMemberNoBound("__class__").getMemberNoBound("__div__").call(args);
+                            result = lRes.getMemberNoBound("__class__").getMemberNoBound("__div__").call(args);
+                            break;
                         case "==":
                             if (lRes.getMemberNoBound("__class__").contains("__eq__")) {
                                 ObjectType member = lRes.getMemberNoBound("__class__").getMemberNoBound("__eq__");
-                                return lRes.getMemberNoBound("__class__").getMemberNoBound("__eq__").call(args);
+                                result =  lRes.getMemberNoBound("__class__").getMemberNoBound("__eq__").call(args);
                             }
                             else {
                                 boolean identity = (lRes == rRes);
                                 if (identity)
-                                    return new IntType(1);
+                                    result = new IntType(1);
                                 else
-                                    return new IntType(0);
+                                    result = new IntType(0);
                             }
+                            break;
                         case "<":
-                            return lRes.getMemberNoBound("__class__").getMemberNoBound("__lt__").call(args);
+                            result = lRes.getMemberNoBound("__class__").getMemberNoBound("__lt__").call(args);
+                            break;
                         case ">":
-                            return lRes.getMemberNoBound("__class__").getMemberNoBound("__gt__").call(args);
+                            result = lRes.getMemberNoBound("__class__").getMemberNoBound("__gt__").call(args);
+                            break;
                         default:
-                            return new ErrorType();
+                            result = new ErrorType();
                     }
+                    Executor.logger.info("Binary operation " + token.getValue() + " for " + lRes.toString() + " and " + rRes.toString() + ", result is " + result.toString());
+                    return result;
                 }
                 catch (ExecutionException e){
                     ErrorType error = e.getError();
@@ -77,6 +96,24 @@ public class BinaryOperationET extends ExecutionToken {
                 }
             }
         }
+    }
+
+    public String toString(){
+        StringBuilder sb = new StringBuilder();
+        if (right.getClass() == FunctionCallET.class){
+            sb.append(left.toString());
+            sb.append(token.getValue());
+            sb.append(right.toString());
+            sb.append(")");
+        }
+        else {
+            sb.append("(");
+            sb.append(left.toString());
+            sb.append(token.getValue());
+            sb.append(right.toString());
+            sb.append(")");
+        }
+        return sb.toString();
     }
 
 }

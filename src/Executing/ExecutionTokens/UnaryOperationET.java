@@ -24,4 +24,12 @@ public class UnaryOperationET extends ExecutionToken {
         return new ErrorType();
     }
 
+    public String toString(){
+        StringBuilder sb = new StringBuilder();
+        sb.append(token.getValue());
+        sb.append("(");
+        sb.append(right.toString());
+        sb.append(")");
+        return sb.toString();
+    }
 }

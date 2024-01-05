@@ -1,5 +1,6 @@
 package Executing.ExecutionTokens;
 
+import Executing.Executor;
 import Executing.Types.ExecutionException;
 import Executing.Types.ObjectType;
 import Lexing.Token;
@@ -15,7 +16,9 @@ public class MemberET extends ExecutionToken {
 
     public ObjectType execute() throws ExecutionException {
         ObjectType result = object.execute();
-        return result.getMember(member.getToken().getValue());
+        result = result.getMember(member.getToken().getValue());
+        Executor.logger.info("Get member " + member.toString()+ " from " + object.toString()+ ", result is " + result.toString());
+        return result;
     }
 
     public String getNameMember(){
@@ -31,5 +34,8 @@ public class MemberET extends ExecutionToken {
 
     public ExecutionToken getMember(){
         return member;
+    }
+    public String toString(){
+        return object.toString() + "." + member.toString();
     }
 }

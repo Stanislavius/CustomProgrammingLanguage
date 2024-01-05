@@ -70,4 +70,17 @@ public class ClassDefinitionET extends ExecutionToken{
         return members;
     }
 
+    public String toString(){
+        StringBuilder sb = new StringBuilder();
+        sb.append("class");
+        sb.append(" ");
+        sb.append(name);
+        sb.append("\n");
+        for(int i = 0; i < toDo.size(); ++i){
+            sb.append("\t");
+            sb.append(toDo.get(i).toString());
+        }
+        return sb.toString();
+    }
+
 }

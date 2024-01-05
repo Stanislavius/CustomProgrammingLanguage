@@ -32,4 +32,9 @@ public class BoundMethodType extends FunctionType implements WrapperInterface{
     public ObjectType call(ObjectType... args) throws ExecutionException {
         return this.execute(new LinkedList<ObjectType>(List.of(args)));
     }
+
+    public String toString(){
+        return "<BoundMethod " + this.getMemberNoBound("__name__") + " for object of class "
+                + object.getMember("__class__")+ ">";
+    }
 }

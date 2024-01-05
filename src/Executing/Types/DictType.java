@@ -157,9 +157,21 @@ public class DictType extends ObjectType {
         while(iter.hasNext()){
             ObjectType key = (ObjectType)iter.next();
             ObjectType value = dict.get(key);
-            sb.append(key.toString());
+            if (key.getClass() == StringType.class) {
+                sb.append("\"");
+                sb.append(key.toString());
+                sb.append("\"");
+            }
+            else
+                sb.append(key.toString());
             sb.append(":");
-            sb.append(value.toString());
+            if (value.getClass() == StringType.class) {
+                sb.append("\"");
+                sb.append(value.toString());
+                sb.append("\"");
+            }
+            else
+                sb.append(value.toString());
             if (iter.hasNext())
                 sb.append(", ");
         }

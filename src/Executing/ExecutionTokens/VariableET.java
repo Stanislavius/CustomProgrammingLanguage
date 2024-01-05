@@ -19,6 +19,11 @@ public class VariableET extends ExecutionToken {
             error.setPosition(token.getPos());
             throw new ExecutionException(error);
         }
+        Executor.logger.info("Get value of variable " + token.getValue());
         return Executor.getVariable(token.getValue());
+    }
+
+    public String toString(){
+        return token.getValue();
     }
 }
