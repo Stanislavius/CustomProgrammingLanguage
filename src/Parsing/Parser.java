@@ -128,6 +128,11 @@ public class Parser {
     }
 
     public AbstractStatementPT parseLineWithBlockword(int indent, LinkedList<Token> line) throws ParsingException {
+        for(int i = 0; i < line.size(); ++i){
+            if (line.get(i).getType() == TokenType.ASSIGNMENT)
+                throw new UsingKeywordAsVariableException(line.get(0));
+        }
+
         if (line.get(0).getValue().equals("if")){
             return new ConditionalStatementPT(line.get(0),
                     indent,
@@ -200,6 +205,10 @@ public class Parser {
     }
 
     public ParsedToken parseExpressionTokens(LinkedList<Token> line) throws ParsingException {
+        for(int i = 0; i < line.size(); ++i){
+            if (line.get(i).getType() == TokenType.BLOCKWORD)
+                throw new UsingKeywordAsVariableException(line.get(0));
+        }
         LinkedList<ParsedToken> parsedLine = new LinkedList<ParsedToken>();
         for(int i = 0; i < line.size(); ++i){
             parsedLine.add(new ParsedToken(line.get(i)));
