@@ -50,18 +50,25 @@ public class ClassDefinitionET extends ExecutionToken{
                     }
                 }
                 ));
-                newClass.setMember("__init__", new FunctionType(name = "__init__", new CustomFunctionType(initFunc)));
+                newClass.setMember("__init__", new FunctionType("__init__", new CustomFunctionType(initFunc)));
             }
             else {
                 if (member.getClass() == FunctionDefinitionET.class){
                     FunctionDefinitionET func = (FunctionDefinitionET) member;
-                    newClass.setMember(key, new FunctionType(name = key, new CustomFunctionType(func)));
+                    newClass.setMember(key, new FunctionType(key, new CustomFunctionType(func)));
                 }
                 else
                     newClass.setMember(key, member.execute());
             }
         }
         newClass.setMember("__class__", ClassType.getTypeClass());
+        newClass.setMember("__str__", new FunctionType("__str__", new SourceFunctionType() {
+            public ObjectType execute(LinkedList<ObjectType> args) throws ExecutionException {
+                return new StringType(name);
+            }
+        }
+        ));
+
         Executor.setVariable(name, newClass);
         return new VoidType();
     }
