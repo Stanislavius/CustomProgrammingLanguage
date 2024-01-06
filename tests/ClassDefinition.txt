@@ -115,7 +115,7 @@ str(obj)
 class c
     def __init__(self, val)
         self.a = val
-    def __str__(self, other)
+    def __str__(self)
         return str(self.a)
 
 str(c)
