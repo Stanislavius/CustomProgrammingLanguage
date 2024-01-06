@@ -100,7 +100,7 @@ obj.a
 class c
     def __init__(self, val)
         self.a = val
-    def __str__(self, other)
+    def __str__(self)
         str(self.a)
 
 obj = c(5)
