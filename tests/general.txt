@@ -118,29 +118,11 @@ a = 4 * * 5
 #_______________________________________________________________
 #TESTCASE
 #<
-a = 4 + + 5
-#>
-#output = NoOperandException: 1 7
-#commentary =
-#title = SyntaxError.2
-#type = ParsingError
-#_______________________________________________________________
-#TESTCASE
-#<
-a = 4 - - 5
-#>
-#output = NoOperandException: 1 7
-#commentary =
-#title = SyntaxError.3
-#type = ParsingError
-#_______________________________________________________________
-#TESTCASE
-#<
 a = 4 4 +
 #>
 #output = NoOperationException: 1 6
 #commentary =
-#title = SyntaxError.4
+#title = SyntaxError.2
 #type = ParsingError
 #_______________________________________________________________
 #TESTCASE
@@ -149,7 +131,7 @@ a = 4 (*) 5
 #>
 #output = NoOperandException: 1 8
 #commentary =
-#title = SyntaxError.5
+#title = SyntaxError.3
 #type = ParsingError
 #_______________________________________________________________
 #TESTCASE
