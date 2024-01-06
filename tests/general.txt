@@ -277,6 +277,42 @@ def = 6
 #_______________________________________________________________
 #TESTCASE
 #<
+s = if + 4
+#>
+#output = UsingKeywordAsVariableException: 1 5
+#commentary =
+#title = KeyWordAsVariable.5
+#type = ParsingError
+#_______________________________________________________________
+#TESTCASE
+#<
+s = while + 4
+#>
+#output = UsingKeywordAsVariableException: 1 5
+#commentary =
+#title = KeyWordAsVariable.5
+#type = ParsingError
+#_______________________________________________________________
+#TESTCASE
+#<
+s = 4 + if
+#>
+#output = UsingKeywordAsVariableException: 1 9
+#commentary =
+#title = KeyWordAsVariable.5
+#type = ParsingError
+#_______________________________________________________________
+#TESTCASE
+#<
+s = def
+#>
+#output = UsingKeywordAsVariableException: 1 5
+#commentary =
+#title = KeyWordAsVariable.6
+#type = ParsingError
+#_______________________________________________________________
+#TESTCASE
+#<
 25 = 5
 #>
 #output = CannotAssignToLiteralException: 1 1

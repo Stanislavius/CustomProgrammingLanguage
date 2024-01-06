@@ -204,6 +204,9 @@ public class Parser {
         return args;
     }
 
+    final static LinkedList<String> blockWordsWithoutArgs = new LinkedList<String>(Arrays.asList("else", "try", "finally", "except"));
+    final static LinkedList<String> blockWordsWithArgs = new LinkedList<String>(Arrays.asList("if", "elif", "while", "def", "class", "except"));
+
     public ParsedToken parseExpressionTokens(LinkedList<Token> line) throws ParsingException {
         for(int i = 0; i < line.size(); ++i){
             if (line.get(i).getType() == TokenType.BLOCKWORD)
@@ -215,6 +218,8 @@ public class Parser {
         }
         for(int i = 0; i < parsedLine.size(); ++i){
             if (parsedLine.get(i).getType() == TokenType.VARIABLE){
+                if (blockWordsWithArgs.contains(parsedLine.get(i).getValue()) || blockWordsWithoutArgs.contains((parsedLine.get(i).getValue())))
+                    throw new UsingKeywordAsVariableException(parsedLine.get(i).getToken());
                 parsedLine.set(i, new VariablePT(parsedLine.get(i).getToken()));
             }
             if (parsedLine.get(i).getType() == TokenType.STRING){
