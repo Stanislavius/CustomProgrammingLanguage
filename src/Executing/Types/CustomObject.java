@@ -72,6 +72,51 @@ public class CustomObject extends ObjectType{
         }
     }
 
+    public ObjectType getMemberOfObject(String name) throws ExecutionException {
+        return getMemberOfObject(new StringType(name));
+    }
+
+    public ObjectType getMemberOfObject(StringType name) throws ExecutionException {
+        ObjectType result = this.members.getOrDefault(name.getValue(), null);
+        if (result == null){
+            result = this.dict.get(name);
+        }
+        if (result == null)
+            if (result == null) {
+                ErrorType error = new ErrorType("NoSuchMember");
+                throw new ExecutionException(error);
+            }
+        if(result.getClass() == FunctionType.class){
+            return new BoundMethodType(this, (FunctionType) result, name.getValue());
+        }
+        return result;
+    }
+
+    public ObjectType getMemberOfObjectNoBound(String name) throws ExecutionException {
+        return getMemberOfObjectNoBound(new StringType(name));
+    }
+
+    public ObjectType getMemberOfObjectNoBound(StringType name) throws ExecutionException {
+        ObjectType result = this.members.getOrDefault(name.getValue(), null);
+        if (result == null){
+            result = this.dict.get(name);
+        }
+        if (result == null)
+            if (result == null) {
+                ErrorType error = new ErrorType("NoSuchMember");
+                throw new ExecutionException(error);
+            }
+        return result;
+    }
+
+    public ObjectType getMemberOfClass(String name) throws ExecutionException {
+        return this.getMember("__class__").getMemberOfObject(name);
+    }
+
+    public ObjectType getMemberOfClassNoBound(String name) throws ExecutionException {
+        return this.getMember("__class__").getMemberOfObjectNoBound(name);
+    }
+
     public boolean contains(String name){
         boolean result = this.members.containsKey(name);
         if (!result)
