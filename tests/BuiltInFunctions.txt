@@ -1,0 +1,95 @@
+#TESTCASE
+#<
+str(1)
+#>
+#output = "1"
+#title = BuiltIn.str.1
+#_______________________________________________________________
+#TESTCASE
+#<
+str(1.4)
+#>
+#output = "1.4"
+#title = BuiltIn.str.2
+#_______________________________________________________________
+#TESTCASE
+#<
+str("sa")
+#>
+#output = "sa"
+#title = BuiltIn.str.3
+#_______________________________________________________________
+#TESTCASE
+#<
+s = "sa"
+c = s.__class__
+str(c)
+#>
+#output = "<type str>"
+#title = BuiltIn.str.4
+#_______________________________________________________________
+#TESTCASE
+#<
+class c
+    def __init__(self, a)
+        self.a = a
+    def some_func(self)
+        4
+obj = c(4)
+obj.some_func
+#>
+#output = <BoundMethod some_func for object of class c>
+#title = BuiltIn.str.5
+#_______________________________________________________________
+#TESTCASE
+#<
+l = [1, 2, 3, 4, 5]
+str(l)
+#>
+#output = "[1, 2, 3, 4, 5]"
+#title = BuiltIn.str.6
+#_______________________________________________________________
+#TESTCASE
+#<
+l = {1:2}
+str(l)
+#>
+#output = "{1:2}"
+#title = BuiltIn.str.7
+#_______________________________________________________________
+#TESTCASE
+#<
+v = 4
+v = v.__class__
+str(v)
+#>
+#output = "<type int>"
+#title = BuiltIn.str.8
+#_______________________________________________________________
+#TESTCASE
+#<
+v = 4.4
+v = v.__class__
+str(v)
+#>
+#output = "<type float>"
+#title = BuiltIn.str.9
+#_______________________________________________________________
+#TESTCASE
+#<
+v = [1, 2, 3, 4, 5]
+v = v.__class__
+str(v)
+#>
+#output = "<type list>"
+#title = BuiltIn.str.10
+#_______________________________________________________________
+#TESTCASE
+#<
+v = {1:2, 3:4}
+v = v.__class__
+str(v)
+#>
+#output = "<type dict>"
+#title = BuiltIn.str.11
+#_______________________________________________________________
