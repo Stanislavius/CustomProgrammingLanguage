@@ -22,7 +22,7 @@ public class StringType extends ObjectType {
         type.setMember("__call__", new FunctionType("__call__", new SourceFunctionType(){
             public ObjectType execute(LinkedList<ObjectType> args) throws ExecutionException {
                 ObjectType val1 = args.get(0);
-                return val1.getMemberNoBound("__str__").call(val1);
+                return val1.getMemberOfClassNoBound("__str__").call(val1);
             }
         }
         ));

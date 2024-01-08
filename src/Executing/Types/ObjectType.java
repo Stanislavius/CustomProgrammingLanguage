@@ -49,6 +49,35 @@ public class ObjectType{
         }
     }
 
+    public ObjectType getMemberOfObject(String name) throws ExecutionException {
+        ObjectType result = this.members.getOrDefault(name, null);
+        if (result == null) {
+            ErrorType error = new ErrorType("NoSuchMember");
+            throw new ExecutionException(error);
+        }
+        if(result.getClass() == FunctionType.class){
+            return new BoundMethodType(this, (FunctionType) result, name);
+        }
+        return result;
+    }
+
+    public ObjectType getMemberOfObjectNoBound(String name) throws ExecutionException {
+        ObjectType result = this.members.getOrDefault(name, null);
+        if (result == null) {
+            ErrorType error = new ErrorType("NoSuchMember");
+            throw new ExecutionException(error);
+        }
+        return result;
+    }
+
+    public ObjectType getMemberOfClass(String name) throws ExecutionException {
+        return this.getMember("__class__").getMemberOfObject(name);
+    }
+
+    public ObjectType getMemberOfClassNoBound(String name) throws ExecutionException {
+        return this.getMember("__class__").getMemberOfObjectNoBound(name);
+    }
+
     public ObjectType call(LinkedList<ObjectType> args) throws ExecutionException {
         if (members.containsKey("__call__"))
             return members.get("__call__").call(args);
