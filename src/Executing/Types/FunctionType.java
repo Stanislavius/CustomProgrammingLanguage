@@ -47,4 +47,12 @@ public class FunctionType extends ObjectType{
             return false;
     }
 
+    public String toString(){
+        try {
+            return "<Func object " + this.getMember("__name__") + ">";
+        } catch (ExecutionException e) {
+            return "Error in FunctionType, should never happen";
+        }
+    }
+
 }
