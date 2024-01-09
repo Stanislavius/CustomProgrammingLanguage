@@ -41,5 +41,14 @@ public class BuiltinFunctions {
 
         Executor.setVariable("hash", hash);
 
+
+        FunctionType type = new FunctionType("type", new SourceFunctionType(){
+            public ObjectType execute(LinkedList<ObjectType> args) throws ExecutionException {
+                return args.get(0).getMemberOfObjectNoBound("__class__");
+            }
+        });
+
+        Executor.setVariable("type", type);
+
     }
 }

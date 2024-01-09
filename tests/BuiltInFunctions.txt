@@ -177,4 +177,55 @@ len({4:4, 5:4})
 #output = 2
 #title = BuiltIn.len.5
 #_______________________________________________________________
+#TESTCASE
+#<
+type(5)
+#>
+#output = int
+#title = BuiltIn.type.1
+#_______________________________________________________________
+#TESTCASE
+#<
+type(5.5)
+#>
+#output = float
+#title = BuiltIn.type.2
+#_______________________________________________________________
+#TESTCASE
+#<
+type("5")
+#>
+#output = str
+#title = BuiltIn.type.3
+#_______________________________________________________________
+#TESTCASE
+#<
+def func(val)
+    val = 4
+
+val = func(4)
+type(val)
+#>
+#output = void
+#title = BuiltIn.type.4
+#_______________________________________________________________
+#TESTCASE
+#<
+def func(val)
+    val = 4
+
+val = func(4)
+type(type(val))
+#>
+#output = type
+#title = BuiltIn.type.5
+#_______________________________________________________________
+#TESTCASE
+#<
+val = 4
+type(type(val))
+#>
+#output = type
+#title = BuiltIn.type.6
+#_______________________________________________________________
 
