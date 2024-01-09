@@ -38,8 +38,13 @@ public class Executor {
                 } catch (ExecutionException e) {
                     output.add(Executor.sendError(e.getError()).toString());
                 }
-                if (result.getType().toString().equals("str"))
-                    output.add("\"" + output.removeLast() + "\"");
+                try {
+                    if (result.getType().toString().equals("str"))
+                        output.add("\"" + output.removeLast() + "\"");
+                }
+                catch (ExecutionException e){
+                    return "ERROR IN result.getType().toString(), should not happen under any circumstances";
+                }
             }
             if (output.isEmpty())
                 return new VoidType().toString();

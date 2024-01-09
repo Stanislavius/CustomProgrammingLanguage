@@ -1,6 +1,7 @@
 package Executing.ExecutionTokens;
 
 import Executing.Executor;
+import Executing.Types.ExecutionException;
 import Executing.Types.ObjectType;
 import Executing.Types.StringType;
 import Lexing.Token;
@@ -12,7 +13,7 @@ public class ValueET extends ExecutionToken{
         this.obj = obj;
     }
 
-    public ObjectType execute(){
+    public ObjectType execute() throws ExecutionException {
         Executor.logger.info("Create object " + obj.toString() + " of class " + obj.getMemberNoBound("__class__"));
         return obj;
     }

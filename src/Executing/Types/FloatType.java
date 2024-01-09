@@ -33,7 +33,7 @@ public class FloatType extends ObjectType {
 
 
         type.setMember("__add__", new FunctionType("__add__", new SourceFunctionType(){
-            public ObjectType execute(LinkedList<ObjectType> args){
+            public ObjectType execute(LinkedList<ObjectType> args) throws ExecutionException {
                 float v1 = ((FloatType)(args.get(0))).getFloat();
                 ObjectType val2 = args.get(1);
                 if (val2.getType().toString().equals("int")) {
@@ -50,7 +50,7 @@ public class FloatType extends ObjectType {
         ));
 
         type.setMember("__sub__", new FunctionType("__sub__", new SourceFunctionType(){
-            public ObjectType execute(LinkedList<ObjectType> args){
+            public ObjectType execute(LinkedList<ObjectType> args) throws ExecutionException {
                 float v1 = ((FloatType)(args.get(0))).getFloat();
                 ObjectType val2 = args.get(1);
                 if (val2.getType().toString().equals("int")) {
@@ -67,7 +67,7 @@ public class FloatType extends ObjectType {
         ));
 
         type.setMember("__mul__", new FunctionType("__mul__", new SourceFunctionType(){
-            public ObjectType execute(LinkedList<ObjectType> args){
+            public ObjectType execute(LinkedList<ObjectType> args) throws ExecutionException {
                 float v1 = ((FloatType)(args.get(0))).getFloat();
                 ObjectType val2 = args.get(1);
                 if (val2.getType().toString().equals("int")) {

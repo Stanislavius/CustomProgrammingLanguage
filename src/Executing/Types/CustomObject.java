@@ -35,11 +35,11 @@ public class CustomObject extends ObjectType{
             return new ErrorType();
     }
 
-    public ObjectType getMember(String name){
+    public ObjectType getMember(String name) throws ExecutionException {
         return this.getMember(new StringType(name));
     }
 
-    public ObjectType getMemberNoBound(StringType key){
+    public ObjectType getMemberNoBound(StringType key) throws ExecutionException {
         if (this.dict.containsKey(key)){
             ObjectType member = this.dict.get(key);
             return member;
@@ -50,11 +50,11 @@ public class CustomObject extends ObjectType{
         }
     }
 
-    public ObjectType getMemberNoBound(String key){
+    public ObjectType getMemberNoBound(String key) throws ExecutionException {
         return this.getMemberNoBound(new StringType(key));
     }
 
-    public ObjectType getMember(StringType key){
+    public ObjectType getMember(StringType key) throws ExecutionException {
         if (this.dict.containsKey(key)){
             ObjectType member = this.dict.get(key);
             if(member.getClass() == FunctionType.class){
@@ -64,7 +64,7 @@ public class CustomObject extends ObjectType{
                 return member;
         }
         else {
-            ObjectType member = this.getMember("__class__").getMember(key.getValue());
+            ObjectType member = this.getMemberOfObject("__class__").getMemberOfObjectNoBound(key.getValue());
             if (member.getClass() == FunctionType.class) {
                 return new BoundMethodType(this, (FunctionType) member, key.getValue());
             } else
@@ -122,6 +122,19 @@ public class CustomObject extends ObjectType{
         if (!result)
             result = this.dict.containsKey(name);
         return result;
+    }
+
+    public String toString(){
+        try {
+            if (this.contains("__name__"))
+                return "<class " + this.getMemberOfObjectNoBound("__name__") + ">";
+            else {
+                ObjectType classObject = this.getMemberOfObjectNoBound("__class__");
+                return classObject.toString();
+            }
+        } catch (ExecutionException e) {
+            return "Error in CustomObject, should never happen";
+        }
     }
 
 }

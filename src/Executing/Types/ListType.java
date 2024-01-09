@@ -142,19 +142,24 @@ public class ListType extends ObjectType {
     }
 
     public String toString(){
-        StringBuilder sb = new StringBuilder();
-        sb.append("[");
-        for(int i = 0; i < values.size(); ++i){
+        try {
+            StringBuilder sb = new StringBuilder();
+            sb.append("[");
+            for (int i = 0; i < values.size(); ++i) {
                 ObjectType rt = values.get(i);
                 if (rt.getType().toString().equals("str"))
                     sb.append("\"" + rt.toString() + "\"");
                 else
                     sb.append(rt.toString());
-            if (i != values.size() - 1)
-                sb.append(", ");
+                if (i != values.size() - 1)
+                    sb.append(", ");
+            }
+            sb.append("]");
+            return sb.toString();
         }
-        sb.append("]");
-        return sb.toString();
+        catch (ExecutionException e){
+            return "ERROR IN toString method of ListType, should not happen under any circumstances";
+        }
     }
 
     public LinkedList<ObjectType> getValues(){

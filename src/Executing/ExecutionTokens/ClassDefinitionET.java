@@ -62,6 +62,7 @@ public class ClassDefinitionET extends ExecutionToken{
             }
         }
         newClass.setMember("__class__", ClassType.getTypeClass());
+        newClass.setMember("__name__", new StringType(name));
         newClass.setMember("__str__", new FunctionType("__str__", new SourceFunctionType() {
             public ObjectType execute(LinkedList<ObjectType> args) throws ExecutionException {
                 return new StringType(name);

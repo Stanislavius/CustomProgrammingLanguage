@@ -34,7 +34,12 @@ public class BoundMethodType extends FunctionType implements WrapperInterface{
     }
 
     public String toString(){
-        return "<BoundMethod " + this.getMemberNoBound("__name__") + " for object of class "
-                + object.getMember("__class__")+ ">";
+        try {
+            return "<BoundMethod " + this.getMemberNoBound("__name__") + " for object of "
+                    + object.getMember("__class__") + ">";
+        }
+        catch (ExecutionException e){
+            return "ERROR IN toString method of BoundMethod, should not happen under any circumstances";
+        }
     }
 }

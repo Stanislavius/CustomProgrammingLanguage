@@ -16,11 +16,11 @@ public class ObjectType{
         this.members = members;
     }
 
-    public static ObjectType getMember(ObjectType object, String name) {
+    public static ObjectType getMember(ObjectType object, String name) throws ExecutionException {
         return object.getMember(name);
     }
 
-    public ObjectType getMemberNoBound(String name){
+    public ObjectType getMemberNoBound(String name) throws ExecutionException {
         if (this.members.containsKey(name)){
             ObjectType member = this.members.get(name);
             return member;
@@ -31,7 +31,7 @@ public class ObjectType{
         }
     }
 
-    public ObjectType getMember(String name){
+    public ObjectType getMember(String name) throws ExecutionException {
         if (this.members.containsKey(name)){
             ObjectType member = this.members.get(name);
             if(member.getClass() == FunctionType.class){
@@ -125,11 +125,11 @@ public class ObjectType{
         return members;
     }
 
-    public ObjectType getType(){
+    public ObjectType getType() throws ExecutionException {
         return this.getMember("__class__");
     }
 
-    public boolean equals(ObjectType other){
+    public boolean equals(ObjectType other) throws ExecutionException {
         boolean result = false;
         if (this.getType().equals(other.getType()))
             if(this.getMembers().equals(other.getMembers()))

@@ -46,16 +46,21 @@ public class ErrorType extends ObjectType {
 
     public String toString(){
         StringBuilder sb = new StringBuilder();
-        sb.append(this.getMember("message").toString());
-        if (this.contains("line")){
-            sb.append(": ");
-            sb.append((this.getMember("line").toString()));
-            if (this.contains("position")){
-                sb.append(" ");
-                sb.append((this.getMember("position").toString()));
+        try {
+            sb.append(this.getMember("message").toString());
+            if (this.contains("line")) {
+                sb.append(": ");
+                sb.append((this.getMember("line").toString()));
+                if (this.contains("position")) {
+                    sb.append(" ");
+                    sb.append((this.getMember("position").toString()));
+                }
             }
+            return sb.toString();
         }
-        return sb.toString();
+        catch (ExecutionException e){
+            return "ERROR IN toString method of error, should not happen under any circumstances";
+        }
     }
 
     public void setMessage(String message){

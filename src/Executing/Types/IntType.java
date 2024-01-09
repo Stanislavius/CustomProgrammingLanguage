@@ -32,7 +32,7 @@ public class IntType extends ObjectType {
         ));
 
         type.setMember("__add__", new FunctionType("__add__", new SourceFunctionType(){
-            public ObjectType execute(LinkedList<ObjectType> args){
+            public ObjectType execute(LinkedList<ObjectType> args) throws ExecutionException {
                 int v1 = ((IntType)(args.get(0))).getInt();
                 ObjectType val2 = args.get(1);
                 if (val2.getType().toString().equals("int")) {
@@ -49,7 +49,7 @@ public class IntType extends ObjectType {
         ));
 
         type.setMember("__sub__", new FunctionType("__sub__", new SourceFunctionType(){
-            public ObjectType execute(LinkedList<ObjectType> args){
+            public ObjectType execute(LinkedList<ObjectType> args) throws ExecutionException {
                 int v1 = ((IntType)(args.get(0))).getInt();
                 ObjectType val2 = args.get(1);
                 if (val2.getType().toString().equals("int")) {
@@ -110,7 +110,7 @@ public class IntType extends ObjectType {
         ));
 
         type.setMember("__lt__", new FunctionType("__lt__", new SourceFunctionType(){
-            public ObjectType execute(LinkedList<ObjectType> args){
+            public ObjectType execute(LinkedList<ObjectType> args) throws ExecutionException {
                 int v1 = ((IntType)(args.get(0))).getInt();
                 ObjectType val2 = args.get(1);
                 if (val2.getType().toString().equals("int")) {
@@ -133,7 +133,7 @@ public class IntType extends ObjectType {
         ));
 
         type.setMember("__gt__", new FunctionType("__gt__", new SourceFunctionType(){
-            public ObjectType execute(LinkedList<ObjectType> args){
+            public ObjectType execute(LinkedList<ObjectType> args) throws ExecutionException {
                 int v1 = ((IntType)(args.get(0))).getInt();
                 ObjectType val2 = args.get(1);
                 if (val2.getType().toString().equals("int")) {
@@ -156,7 +156,7 @@ public class IntType extends ObjectType {
         ));
 
         type.setMember("__mul__", new FunctionType("__mul__", new SourceFunctionType(){
-            public ObjectType execute(LinkedList<ObjectType> args){
+            public ObjectType execute(LinkedList<ObjectType> args) throws ExecutionException {
                 int v1 = ((IntType)(args.get(0))).getInt();
                 ObjectType val2 = args.get(1);
                 if (val2.getType().toString().equals("int")) {
