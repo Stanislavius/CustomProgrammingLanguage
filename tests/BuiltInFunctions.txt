@@ -38,7 +38,7 @@ class c
 obj = c(4)
 obj.some_func
 #>
-#output = <BoundMethod some_func for object of class c>
+#output = <BoundMethod some_func for object of <class c>>
 #title = BuiltIn.str.5
 #_______________________________________________________________
 #TESTCASE
