@@ -75,6 +75,18 @@ public class ErrorType extends ObjectType {
         this.setMember("position", new IntType(position));
     }
 
+    public String getMessage() throws ExecutionException {
+        return this.getMember("message").toString();
+    }
+
+    public int getLineNum() throws ExecutionException {
+        return ((IntType) (this.getMember("line"))).getInt();
+    }
+
+    public boolean hasLineNum() throws ExecutionException {
+        return this.members.containsKey("line");
+    }
+
     public ObjectType execute() {
         return this;
     }

@@ -47,8 +47,10 @@ public class BinaryOperationET extends ExecutionToken {
                 }
                 catch (ExecutionException e){
                     ErrorType et = e.getError();
-                    et.setLine(token.getLineNum());
-                    et.setPosition(token.getPos());
+                    if(et.getMessage().equals("WrongNumberOfArguments")) {
+                        et.setLine(token.getLineNum());
+                        et.setPosition(token.getPos());
+                    }
                     throw e;
                 }
             }
@@ -98,8 +100,10 @@ public class BinaryOperationET extends ExecutionToken {
                 }
                 catch (ExecutionException e){
                     ErrorType error = e.getError();
-                    error.setLine(this.getToken().getLineNum());
-                    error.setPosition(this.getToken().getPos());
+                    if (!error.hasLineNum()) {
+                        error.setLine(this.getToken().getLineNum());
+                        error.setPosition(this.getToken().getPos());
+                    }
                     throw e;
                 }
             }

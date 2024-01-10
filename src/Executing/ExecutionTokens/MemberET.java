@@ -26,13 +26,26 @@ public class MemberET extends ExecutionToken {
             }
             catch (ExecutionException e){
                 ErrorType et = e.getError();
-                et.setLine(token.getLineNum());
-                et.setPosition(token.getPos());
+                if (!et.hasLineNum()) {
+                    et.setLine(token.getLineNum());
+                    et.setPosition(token.getPos());
+                }
                 throw e;
             }
         }
         else {
-            result = result.getMember(member.getToken().getValue());
+            try {
+                result = result.getMember(member.getToken().getValue());
+            }
+            catch (ExecutionException e){
+                ErrorType et = e.getError();
+                if (!et.hasLineNum()) {
+                    et.setLine(token.getLineNum());
+                    et.setPosition(token.getPos());
+                }
+                throw e;
+            }
+
         }
         Executor.logger.info("Get member " + member.toString()+ " from " + object.toString()+ ", result is " + result.toString());
         return result;
