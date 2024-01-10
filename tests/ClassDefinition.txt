@@ -212,7 +212,7 @@ class c
 op1 = c(4)
 op2 = c(5)
 op3 = op1 + op2
-op1.a
+op3.a
 #>
 #output = 9
 #commentary = method __add__
