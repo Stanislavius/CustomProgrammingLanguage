@@ -239,11 +239,11 @@ op1.a
 #TESTCASE
 #<
 class c
-    def __init__(self, val, func)
+    def __init__(self, val, fun)
         self.val = val
-        self.func = func
+        self.fun = fun
     def func(self)
-        self.func(self.val)
+        self.fun(self.val)
 
 def func(v)
     v + 2
@@ -258,11 +258,11 @@ obj.func()
 #TESTCASE
 #<
 class c
-    def __init__(self, val, func)
+    def __init__(self, val, fun)
         self.val = val
-        self.func = func
+        self.fun = fun
     def func(self)
-        self.func(self.val)
+        self.fun(self.val)
 
 def func(v)
     v + 2
@@ -300,9 +300,9 @@ class c
         self.val = val
         def func(v)
             v + k
-        self.func = func
+        self.fun = func
     def func(self)
-        self.func(self.val)
+        self.fun(self.val)
 
 
 obj = c(2, 5)
@@ -319,9 +319,9 @@ class c
         self.val = val
         def func(v)
             v + k
-        self.func = func
+        self.fun = func
     def func(self)
-        self.func(self.val)
+        self.fun(self.val)
 
 
 obj = c(2, 5)
