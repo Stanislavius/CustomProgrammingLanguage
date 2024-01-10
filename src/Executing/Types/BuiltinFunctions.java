@@ -18,6 +18,16 @@ public class BuiltinFunctions {
 
         FunctionType abs = new FunctionType("abs", new SourceFunctionType(){
             public ObjectType execute(LinkedList<ObjectType> args) throws ExecutionException {
+                ObjectType obj = args.get(0);
+                if(obj.getClass() == DictType.class)
+                    throw new ExecutionException(new ErrorType("BadArgumentType"));
+                if(obj.getClass() == ListType.class)
+                    throw new ExecutionException(new ErrorType("BadArgumentType"));
+                if(obj.getClass() == StringType.class)
+                    throw new ExecutionException(new ErrorType("BadArgumentType"));
+                if(obj.getClass() == ErrorType.class)
+                    throw new ExecutionException(new ErrorType("BadArgumentType"));
+
                 return args.get(0).getMember("__class__").getMember("__abs__").call(args.get(0));
             }
         });
@@ -27,6 +37,13 @@ public class BuiltinFunctions {
 
         FunctionType len = new FunctionType("len", new SourceFunctionType(){
             public ObjectType execute(LinkedList<ObjectType> args) throws ExecutionException {
+                ObjectType obj = args.get(0);
+                if(obj.getClass() == IntType.class)
+                    throw new ExecutionException(new ErrorType("BadArgumentType"));
+                if(obj.getClass() == FloatType.class)
+                    throw new ExecutionException(new ErrorType("BadArgumentType"));
+                if(obj.getClass() == ErrorType.class)
+                    throw new ExecutionException(new ErrorType("BadArgumentType"));
                 return args.get(0).getMember("__class__").getMember("__len__").call(args.get(0));
             }
         });

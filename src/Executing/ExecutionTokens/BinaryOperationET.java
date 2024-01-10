@@ -46,10 +46,10 @@ public class BinaryOperationET extends ExecutionToken {
                     return result;
                 }
                 catch (ExecutionException e){
-                    ErrorType et = e.getError();
-                    if(et.getMessage().equals("WrongNumberOfArguments")) {
-                        et.setLine(token.getLineNum());
-                        et.setPosition(token.getPos());
+                    ErrorType error = e.getError();
+                    if (!error.hasLineNum()) {
+                        error.setLine(this.getToken().getLineNum());
+                        error.setPosition(this.getToken().getPos());
                     }
                     throw e;
                 }
