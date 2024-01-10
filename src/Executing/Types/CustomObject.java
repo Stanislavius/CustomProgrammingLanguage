@@ -58,7 +58,8 @@ public class CustomObject extends ObjectType{
         if (this.dict.containsKey(key)){
             ObjectType member = this.dict.get(key);
             if(member.getClass() == FunctionType.class){
-                return new BoundMethodType(this, (FunctionType) member, key.getValue());
+                //return new BoundMethodType(this, (FunctionType) member, key.getValue());
+                return member;
             }
             else
                 return member;
