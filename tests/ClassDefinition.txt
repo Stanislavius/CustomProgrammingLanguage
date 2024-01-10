@@ -174,7 +174,7 @@ class c
         self.a = val
     def __str__(self, other)
         return str(self.a)
-    def __len__(self, other)
+    def __len__(self)
         1
 
 s = c(3)
