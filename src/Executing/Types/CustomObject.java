@@ -131,7 +131,7 @@ public class CustomObject extends ObjectType{
                 return "<class " + this.getMemberOfObjectNoBound("__name__") + ">";
             else {
                 ObjectType classObject = this.getMemberOfObjectNoBound("__class__");
-                return classObject.toString();
+                return "Object of " + classObject.toString();
             }
         } catch (ExecutionException e) {
             return "Error in CustomObject, should never happen";
