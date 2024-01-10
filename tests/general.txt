@@ -356,3 +356,27 @@ s = def
 #title = AssignToLiteral.5
 #type = ParsingError
 #_______________________________________________________________
+#TESTCASE
+#<
++"1"
+#>
+#output = No such member: 1 1
+#commentary =
+#title = NoSuchMember.str.1
+#_______________________________________________________________
+#TESTCASE
+#<
++[3, 4, 5, 6]
+#>
+#output = No such member: 1 1
+#commentary =
+#title = NoSuchMember.str.2
+#_______________________________________________________________
+#TESTCASE
+#<
+[1, 2, 3, 4] * [3, 4, 5, 6]
+#>
+#output = No such member: 1 1
+#commentary =
+#title = NoSuchMember.str.3
+#_______________________________________________________________

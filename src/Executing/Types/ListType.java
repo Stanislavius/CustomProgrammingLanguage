@@ -81,6 +81,26 @@ public class ListType extends ObjectType {
         }
         ));
 
+        type.setMember("__mul__", new FunctionType("__mul__", new SourceFunctionType(){
+            public ObjectType execute(LinkedList<ObjectType> args) throws ExecutionException {
+                LinkedList<ObjectType> v1 = ((ListType)(args.get(0))).getValues();
+                if (args.get(1).getClass() == IntType.class){
+                    ListType result = new ListType();
+                    int howMany = ((IntType) args.get(1)).getInt();
+                    for(int j = 0; j < howMany; ++j) {
+                        for (int i = 0; i < v1.size(); ++i) {
+                            result.append(v1.get(i));
+                        }
+                    }
+                    return result;
+                }
+                else{
+                    throw new ExecutionException(new ErrorType("BadArgumentType"));
+                }
+            }
+        }
+        ));
+
         type.setMember("__len__", new FunctionType("__len__", new SourceFunctionType(){
             public ObjectType execute(LinkedList<ObjectType> args){
                 LinkedList<ObjectType> v1 = ((ListType)(args.get(0))).getValues();
@@ -141,6 +161,11 @@ public class ListType extends ObjectType {
         this.setMember("__class__", type);
     }
 
+    public ListType(){
+        this.values = new LinkedList<ObjectType>();
+        this.setMember("__class__", type);
+    }
+
     public String toString(){
         try {
             StringBuilder sb = new StringBuilder();
@@ -193,6 +218,11 @@ public class ListType extends ObjectType {
     public ObjectType set(ObjectType inx, ObjectType value){
         IntType obj = (IntType)inx;
         this.values.set(obj.getInt(), value);
+        return new VoidType();
+    }
+
+    public ObjectType append(ObjectType toAppend){
+        this.values.add(toAppend);
         return new VoidType();
     }
 

@@ -174,7 +174,13 @@ public class IntType extends ObjectType {
                     float v2 = ((FloatType) (val2)).getFloat();
                     return new FloatType(v1*v2);
                 }
-                return VoidType.voidObject;
+
+                if (val2.getType().toString().equals("list")) {
+                    ListType v2 = ((ListType) (val2));
+                    return v2.getMember("__mul__").call(new IntType(v1));
+                }
+                throw new ExecutionException(new ErrorType("BadArgumentType"));
+
             }
         }
         ));
