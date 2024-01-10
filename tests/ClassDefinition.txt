@@ -78,6 +78,32 @@ class c
         c(self.a + other)
 
 obj = c(5)
+obj = obj + 5
+obj.a
+#>
+#<parsingOutput
+#class c
+#\t1 def __init__(self, val)
+#\t2 (self.a)=val
+#\t1 def __add__(self, other)
+#\t2 c(((self.a)+other))
+#obj=c(5)
+#obj=(obj+5)
+#(obj.a)
+#>parsingOutput
+#output = 10
+#commentary = should use magic method __add__ when '+' operator is used
+#title = cls_def.3.1
+#_______________________________________________________________
+#TESTCASE
+#<
+class c
+    def __init__(self, val)
+        self.a = val
+    def __add__(self, other)
+        c(self.a + other)
+
+obj = c(5)
 obj = c + 5
 obj.a
 #>
@@ -91,9 +117,9 @@ obj.a
 #obj=(c+5)
 #(obj.a)
 #>parsingOutput
-#output = 10
+#output = No such member: 8 9
 #commentary = should use magic method __add__ when '+' operator is used
-#title = cls_def.3
+#title = cls_def.3.2
 #_______________________________________________________________
 #TESTCASE
 #<
