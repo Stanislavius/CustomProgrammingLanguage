@@ -39,10 +39,18 @@ public class BinaryOperationET extends ExecutionToken {
                 args = fct.executeArgs();
                 Executor.logger.info("Call function " + left.toString() + " with args: (" +
                         args.toString().substring(1, args.toString().length()-1) + ")");
-                ObjectType result = lRes.call(args);
-                Executor.logger.info("Result of calling function " + left.toString() + " with args: (" +
-                        args.toString().substring(1, args.toString().length()-1) + ") is " + result.toString()) ;
-                return result;
+                try {
+                    ObjectType result = lRes.call(args);
+                    Executor.logger.info("Result of calling function " + left.toString() + " with args: (" +
+                            args.toString().substring(1, args.toString().length() - 1) + ") is " + result.toString());
+                    return result;
+                }
+                catch (ExecutionException e){
+                    ErrorType et = e.getError();
+                    et.setLine(token.getLineNum());
+                    et.setPosition(token.getPos());
+                    throw e;
+                }
             }
             else {
                 rRes = right.execute();

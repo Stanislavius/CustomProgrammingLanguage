@@ -27,6 +27,12 @@ public class FunctionDefinitionET extends ExecutionToken{
     }
 
     public ObjectType execute(LinkedList<ObjectType> funcArgs) throws ExecutionException {
+        if (args.size() != funcArgs.size()) {
+            ErrorType et = new ErrorType("WrongNumberOfArguments");
+            et.setLine(token.getLineNum());
+            et.setPosition(token.getPos());
+            throw new ExecutionException(et);
+        }
         Executor.addToStack(this);
         for (int i = 0; i < args.size(); ++i){
             Executor.setVariable(args.get(i), funcArgs.get(i));

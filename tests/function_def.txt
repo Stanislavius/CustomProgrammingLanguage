@@ -95,3 +95,39 @@ fun(4)()
 #commentary = should allow function call after function call
 #title = function_creates_function.2
 #_______________________________________________________________
+#TESTCASE
+#<
+def func()
+    4
+func(45, 5, 5)
+#>
+#output = WrongNumberOfArguments: 3 5
+#title = function.wrong_number_of_args.1
+#_______________________________________________________________
+#TESTCASE
+#<
+def func(arg)
+    arg + 4
+func()
+#>
+#output = WrongNumberOfArguments: 3 5
+#title = function.wrong_number_of_args.2
+#_______________________________________________________________
+#TESTCASE
+#<
+def func(arg)
+    arg + 4
+func(4, 5)
+#>
+#output = WrongNumberOfArguments: 3 5
+#title = function.wrong_number_of_args.3
+#_______________________________________________________________
+#TESTCASE
+#<
+def func(arg)
+    arg + 4
+func(4)
+#>
+#output = 8
+#title = function.wrong_number_of_args.positive.1
+#_______________________________________________________________
