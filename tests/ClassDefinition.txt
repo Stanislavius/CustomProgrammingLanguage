@@ -146,7 +146,7 @@ class c
 
 str(c)
 #>
-#output = "c"
+#output = "<type <class c>>"
 #commentary = should return class of c
 #title = cls_def.5
 #_______________________________________________________________
