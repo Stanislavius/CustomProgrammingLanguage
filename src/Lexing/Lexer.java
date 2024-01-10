@@ -213,7 +213,6 @@ public class Lexer {
         }
 
         Matcher intMatcher = intPattern.matcher(st);
-        Matcher floatMatcher = floatPattern.matcher(st);
         Matcher paranthesisMatcher = parenthesisPattern.matcher(st);
         Matcher assignmentMatcher = assignmentPattern.matcher(st);
         Matcher variableMatcher = variablePattern.matcher(st);
@@ -254,6 +253,15 @@ public class Lexer {
                     st.substring(intMatcher.start()+intMatcher.group().length());
         }
 
+        while (variableMatcher.find()){
+            int start = indentation * 4 + variableMatcher.start();
+            tokens.add(new Token(TokenType.VARIABLE, variableMatcher.group(), lineNum, start+1, originalString));
+            st = st.substring(0, variableMatcher.start()) +
+                    " ".repeat(variableMatcher.group().length()) +
+                    st.substring(variableMatcher.start()+variableMatcher.group().length());
+        }
+
+        Matcher floatMatcher = floatPattern.matcher(st);
         while (floatMatcher.find()){
             int start = indentation * 4 + floatMatcher.start();
             String value = floatMatcher.group();
@@ -287,14 +295,6 @@ public class Lexer {
             st = st.substring(0, assignmentMatcher.start()) +
                     " ".repeat(assignmentMatcher.group().length()) +
                     st.substring(assignmentMatcher.start()+assignmentMatcher.group().length());
-        }
-
-        while (variableMatcher.find()){
-            int start = indentation * 4 + variableMatcher.start();
-            tokens.add(new Token(TokenType.VARIABLE, variableMatcher.group(), lineNum, start+1, originalString));
-            st = st.substring(0, variableMatcher.start()) +
-                    " ".repeat(variableMatcher.group().length()) +
-                    st.substring(variableMatcher.start()+variableMatcher.group().length());
         }
 
         while (separatorMatcher.find()){
