@@ -191,7 +191,7 @@ class c
         self.a = val
     def __str__(self, other)
         return str(self.a)
-    def __abs__(self, other)
+    def __abs__(self)
         abs(self.a)
 
 s = c(4)
