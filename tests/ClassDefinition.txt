@@ -132,7 +132,7 @@ class c
 obj = c(5)
 str(obj)
 #>
-#output = 5
+#output = "5"
 #commentary = should use magic method __str__ when str is called
 #title = cls_def.4
 #_______________________________________________________________
