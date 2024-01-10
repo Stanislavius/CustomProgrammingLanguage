@@ -3,6 +3,7 @@ package Executing.ExecutionTokens;
 import Executing.Executor;
 import Executing.Types.ExecutionException;
 import Executing.Types.ObjectType;
+import Executing.Types.ErrorType;
 import Lexing.Token;
 
 public class MemberET extends ExecutionToken {
@@ -18,9 +19,17 @@ public class MemberET extends ExecutionToken {
         Executor.logger.info("Get member " + member.toString()+ " from " + object.toString());
         ObjectType result = object.execute();
         if (member.getClass() == BinaryOperationET.class){
-            BinaryOperationET memberBO = (BinaryOperationET) member;
-            FunctionCallET functionCallET = (FunctionCallET) memberBO.right;
-            result = result.getMember(memberBO.left.getToken().getValue()).call(functionCallET.executeArgs());
+            try {
+                BinaryOperationET memberBO = (BinaryOperationET) member;
+                FunctionCallET functionCallET = (FunctionCallET) memberBO.right;
+                result = result.getMember(memberBO.left.getToken().getValue()).call(functionCallET.executeArgs());
+            }
+            catch (ExecutionException e){
+                ErrorType et = e.getError();
+                et.setLine(token.getLineNum());
+                et.setPosition(token.getPos());
+                throw e;
+            }
         }
         else {
             result = result.getMember(member.getToken().getValue());

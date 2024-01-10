@@ -10,8 +10,10 @@ public class ListType extends ObjectType {
     {
         type = new ClassType();
         type.setMember("__name__", new StringType("list"));
-        type.setMember("__append__", new FunctionType("__append__", new SourceFunctionType(){
-            public ObjectType execute(LinkedList<ObjectType> args){
+        type.setMember("append", new FunctionType("__append__", new SourceFunctionType(){
+            public ObjectType execute(LinkedList<ObjectType> args) throws ExecutionException {
+                if (args.size() != 2)
+                    throw new ExecutionException(new ErrorType("WrongNumberOfArguments"));
                 ListType list = ((ListType)(args.get(0)));
                 ObjectType val2 = args.get(1);
                 list.values.add(args.get(1));
