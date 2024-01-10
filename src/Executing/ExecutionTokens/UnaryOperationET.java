@@ -15,11 +15,20 @@ public class UnaryOperationET extends ExecutionToken {
 
     public ObjectType execute() throws ExecutionException {
         ObjectType arg = right.execute();
-        switch (token.getValue()) {
-            case "+":
-                return arg.getMember("__class__").getMember("__pos__").call(arg);
-            case "-":
-                return arg.getMember("__class__").getMember("__neg__").call(arg);
+        try {
+            switch (token.getValue()) {
+                case "+":
+                    return arg.getMember("__class__").getMember("__pos__").call(arg);
+                case "-":
+                    return arg.getMember("__class__").getMember("__neg__").call(arg);
+            }
+        }
+
+        catch (ExecutionException e){
+            ErrorType et = e.getError();
+            et.setLine(token.getLineNum());
+            et.setPosition(token.getPos());
+            throw e;
         }
         return new ErrorType();
     }

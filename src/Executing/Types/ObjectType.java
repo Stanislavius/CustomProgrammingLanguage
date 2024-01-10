@@ -42,6 +42,9 @@ public class ObjectType{
         }
         else {
             ObjectType member = this.getMember("__class__").getMember(name);
+            if (member == null){
+                throw new ExecutionException(new ErrorType("No such member"));
+            }
             if (member.getClass() == FunctionType.class) {
                 return new BoundMethodType(this, (FunctionType) member, name);
             } else

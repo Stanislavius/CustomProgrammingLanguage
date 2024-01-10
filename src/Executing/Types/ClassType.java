@@ -31,11 +31,19 @@ public class ClassType extends ObjectType {
     }
 
     public String toString(){
-        return ((StringType)this.getMember("__name__")).getValue();
+        try {
+            return ((StringType)this.getMember("__name__")).getValue();
+        } catch (ExecutionException e) {
+            return "Error in ClassType toString method, should never happen";
+        }
     }
 
-    public ObjectType getMember(String name){
-        return members.get(name);
+    public ObjectType getMember(String name) throws ExecutionException {
+        ObjectType member =  members.get(name);
+        if (member == null){
+            throw new ExecutionException(new ErrorType("No such member"));
+        }
+        return member;
     }
 
     public static ClassType getTypeClass(){
