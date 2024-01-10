@@ -48,6 +48,13 @@ public class IntType extends ObjectType {
         }
         ));
 
+        type.setMember("__pos__", new FunctionType("__pos__", new SourceFunctionType(){
+            public ObjectType execute(LinkedList<ObjectType> args) throws ExecutionException {
+                return args.get(0);
+            }
+        }
+        ));
+
         type.setMember("__sub__", new FunctionType("__sub__", new SourceFunctionType(){
             public ObjectType execute(LinkedList<ObjectType> args) throws ExecutionException {
                 int v1 = ((IntType)(args.get(0))).getInt();

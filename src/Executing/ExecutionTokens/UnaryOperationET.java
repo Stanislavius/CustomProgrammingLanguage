@@ -17,7 +17,7 @@ public class UnaryOperationET extends ExecutionToken {
         ObjectType arg = right.execute();
         switch (token.getValue()) {
             case "+":
-                return arg;
+                return arg.getMember("__class__").getMember("__pos__").call(arg);
             case "-":
                 return arg.getMember("__class__").getMember("__neg__").call(arg);
         }
