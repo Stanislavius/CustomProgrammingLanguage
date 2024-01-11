@@ -307,9 +307,9 @@ class c
         self.val = val
         def func(v)
             v + 2
-        self.func = func
+        self.fun = func
     def func(self)
-        self.func(self.val)
+        self.fun(self.val)
 
 
 obj = c(2)
