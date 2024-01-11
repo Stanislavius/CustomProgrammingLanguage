@@ -376,7 +376,7 @@ s = def
 #<
 [1, 2, 3, 4] * [3, 4, 5, 6]
 #>
-#output = No such member: 1 1
+#output = BadArgumentType: 1 14
 #commentary =
 #title = NoSuchMember.str.3
 #_______________________________________________________________
