@@ -85,4 +85,8 @@ public class ClassDefinitionET extends ExecutionToken{
         return sb.toString();
     }
 
+    public void replaceOuterVariableIfHasAny(LinkedList<String> args){
+        //toDo later, for now classes inside of functions should not be accepted
+    }
+
 }

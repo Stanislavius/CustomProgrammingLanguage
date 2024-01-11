@@ -5,6 +5,8 @@ import Executing.Types.ExecutionException;
 import Executing.Types.ObjectType;
 import Lexing.Token;
 
+import java.util.LinkedList;
+
 public class UnaryOperationET extends ExecutionToken {
     ExecutionToken right;
 
@@ -40,5 +42,9 @@ public class UnaryOperationET extends ExecutionToken {
         sb.append(right.toString());
         sb.append(")");
         return sb.toString();
+    }
+
+    public void replaceOuterVariableIfHasAny(LinkedList<String> args) throws ExecutionException {
+        right.replaceOuterVariableIfHasAny(args);
     }
 }

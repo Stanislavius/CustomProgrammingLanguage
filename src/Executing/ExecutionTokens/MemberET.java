@@ -6,6 +6,8 @@ import Executing.Types.ObjectType;
 import Executing.Types.ErrorType;
 import Lexing.Token;
 
+import java.util.LinkedList;
+
 public class MemberET extends ExecutionToken {
     ExecutionToken object;
     ExecutionToken member;
@@ -67,5 +69,10 @@ public class MemberET extends ExecutionToken {
     }
     public String toString(){
         return object.toString() + "." + member.toString();
+    }
+
+    public void replaceOuterVariableIfHasAny(LinkedList<String> args) throws ExecutionException {
+        object.replaceOuterVariableIfHasAny(args);
+        member.replaceOuterVariableIfHasAny(args);
     }
 }

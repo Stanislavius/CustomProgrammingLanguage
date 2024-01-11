@@ -49,4 +49,10 @@ public class FunctionCallET extends ExecutionToken {
         }
         return sb.toString();
     }
+
+    public void replaceOuterVariableIfHasAny(LinkedList<String> passedArgs) throws ExecutionException {
+        for(int i = 0; i < args.size(); ++i){
+            //args.get(i).replaceOuterVariableIfHasAny(passedArgs);
+        }
+    }
 }

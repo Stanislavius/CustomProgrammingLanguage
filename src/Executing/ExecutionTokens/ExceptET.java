@@ -43,4 +43,10 @@ public class ExceptET extends ExecutionToken{
             return false;
         }
     }
+
+    public void replaceOuterVariableIfHasAny(LinkedList<String> args) throws ExecutionException {
+        for(int i = 0; i < toDo.size(); ++i){
+            toDo.get(i).replaceOuterVariableIfHasAny(args);
+        }
+    }
 }

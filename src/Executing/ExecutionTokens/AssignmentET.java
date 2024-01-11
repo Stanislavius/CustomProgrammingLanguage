@@ -6,6 +6,8 @@ import Executing.Types.VoidType;
 import Executing.Executor;
 import Lexing.Token;
 
+import java.util.LinkedList;
+
 public class AssignmentET extends ExecutionToken {
     ExecutionToken assignTo;
     ExecutionToken value;
@@ -42,5 +44,9 @@ public class AssignmentET extends ExecutionToken {
 
     public String toString(){
         return assignTo.toString() + "=" + value.toString();
+    }
+
+    public void replaceOuterVariableIfHasAny(LinkedList<String> args) throws ExecutionException {
+        value.replaceOuterVariableIfHasAny(args);
     }
 }

@@ -39,4 +39,10 @@ public class TryET extends ExecutionToken{
             }
         return result;
     }
+
+    public void replaceOuterVariableIfHasAny(LinkedList<String> args) throws ExecutionException {
+        for(int i = 0; i < toDo.size(); ++i){
+            toDo.get(i).replaceOuterVariableIfHasAny(args);
+        }
+    }
 }

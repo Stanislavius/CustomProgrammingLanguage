@@ -54,4 +54,17 @@ public class BlockET extends ExecutionToken{
         }
         return result;
     }
+    public void replaceOuterVariableIfHasAny(LinkedList<String> args) throws ExecutionException {
+        for(int i = 0; i < toDo.size(); ++i){
+            toDo.get(i).replaceOuterVariableIfHasAny(args);
+        }
+        for(int i = 0; i < elseConditions.size(); ++i){
+            elseConditions.get(i).replaceOuterVariableIfHasAny(args);
+        }
+        for(int i = 0; i < elseToDos.size(); ++i){
+            for(int j = 0; j < elseToDos.size(); ++j)
+                elseToDos.get(i).get(j).replaceOuterVariableIfHasAny(args);
+        }
+        condition.replaceOuterVariableIfHasAny(args);
+    }
 }

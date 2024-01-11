@@ -16,7 +16,7 @@ public class FunctionDefinitionET extends ExecutionToken{
         this.name = name;
     }
 
-    public ObjectType execute(){
+    public ObjectType execute() throws ExecutionException {
         Executor.logger.info("Define custom function " + name);
         FunctionType newFunction = new FunctionType(name, new CustomFunctionType(this));
         Executor.setVariable(name, newFunction);
@@ -35,6 +35,10 @@ public class FunctionDefinitionET extends ExecutionToken{
         Executor.addToStack(this);
         for (int i = 0; i < args.size(); ++i){
             Executor.setVariable(args.get(i), funcArgs.get(i));
+        }
+        for (int i = 0; i < toDo.size(); ++i){
+            if (toDo.get(i).getClass() == FunctionDefinitionET.class)
+                ((FunctionDefinitionET) toDo.get(i)).replaceOuterVariableIfHasAny();
         }
         ObjectType result = new VoidType();
         for (int i = 0; i < toDo.size(); ++i){
@@ -67,5 +71,17 @@ public class FunctionDefinitionET extends ExecutionToken{
             sb.append("\n");
         }
         return sb.toString();
+    }
+
+    public void replaceOuterVariableIfHasAny(LinkedList<String> args) throws ExecutionException {
+        for(int i = 0; i < toDo.size(); ++i){
+            toDo.get(i).replaceOuterVariableIfHasAny(args);
+        }
+    }
+
+    public void replaceOuterVariableIfHasAny() throws ExecutionException {
+        for(int i = 0; i < toDo.size(); ++i){
+            toDo.get(i).replaceOuterVariableIfHasAny(this.args);
+        }
     }
 }

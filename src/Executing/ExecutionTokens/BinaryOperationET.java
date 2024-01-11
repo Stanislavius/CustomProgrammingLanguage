@@ -128,4 +128,8 @@ public class BinaryOperationET extends ExecutionToken {
         return sb.toString();
     }
 
+    public void replaceOuterVariableIfHasAny(LinkedList<String> args) throws ExecutionException {
+        left.replaceOuterVariableIfHasAny(args);
+        right.replaceOuterVariableIfHasAny(args);
+    }
 }

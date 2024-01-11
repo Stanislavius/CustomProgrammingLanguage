@@ -154,6 +154,30 @@ fun(4)()
 #_______________________________________________________________
 #TESTCASE
 #<
+def fun(a)
+    def fun2()
+        a + 5
+    fun2
+a = 10
+fun(4)()
+#>
+#output = 9
+#title = function_creates_function.3
+#_______________________________________________________________
+#TESTCASE
+#<
+def fun(a)
+    def fun2(b)
+        a + b
+    fun2
+f = fun(4)
+f(4)
+#>
+#output = 8
+#title = function_creates_function.4
+#_______________________________________________________________
+#TESTCASE
+#<
 def func()
     4
 func(45, 5, 5)

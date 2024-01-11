@@ -4,6 +4,8 @@ import Executing.Types.ExecutionException;
 import Executing.Types.ObjectType;
 import Lexing.Token;
 
+import java.util.LinkedList;
+
 public abstract class ExecutionToken {
     protected Token token;
 
@@ -16,4 +18,6 @@ public abstract class ExecutionToken {
     }
 
     public abstract ObjectType execute() throws ExecutionException;
+
+    public void replaceOuterVariableIfHasAny(LinkedList<String> args) throws ExecutionException {};
 }
