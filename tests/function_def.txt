@@ -49,8 +49,65 @@ def foo(a)
 foo(4)
 bar()
 #>
-#output = 4
+#output = NoSuchVariable: 9 1
+#title = function.returns_function.1
 #commentary = conditional functional definition (NOW SHOULD CAUSE ERROR, BECAUSE BAR IS NOT DEFINED OUTSIDE OF foo)
+#_______________________________________________________________
+#TESTCASE
+#<
+def foo(a)
+    if a == 4
+        def bar()
+            4
+    else
+        def bar()
+            5
+foo(4)()
+#>
+#output = 4
+#title = function.returns_function.2
+#_______________________________________________________________
+#TESTCASE
+#<
+def foo(a)
+    if a == 4
+        def bar()
+            4
+    else
+        def bar()
+            5
+foo(5)()
+#>
+#output = 5
+#title = function.returns_function.3
+#_______________________________________________________________
+#TESTCASE
+#<
+def foo(a)
+    if a == 4
+        def bar()
+            4
+    else
+        def bar()
+            5
+foo(4)
+#>
+#output = <Func object bar>
+#title = function.returns_function.4
+#_______________________________________________________________
+#TESTCASE
+#<
+def foo(a)
+    if a == 4
+        def bar()
+            4
+    else
+        def bar()
+            5
+foo
+#>
+#output = <Func object foo>
+#title = function.returns_function.5
 #_______________________________________________________________
 #TESTCASE
 #<
