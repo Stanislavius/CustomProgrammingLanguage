@@ -38,9 +38,13 @@ public class DictType extends ObjectType {
         ));
 
         type.setMember("__getitem__", new FunctionType("__getitem__", new SourceFunctionType(){
-            public ObjectType execute(LinkedList<ObjectType> args){
+            public ObjectType execute(LinkedList<ObjectType> args) throws ExecutionException {
                 DictType v1 = ((DictType)(args.get(0)));
-                return v1.get(args.get(1));
+                if (v1.containsKey(args.get(1))){
+                    return v1.get(args.get(1));
+                }
+                else
+                    throw new ExecutionException(new ErrorType("NoSuchKey"));
             }
         }
         ));
