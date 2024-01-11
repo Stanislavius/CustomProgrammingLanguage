@@ -144,6 +144,45 @@ abs("43543")
 #_______________________________________________________________
 #TESTCASE
 #<
+class c
+    def __init__(self, a)
+        self.a = a
+    def __abs__(self)
+        abs(self.a)
+obj = c(-4)
+abs(obj)
+#>
+#output = 4
+#title = BuiltIn.abs.8
+#_______________________________________________________________
+#TESTCASE
+#<
+class c
+    def __init__(self, a)
+        self.a = a
+    def __abs__(self)
+        c(abs(self.a))
+obj = c(-4)
+abs(obj).a
+#>
+#output = 4
+#title = BuiltIn.abs.9
+#_______________________________________________________________
+#TESTCASE
+#<
+class c
+    def __init__(self, a)
+        self.a = a
+    def __abs__(self)
+        abs(self.a)
+obj = c(-4)
+abs(obj)
+#>
+#output = 4
+#title = BuiltIn.abs.9
+#_______________________________________________________________
+#TESTCASE
+#<
 len(3)
 #>
 #output = BadArgumentType: 1 4
