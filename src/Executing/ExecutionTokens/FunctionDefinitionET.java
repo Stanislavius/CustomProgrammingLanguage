@@ -18,8 +18,9 @@ public class FunctionDefinitionET extends ExecutionToken{
 
     public ObjectType execute(){
         Executor.logger.info("Define custom function " + name);
-        Executor.setVariable(name, new FunctionType(name, new CustomFunctionType(this)));
-        return new VoidType();
+        FunctionType newFunction = new FunctionType(name, new CustomFunctionType(this));
+        Executor.setVariable(name, newFunction);
+        return newFunction;
     }
 
     public static void addFun(String funName, FunctionDefinitionET fun){
