@@ -2,10 +2,7 @@ package Executing.Types;
 
 import Executing.Executor;
 
-import java.util.HashMap;
-import java.util.Iterator;
-import java.util.LinkedList;
-import java.util.Set;
+import java.util.*;
 
 public class DictType extends ObjectType {
     static ClassType type;
@@ -129,10 +126,10 @@ public class DictType extends ObjectType {
 
         Executor.setVariable("dict", type);
     }
-    HashMap<ObjectType, ObjectType> dict;
+    LinkedHashMap<ObjectType, ObjectType> dict;
 
     public DictType(LinkedList<ObjectType> keys, LinkedList<ObjectType> values){
-        this.dict = new HashMap<ObjectType, ObjectType>();
+        this.dict = new LinkedHashMap<ObjectType, ObjectType>();
         for (int i = 0; i < keys.size(); ++i){
             this.dict.put(keys.get(i), values.get(i));
         }
@@ -140,11 +137,11 @@ public class DictType extends ObjectType {
     }
 
     public DictType(){
-        this.dict = new HashMap<ObjectType, ObjectType>();
+        this.dict = new LinkedHashMap<ObjectType, ObjectType>();
         this.setMember("__class__", type);
     }
 
-    public DictType(HashMap<ObjectType, ObjectType> dict){
+    public DictType(LinkedHashMap<ObjectType, ObjectType> dict){
         this.dict = dict;
         this.setMember("__class__", type);
     }
