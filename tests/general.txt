@@ -120,7 +120,7 @@ a = 4 * * 5
 #<
 a = 4 4 +
 #>
-#output = NoOperationException: 1 6
+#output = NoOperationException: 1 9
 #commentary =
 #title = SyntaxError.2
 #type = ParsingError
