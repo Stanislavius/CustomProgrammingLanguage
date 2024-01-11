@@ -462,6 +462,25 @@ public class Parser {
         if (line.isEmpty()) {
             return null;
         }
+        if (line.size() == 1){
+            if (line.get(0).getClass() == ParsedToken.class
+                    && line.get(0).getType() == TokenType.OPERATION){
+                throw new NoOperandException(line.get(0).getToken());
+            }
+        }
+        else{
+            for(int i = 0; i < line.size() - 1; ++i){
+                if (line.get(i).getType() == TokenType.OPERATION && line.get(i+1).getType() == TokenType.OPERATION){
+                    if (line.get(i).getClass() == ParsedToken.class && line.get(i+1).getClass() == ParsedToken.class)
+                        if (!line.get(i+1).getValue().equals("+") && !line.get(i+1).getValue().equals("-"))
+                            throw new NoOperandException(line.get(0).getToken());
+                }
+            }
+            ParsedToken last = line.getLast();
+            if (last.getClass() == ParsedToken.class && last.getType() == TokenType.OPERATION){
+                throw new NoOperandException(last.getToken());
+            }
+        }
         if (line.size() == 1) {
             return line.getFirst();
         }
