@@ -234,7 +234,7 @@ try
     def func(a, b, c)
             print(c)
 #>
-#output = UnexpectedIndentException: 1 5
+#output = UnexpectedIndentException: 0 0
 #commentary =
 #title = Indent.1
 #type = ParsingError
