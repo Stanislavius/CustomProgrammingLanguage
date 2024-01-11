@@ -56,6 +56,14 @@ public class FloatType extends ObjectType {
         }
         ));
 
+        type.setMember("__abs__", new FunctionType("__str__", new SourceFunctionType(){
+            public ObjectType execute(LinkedList<ObjectType> args){
+                float v1 = ((FloatType)(args.get(0))).getFloat();
+                return new FloatType(Math.abs(v1));
+            }
+        }
+        ));
+
         type.setMember("__sub__", new FunctionType("__sub__", new SourceFunctionType(){
             public ObjectType execute(LinkedList<ObjectType> args) throws ExecutionException {
                 float v1 = ((FloatType)(args.get(0))).getFloat();
