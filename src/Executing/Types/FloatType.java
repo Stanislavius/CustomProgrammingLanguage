@@ -208,4 +208,8 @@ public class FloatType extends ObjectType {
                 return false;
         }
     }
+
+    public int hashCode(){
+        return value.hashCode();
+    }
 }
