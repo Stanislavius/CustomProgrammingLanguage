@@ -142,7 +142,7 @@ class c
     def __init__(self, val)
         self.a = val
     def __str__(self)
-        return str(self.a)
+        str(self.a)
 
 str(c)
 #>
@@ -156,7 +156,7 @@ class c
     def __init__(self, val)
         self.a = val
     def __str__(self, other)
-        return str(self.a)
+        str(self.a)
     def __eq__(self, other)
         1
 
@@ -173,7 +173,7 @@ class c
     def __init__(self, val)
         self.a = val
     def __str__(self, other)
-        return str(self.a)
+        str(self.a)
     def __len__(self)
         1
 
@@ -190,7 +190,7 @@ class c
     def __init__(self, val)
         self.a = val
     def __str__(self, other)
-        return str(self.a)
+        str(self.a)
     def __abs__(self)
         abs(self.a)
 
@@ -229,7 +229,7 @@ class c
         elif type(other) == c
             self.a + other.a
         else
-            return error("Wrong argument")
+            error("Wrong argument")
 
 op1 = c(4)
 op2 = 5
@@ -251,7 +251,7 @@ class c
         elif type(other) == c
             self.a + other.a
         else
-            return error("Wrong argument")
+            error("Wrong argument")
 
 op1 = c(4)
 op2 = c(5)
