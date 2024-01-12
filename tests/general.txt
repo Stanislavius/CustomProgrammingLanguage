@@ -232,7 +232,7 @@ print(c)
 #<
 def func(a, b, c)
 #>
-#output = NoBodyException: 1 18
+#output = NoBodyException: 1 17
 #commentary =
 #title = NoBody.6
 #type = ParsingError
@@ -241,7 +241,7 @@ def func(a, b, c)
 #<
 if 4 == 4
 #>
-#output = NoBodyException: 1 10
+#output = NoBodyException: 1 9
 #commentary =
 #title = NoBody.7
 #type = ParsingError
@@ -259,7 +259,7 @@ while 4 == 4
 #<
 class cdf
 #>
-#output = NoBodyException: 1 1
+#output = NoBodyException: 1 9
 #commentary =
 #title = NoBody.9
 #type = ParsingError
@@ -268,7 +268,7 @@ class cdf
 #<
 try
 #>
-#output = NoBodyException: 1 1
+#output = NoBodyException: 1 3
 #commentary =
 #title = NoBody.10
 #type = ParsingError
@@ -278,7 +278,7 @@ try
     def func(a, b, c)
             print(c)
 #>
-#output = UnexpectedIndentException: 0 0
+#output = UnexpectedIndentException: 1 0
 #commentary =
 #title = Indent.1
 #type = ParsingError
