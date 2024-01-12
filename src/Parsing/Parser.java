@@ -473,17 +473,37 @@ public class Parser {
                 if (line.get(i).getType() == TokenType.OPERATION && line.get(i+1).getType() == TokenType.OPERATION){
                     if (line.get(i).getClass() == ParsedToken.class && line.get(i+1).getClass() == ParsedToken.class)
                         if (!line.get(i+1).getValue().equals("+") && !line.get(i+1).getValue().equals("-"))
-                            throw new NoOperandException(line.get(0).getToken());
+                            throw new NoOperandException(line.get(i).getToken());
                 }
+                if(line.get(i).getParsedType() == ParsedTokenType.VALUE)
+                    if(line.get(i+1).getParsedType() == ParsedTokenType.VALUE)
+                        throw new NoOperationException((line.get(i+1).getToken()));
             }
             ParsedToken last = line.getLast();
             if (last.getClass() == ParsedToken.class && last.getType() == TokenType.OPERATION){
                 throw new NoOperandException(last.getToken());
             }
         }
+        /* if (line.size() != 1){
+            for(int i = 0; i < line.size()-1; ++i){
+
+                if(line.get(i).getParsedType() == ParsedTokenType.VALUE ||
+                        line.get(i).getParsedType() == ParsedTokenType.BINARY_OPERATION
+                        || line.get(i).getParsedType() == ParsedTokenType.UNARY_OPERATION)
+                    if(line.get(i+1).getParsedType() == ParsedTokenType.VALUE ||
+                            line.get(i+1).getParsedType() == ParsedTokenType.BINARY_OPERATION
+                            || line.get(i+1).getParsedType() == ParsedTokenType.UNARY_OPERATION){
+                        throw new NoOperationException((line.get(i+1).getToken()));
+                    }
+                 maybe that's can be done, but for now i will go with another:
+            }
+        } */
+
         if (line.size() == 1) {
             return line.getFirst();
         }
+
+
         //checks
         LinkedList<ParsedToken> operands = processStructures(line);
         operands = groupByMembership(operands);
