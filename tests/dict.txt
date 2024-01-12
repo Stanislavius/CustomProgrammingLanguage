@@ -122,7 +122,16 @@ len(s)
 s = {2:3, 2:5}
 len(s)
 #>
-#output = 2
+#output = 1
 #commentary = should return len
 #title = dict.len.3
+#_______________________________________________________________
+#TESTCASE
+#<
+s = {2:3, 3:5}
+len(s)
+#>
+#output = 2
+#commentary = should return len
+#title = dict.len.4
 #_______________________________________________________________
