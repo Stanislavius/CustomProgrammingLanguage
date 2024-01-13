@@ -197,5 +197,15 @@ a.append(4, 3)
 a
 #>
 #output = WrongNumberOfArguments: 2 2
-#title = list.append.1
+#title = list.append.2
+#_______________________________________________________________
+#TESTCASE
+#<
+l = [1, 2, 3]
+l.append(l)
+l
+#>
+#output = 2
+#commentary = should return len
+#title = list.recursive.1
 #_______________________________________________________________

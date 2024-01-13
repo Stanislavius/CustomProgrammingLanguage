@@ -16,6 +16,8 @@ public class Executor {
     static LinkedList<Variables> namespaces = new LinkedList<Variables>();
 
     static LinkedList<TryET> tryBlocks = new LinkedList<TryET>();
+
+    public static RecursionTracker tracker = new RecursionTracker();
     public static String execute(LinkedList<AbstractStatementPT> program) {
         createTypes();
         LinkedList<String> output = new LinkedList<String>();

@@ -264,3 +264,82 @@ _______________________________________________________________
 #title = parentheses.22
 #commentary = should work with multiple operations in a row
 #_______________________________________________________________
+#TESTCASE
+#<
+def s(a, b)
+    a + b
+s((s(s(1, 2), 3), 4), 5)
+#>
+#<parsingOutput
+#def s(a, b)
+#\t1 (a+b)
+#s(s(s(s(1, 2), 3), 4), 5)
+#>parsingOutput
+#output = 15
+#title = chain_functions_call.1
+#_______________________________________________________________
+#TESTCASE
+#<
+def s(a, b)
+    a + b
+s(s(1, 2) + s(3, 4), 2)
+#>
+#output = 12
+#title = chain_functions_call.2
+#_______________________________________________________________
+#TESTCASE
+#<
+def s(a, b)
+    a + b
+s(s(1, 2) + s(3, 4), 2)
+#>
+#output = 13
+#title = chain_functions_call.3
+#_______________________________________________________________
+#TESTCASE
+#<
+def s(a)
+    a + 1
+s(s(s(s(s(s(s(s(s(1)))))))))
+#>
+#output = 10
+#title = chain_functions_call.4
+#_______________________________________________________________
+#TESTCASE
+#<
+class c
+    def __init__(self)
+        self.arr = []
+        self.arr.append(self)
+obj = c()
+obj.arr
+#>
+#output = [Object of <class c>]
+#title = members_and_structures.1
+#_______________________________________________________________
+#TESTCASE
+#<
+class c
+    def __init__(self)
+        self.arr = []
+        self.arr.append(self)
+obj = c()
+obj.arr[0]
+#>
+#output = Object of <class c>
+#title = members_and_structures.2
+#_______________________________________________________________
+#TESTCASE
+#<
+class c
+    def __init__(self)
+        self.arr = []
+        self.arr.append(self)
+obj = c()
+obj = obj.arr
+obj[0].arr
+#>
+#output = [Object of <class c>]
+#title = members_and_structures.3
+#_______________________________________________________________
+

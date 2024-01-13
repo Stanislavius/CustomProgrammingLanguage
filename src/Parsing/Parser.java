@@ -617,10 +617,14 @@ public class Parser {
                         head1 = (ConditionalStatementPT) curLine;
                     if (curLine.getValue().equals("elif")) {
                         iter.remove();
+                        if (head1 == null)
+                            throw new UnexpectedBlockWordException(curLine.getToken());
                         ((ConditionalStatementPT)head1).append((ConditionalStatementPT)curLine);
                     }
                     if (curLine.getValue().equals("else")) {
                         iter.remove();
+                        if (head1 == null)
+                            throw new UnexpectedBlockWordException(curLine.getToken());
                         ((ConditionalStatementPT)head1).append((ConditionalStatementPT)curLine);
                         head1 = null;
                     }
@@ -639,13 +643,15 @@ public class Parser {
                     if (curLine.getValue().equals("except")) {
                         iter.remove();
                         assert curLine instanceof ExceptStatementPT;
-                        assert headTry != null;
+                        if (head1 == null)
+                            throw new UnexpectedBlockWordException(curLine.getToken());
                         headTry.addExcept((ExceptStatementPT) curLine);
                     }
                     if (curLine.getValue().equals("finally")) {
                         iter.remove();
                         assert curLine instanceof FinallyStatementPT;
-                        assert headTry != null;
+                        if (head1 == null)
+                            throw new UnexpectedBlockWordException(curLine.getToken());
                         headTry.setFinallyStatement((FinallyStatementPT) curLine);
                         headTry = null;
                     }

@@ -4,6 +4,10 @@ import java.util.LinkedList;
 
 public class CustomObject extends ObjectType{
     DictType dict = new DictType();
+    public CustomObject(){
+        super();
+        dict.set(new StringType("__dict__"), dict);
+    }
     public static ObjectType setMember(ObjectType object, String name, ObjectType member) {
         object.setMember(name, member);
         return VoidType.voidObject;

@@ -151,33 +151,40 @@ public class DictType extends ObjectType {
     }
 
     public String toString(){
-        StringBuilder sb = new StringBuilder();
-        sb.append("{");
-        Set keys  = dict.keySet();
-        Iterator iter = keys.iterator();
-        while(iter.hasNext()){
-            ObjectType key = (ObjectType)iter.next();
-            ObjectType value = dict.get(key);
-            if (key.getClass() == StringType.class) {
-                sb.append("\"");
-                sb.append(key.toString());
-                sb.append("\"");
-            }
-            else
-                sb.append(key.toString());
-            sb.append(":");
-            if (value.getClass() == StringType.class) {
-                sb.append("\"");
-                sb.append(value.toString());
-                sb.append("\"");
-            }
-            else
-                sb.append(value.toString());
-            if (iter.hasNext())
-                sb.append(", ");
+        if (Executor.tracker.contains(this)){
+            return "{...}";
         }
-        sb.append("}");
-        return sb.toString();
+        else {
+            Executor.tracker.add(this);
+            StringBuilder sb = new StringBuilder();
+            sb.append("{");
+            Set keys = dict.keySet();
+            Iterator iter = keys.iterator();
+            while (iter.hasNext()) {
+                ObjectType key = (ObjectType) iter.next();
+                ObjectType value = dict.get(key);
+                if (key.getClass() == StringType.class) {
+                    sb.append("\"");
+                    sb.append(key.toString());
+                    sb.append("\"");
+                } else
+                    sb.append(key.toString());
+                sb.append(":");
+                if (value.getClass() == StringType.class) {
+                    sb.append("\"");
+                    sb.append(value.toString());
+                    sb.append("\"");
+                } else
+                    sb.append(value.toString());
+                if (iter.hasNext())
+                    sb.append(", ");
+            }
+            sb.append("}");
+            if (Executor.tracker.isFirst(this)){
+                Executor.tracker.clear();
+            }
+            return sb.toString();
+        }
     }
 
 

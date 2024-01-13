@@ -37,4 +37,25 @@ arr
 #commentary = bubble_sort
 #title = bubble_sort
 #_______________________________________________________________
+#TESTCASE
+#<
+def fibonacci(N)
+    if N == 1
+        N
+    elif N == 0
+        N
+    else
+        fibonacci(N-1)+fibonacci(N-2)
+
+l = []
+i = 0
+N = 10
+while i < N
+    l.append(fibonacci(i))
+    i = i + 1
+l
+#>
+#output = [0, 1, 1, 2, 3, 5, 8, 13, 21, 34]
+#title = fibonacci
+#_______________________________________________________________
 

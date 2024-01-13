@@ -135,3 +135,54 @@ len(s)
 #commentary = should return len
 #title = dict.len.4
 #_______________________________________________________________
+#TESTCASE
+#<
+class c
+    def __init__(self, a)
+        self.a = 5
+    def s(self)
+        self.a = self.a + 1
+    def n(self)
+        self.a = self.a - 1
+    def c(self)
+        self.c = self.a
+
+c.__dict__
+#>
+#output = {"__dict__":{...}, "s":<Func object s>, "c":<Func object c>, "__call__":<Func object __call__>, "__init__":<Func object __init__>, "n":<Func object n>, "__class__":type, "__name__":"c"}
+#title = dict.recursive.1
+#_______________________________________________________________
+#TESTCASE
+#<
+class c
+    def __init__(self, a)
+        self.a = 5
+    def s(self)
+        self.a = self.a + 1
+    def n(self)
+        self.a = self.a - 1
+    def c(self)
+        self.c = self.a
+
+c.__dict__["__dict__"]
+#>
+#output = {"__dict__":{...}, "s":<Func object s>, "c":<Func object c>, "__call__":<Func object __call__>, "__init__":<Func object __init__>, "n":<Func object n>, "__class__":type, "__name__":"c"}
+#title = dict.recursive.2
+#_______________________________________________________________
+#TESTCASE
+#<
+class c
+    def __init__(self, a)
+        self.a = 5
+    def s(self)
+        self.a = self.a + 1
+    def n(self)
+        self.a = self.a - 1
+    def c(self)
+        self.c = self.a
+
+c.__dict__[__dict__] == c.__dict__
+#>
+#output = 1
+#title = dict.recursive.3
+#_______________________________________________________________

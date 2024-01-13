@@ -424,3 +424,30 @@ s = def
 #commentary =
 #title = NoSuchMember.str.3
 #_______________________________________________________________
+#TESTCASE
+#<
+elif 5 == 4
+    4
+#>
+#output = UnexpectedBlockWordException: 1 1
+#commentary =
+#title = UnexpectedBlockWord.1
+#_______________________________________________________________
+#TESTCASE
+#<
+else
+    4
+#>
+#output = UnexpectedBlockWordException: 1 1
+#commentary =
+#title = UnexpectedBlockWord.2
+#_______________________________________________________________
+#TESTCASE
+#<
+except
+    4
+#>
+#output = UnexpectedBlockWordException: 1 1
+#commentary =
+#title = UnexpectedBlockWord.3
+#_______________________________________________________________
