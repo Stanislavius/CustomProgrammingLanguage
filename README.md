@@ -1,4 +1,4 @@
-## Autokrator
+## Custom Programming Language
 # Contents
 * [Description](#description)
    * [What it does?](#what-it-does)
@@ -11,7 +11,7 @@
 
 # Description
 ## What it does?
-Executes code written in custom program language Autokrator (Autokrator or Autocrator is a Greek epithet applied to an individual who is unrestrained by superiors), grammar of which is described below. Which is similar to Python grammar, but not quite.
+Executes code written in custom program language, grammar of which is described below. Which is similar to Python grammar, but not quite.
 
 ## Why?
 Mostly to demonstrate the possibilities of creating your own programming language.
