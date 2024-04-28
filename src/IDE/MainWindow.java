@@ -77,8 +77,6 @@ public class MainWindow extends JFrame implements ActionListener {
         pane.addCaretListener(new CaretListener() {
             @Override
             public void caretUpdate(CaretEvent e) {
-                int length = pane.getSelectionEnd() - pane.getSelectionStart();
-                System.out.println(length);
                 int caretPos = pane.getCaretPosition();
                 int rowNum = (caretPos == 0) ? 1 : 0;
                 for (int offset = caretPos; offset > 0;) {
@@ -96,7 +94,7 @@ public class MainWindow extends JFrame implements ActionListener {
                     throw new RuntimeException(ex);
                 }
                 int colNum = caretPos - offset + 1;
-                label.setText(rowNum + " " + colNum);
+                label.setText("Ln:"+rowNum + " Col:" + colNum);
             }
         });
 
