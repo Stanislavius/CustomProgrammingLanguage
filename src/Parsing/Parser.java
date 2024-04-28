@@ -134,11 +134,15 @@ public class Parser {
         }
 
         if (line.get(0).getValue().equals("if")){
+            if (line.size() <= 1)
+                throw new NoConditionException(line.get(0));
             return new ConditionalStatementPT(line.get(0),
                     indent,
                     parseExpressionTokens(new LinkedList<Token>(line.subList(1, line.size()))));
         }
         if (line.get(0).getValue().equals("elif")){
+            if (line.size() <= 1)
+                throw new NoConditionException(line.get(0));
             return new ConditionalStatementPT(line.get(0),
                     indent,
                     parseExpressionTokens(new LinkedList<Token>(line.subList(1, line.size()))));
@@ -164,17 +168,23 @@ public class Parser {
                     indent);
         }
         if (line.get(0).getValue().equals("while")){
+            if (line.size() <= 1)
+                throw new NoConditionException(line.get(0));
             return new ConditionalStatementPT(line.get(0),
                     indent,
                     parseExpressionTokens(new LinkedList<Token>(line.subList(1, line.size()))));
         }
         if (line.get(0).getValue().equals("def")){
+            if (line.size() <= 4)
+                throw new NoFunctionSignatureException(line.get(0));
             return new FunctionDefinitionPT(line.get(0),
                     indent, line.get(1),
                     parseArgsTokens(new LinkedList<Token>(line.subList(2, line.size()))));
         }
 
         if (line.get(0).getValue().equals("class")){
+            if (line.size() <= 1)
+                throw new NoClassNameException(line.get(0));
             return new ClassDefinitionPT(line.get(0),
                     indent, line.get(1));
         }
@@ -665,4 +675,5 @@ public class Parser {
         }
         return tokens;
     }
+
 }
