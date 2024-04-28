@@ -1,6 +1,8 @@
 package IDE;
 
 import javax.swing.*;
+import javax.swing.event.CaretEvent;
+import javax.swing.event.CaretListener;
 import javax.swing.event.DocumentEvent;
 import javax.swing.event.DocumentListener;
 import javax.swing.text.*;
@@ -69,6 +71,32 @@ public class MainWindow extends JFrame implements ActionListener {
                 catch (BadLocationException ex) {
                     ex.printStackTrace();
                 }
+            }
+        });
+
+        pane.addCaretListener(new CaretListener() {
+            @Override
+            public void caretUpdate(CaretEvent e) {
+                int length = pane.getSelectionEnd() - pane.getSelectionStart();
+                System.out.println(length);
+                int caretPos = pane.getCaretPosition();
+                int rowNum = (caretPos == 0) ? 1 : 0;
+                for (int offset = caretPos; offset > 0;) {
+                    try {
+                        offset = Utilities.getRowStart(pane, offset) - 1;
+                    } catch (BadLocationException ex) {
+                        throw new RuntimeException(ex);
+                    }
+                    rowNum++;
+                }
+                int offset = 0;
+                try {
+                    offset = Utilities.getRowStart(pane, caretPos);
+                } catch (BadLocationException ex) {
+                    throw new RuntimeException(ex);
+                }
+                int colNum = caretPos - offset + 1;
+                label.setText(rowNum + " " + colNum);
             }
         });
 
