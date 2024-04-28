@@ -22,4 +22,12 @@ public class LexingException extends Exception{
     public String getTestingRepresentation(){
         return this.getClass().getSimpleName() + ": " + num + " " + pos;
     }
+
+    public int getLineNum(){
+        return num;
+    }
+
+    public int getPosition(){
+        return pos;
+    }
 }
