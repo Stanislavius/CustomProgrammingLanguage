@@ -136,7 +136,7 @@ public class Lexer {
         return sort(tokens);
     }
 
-    public LinkedList<Token> read(String code) throws MissingEndOfStringException {
+    public LinkedList<Token> read(String code) {
         String[] splitCode = code.split(System.lineSeparator());
         return this.read(splitCode);
     }
