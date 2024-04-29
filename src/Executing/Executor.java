@@ -306,5 +306,13 @@ public class Executor {
             return namespaces.get(i).getVariable(name);
         }
     }
+
+    public  static void clear(){
+        globalVariables = new Variables();
+        stack = new LinkedList<FunctionDefinitionET>();
+        namespaces = new LinkedList<Variables>();
+        tryBlocks = new LinkedList<TryET>();
+        tracker = new RecursionTracker();
+    }
 }
 
