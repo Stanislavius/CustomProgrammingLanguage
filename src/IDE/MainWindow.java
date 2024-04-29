@@ -1,9 +1,12 @@
 package IDE;
 
+import Executing.Executor;
 import Lexing.Exceptions.LexingException;
 import Lexing.Lexer;
 import Lexing.Token;
+import Parsing.ParsedTokens.AbstractStatementPT;
 import Parsing.Parser;
+import Parsing.ParsingExceptions.ParsingException;
 
 import javax.swing.*;
 import javax.swing.event.CaretEvent;
@@ -25,6 +28,7 @@ public class MainWindow extends JFrame implements ActionListener {
     private JTextPane pane;
     JTextArea lines;
     JLabel label;
+    JTextArea textArea;
     Lexer lexer = new Lexer();
     Parser parser = new Parser();
 
@@ -39,6 +43,21 @@ public class MainWindow extends JFrame implements ActionListener {
         lines.setBackground(Color.LIGHT_GRAY);
         lines.setEditable(false);
         label = new JLabel("Some text");
+
+        JMenuBar menuBar = new JMenuBar();
+
+//Build the first menu.
+        JMenu menu = new JMenu("File");
+        menu.getAccessibleContext().setAccessibleDescription(
+                "File");
+        menuBar.add(menu);
+
+//a group of JMenuItems
+        JMenuItem menuItem = new JMenuItem("Run");
+        menuItem.addActionListener(this);
+        menu.add(menuItem);
+        setJMenuBar(menuBar);
+        JPanel panel = new JPanel();
         pane.getDocument().addDocumentListener(new DocumentListener() {
             public String getText() {
                 int caretPosition = pane.getDocument().getLength();
@@ -129,8 +148,15 @@ public class MainWindow extends JFrame implements ActionListener {
         add(scrollPane, BorderLayout.CENTER);
         scrollPane.getViewport().add(pane);
         scrollPane.setRowHeaderView(lines);
+        textArea = new JTextArea();
         //this.add(area);
-        add(label, BorderLayout.SOUTH);
+        //add(label, BorderLayout.SOUTH);
+        panel.setLayout(new BorderLayout());
+        panel.add(label, BorderLayout.NORTH);
+        panel.add(textArea, BorderLayout.SOUTH);
+        textArea.setEditable(false);
+        textArea.setText("");
+        add(panel, BorderLayout.SOUTH);
         this.pack();
         ((AbstractDocument)this.pane.getDocument()).setDocumentFilter(new DocumentFilter(){
             public void remove(DocumentFilter.FilterBypass fb, int offset, int length) {
@@ -203,7 +229,40 @@ public class MainWindow extends JFrame implements ActionListener {
 
     @Override
     public void actionPerformed(ActionEvent e) {
+        synchronized (lexer) {
+            synchronized (parser) {
+                lexer.clear();
+                parser.clear();
+                try {
+                    LinkedList<Token> tokens = lexer.read(pane.getText());
+                    if (lexer.isWithoutError()) {
+                        LinkedList<AbstractStatementPT> ps = parser.parse(tokens);
+                        if (parser.isWithoutError()) {
+                            String result = Executor.execute(ps);
+                            textArea.setText("Result: \n" + result);
+                        } else {
+                            LinkedList<ParsingException> exceptions = parser.getExceptions();
+                            StringBuilder sb = new StringBuilder();
+                            for (int i = 0; i < exceptions.size(); ++i) {
+                                sb.append(exceptions.get(i));
+                            }
+                            textArea.setText("Error: \n" + sb.toString());
+                        }
+                    } else {
+                        LinkedList<LexingException> exceptions = lexer.getExceptions();
+                        StringBuilder sb = new StringBuilder();
+                        for (int i = 0; i < exceptions.size(); ++i) {
+                            sb.append(exceptions.get(i));
+                        }
+                        textArea.setText("Error: \n" + sb.toString());
+                    }
 
+                } catch (Exception ex) {
+                    System.out.println(ex.getStackTrace());
+                    System.out.println(ex.toString());
+                }
+            }
+        }
     }
 
     public int getLineNum(int caretPos){
