@@ -18,6 +18,7 @@ public class Executor {
     static LinkedList<TryET> tryBlocks = new LinkedList<TryET>();
     public static RecursionTracker tracker = new RecursionTracker();
     public static RecursionCallTracker callTracker = new RecursionCallTracker();
+    public static final int RECURSION_DEPTH = 256;
     public static String execute(LinkedList<AbstractStatementPT> program) {
         createTypes();
         LinkedList<String> output = new LinkedList<String>();
@@ -99,8 +100,8 @@ public class Executor {
         stack.add(curFunc);
         namespaces.add(new Variables());
         callTracker.add(curFunc);
-        if (callTracker.get(curFunc) > 250) {
-            ErrorType er =  new ErrorType("Recursion ");
+        if (callTracker.get(curFunc) > RECURSION_DEPTH) {
+            ErrorType er =  new ErrorType("Infinite recursion ");
             throw new ExecutionException(er);
         }
     }
