@@ -1,5 +1,6 @@
 package Executing;
 
+import Executing.ExecutionExceptions.RecursionException;
 import Executing.ExecutionTokens.*;
 import Executing.Types.*;
 import Executing.Types.IntType;
@@ -14,10 +15,9 @@ public class Executor {
     static Variables globalVariables = new Variables();
     static LinkedList<FunctionDefinitionET> stack = new LinkedList<FunctionDefinitionET>();
     static LinkedList<Variables> namespaces = new LinkedList<Variables>();
-
     static LinkedList<TryET> tryBlocks = new LinkedList<TryET>();
-
     public static RecursionTracker tracker = new RecursionTracker();
+    public static RecursionCallTracker callTracker = new RecursionCallTracker();
     public static String execute(LinkedList<AbstractStatementPT> program) {
         createTypes();
         LinkedList<String> output = new LinkedList<String>();
@@ -95,12 +95,18 @@ public class Executor {
         VoidType.createType();
         BuiltinFunctions.createFunctions();
     }
-    public static void addToStack(FunctionDefinitionET curFunc){
+    public static void addToStack(FunctionDefinitionET curFunc) throws ExecutionException {
         stack.add(curFunc);
         namespaces.add(new Variables());
+        callTracker.add(curFunc);
+        if (callTracker.get(curFunc) > 250) {
+            ErrorType er =  new ErrorType("Recursion ");
+            throw new ExecutionException(er);
+        }
     }
 
     public static void removeFromStack(){
+        callTracker.exit(stack.getLast());
         stack.remove(stack.size()-1);
         namespaces.remove(namespaces.size()-1);
     }
