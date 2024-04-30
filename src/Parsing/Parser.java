@@ -653,14 +653,14 @@ public class Parser {
                     if (curLine.getValue().equals("except")) {
                         iter.remove();
                         assert curLine instanceof ExceptStatementPT;
-                        if (head1 == null)
+                        if (headTry == null)
                             throw new UnexpectedBlockWordException(curLine.getToken());
                         headTry.addExcept((ExceptStatementPT) curLine);
                     }
                     if (curLine.getValue().equals("finally")) {
                         iter.remove();
                         assert curLine instanceof FinallyStatementPT;
-                        if (head1 == null)
+                        if (headTry == null)
                             throw new UnexpectedBlockWordException(curLine.getToken());
                         headTry.setFinallyStatement((FinallyStatementPT) curLine);
                         headTry = null;
