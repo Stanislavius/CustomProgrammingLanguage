@@ -175,7 +175,7 @@ public class Parser {
                     parseExpressionTokens(new LinkedList<Token>(line.subList(1, line.size()))));
         }
         if (line.get(0).getValue().equals("def")){
-            if (line.size() <= 4)
+            if (line.size() < 4)
                 throw new NoFunctionSignatureException(line.get(0));
             return new FunctionDefinitionPT(line.get(0),
                     indent, line.get(1),
